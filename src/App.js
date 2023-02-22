@@ -1,36 +1,36 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './pages/Header';
+import Footer from './pages/Footer';
 
 // import item
-import Home from './components/item/Home';
-import ItemDetail from './components/item/ItemDetail';
-import ItemUpdate from './components/item/ItemUpdate';
-import ItemRank from './components/item/ItemRank';
+import Home from './pages/item/Home';
+import ItemDetail from './pages/item/ItemDetail';
+import ItemUpdate from './pages/item/ItemUpdate';
+import ItemRank from './pages/item/ItemRank';
 
 // import member
-import Login from './components/member/Login';
-import Join from './components/member/Join';
-import MemberDetail from './components/member/MemberDetail';
-import IdSearch from './components/member/help/IdSearch'
-import PwdSearch from './components/member/help/PwdSearch'
+import Login from './pages/member/Login';
+import Join from './pages/member/Join';
+import MemberDetail from './pages/member/MemberDetail';
+import IdSearch from './pages/member/help/IdSearch'
+import PwdSearch from './pages/member/help/PwdSearch'
 
 // import customerservice
-import CustomerServiceList from './components/customerservice/CustomerServiceList';
+import CustomerServiceList from './pages/customerservice/CustomerServiceList';
 
 // import recommendation
-import RecommendationList from './components/recommendation/RecommendationList';
-import RecommendationDetail from './components/recommendation/RecommendationDetail';
-import RecommendationUpdate from './components/recommendation/RecommendationUpdate';
+import RecommendationList from './pages/recommendation/RecommendationList';
+import RecommendationDetail from './pages/recommendation/RecommendationDetail';
+import RecommendationUpdate from './pages/recommendation/RecommendationUpdate';
 
 // import error page
-import NotFound from './components/error/NotFound';
-import IdSearchAnswer from './components/member/help/IdSearchAnswer';
-import PwdSearchAnswer from './components/member/help/PwdSearchAnswer';
-import MemberUpdate from './components/member/MemberUpdte';
-import Order from './components/order/Order';
-import CustomerServiceDetail from './components/customerservice/CustomerServiceDetail';
+import NotFound from './pages/error/NotFound';
+import IdSearchAnswer from './pages/member/help/IdSearchAnswer';
+import PwdSearchAnswer from './pages/member/help/PwdSearchAnswer';
+import MemberUpdate from './pages/member/MemberUpdte';
+import Order from './pages/order/Order';
+import CustomerServiceDetail from './pages/customerservice/CustomerServiceDetail';
 
 
 function App() {

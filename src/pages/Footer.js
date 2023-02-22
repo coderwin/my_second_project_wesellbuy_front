@@ -1,13 +1,12 @@
 import React from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import {Route, Routes} from 'react-router-dom';
+import FooterBottom from '../components/footer/FooterBottom';
 
 function Footer() {
 
     return (
-        <>
-            <hr />
-            <div>여기는 Footer 입니다.</div>
-        </>
+        <FooterBottom />
     );
 }
 
