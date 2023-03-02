@@ -9,6 +9,10 @@ const HeaderTop = () => {
     const handleLoginClick = () => {
         navigation("/login");
     }
+    // /join으로 가기
+    const handleJoinClick = () => {
+        navigation("/join");
+    }
     // /mydetail로 가기
     const handleMydetailClick = () => {
         navigation("/mydetail");
@@ -52,6 +56,9 @@ const HeaderTop = () => {
             <Nav className="justify-content-end" activeKey="/home">
                 <Nav.Item>
                     <Nav.Link onClick={handleLoginClick}>로그인</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link onClick={handleJoinClick}>회원가입</Nav.Link>
                 </Nav.Item>
             </Nav>
         );  
