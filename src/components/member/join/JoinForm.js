@@ -43,11 +43,14 @@ const JoinForm = () => {
   }
   // errMsgs
   const [errMsgs, setErrMsgs] = useState(defaultErrMsgs);
+  // 작업 처리 상태(로딩 상태)
+  const [loding, setLoding] = useState(false);
+  // 아이디 중복 확인 상태
+  const [checkId, setCheckId] = useState({msg : ""});
 
 
   // 상태값 변화시키기
   function handleInputDataChange(e) {
-    console.log("value : " + e.target.value);
     // 상태값 바꾸기
     setData({
       ...data,
@@ -99,6 +102,8 @@ const JoinForm = () => {
   async function handleJoinSubmit(e) {
     // 이벤트 막기
     e.preventDefault();
+    // loding 상태 true로 바꾸기
+    setLoding(true);
     // FormData 객체 생성
     const formData = new FormData();
     // 데이터 넣기
@@ -117,12 +122,16 @@ const JoinForm = () => {
     })
     .then((response) => {
       console.log("요청 성공");
-      console.log(response);
+      // 가입성공 alert창 띄우기
+      alert(response.data.data);
+      // 로그인으로 이동
+      navigation("/login");
     })
     .catch((err) => {
       console.log("요청 실패");
-      console.log(err.response.data);
-      console.log(err.response.data.errors);
+      console.log(err);
+      // 로딩중 해제하기
+      setLoding(false);    
       // newErrMsgs 객체 생성하기
       let newErrMsgs = {};
 
@@ -142,6 +151,14 @@ const JoinForm = () => {
             }
         }
       }
+
+      // 이미 존재하는 회원 일 때
+      if(err.response.data.errMsg === "이미 사용중인 아이디") {
+        newErrMsgs = {
+          ...newErrMsgs,
+          id: err.response.data.errMsg
+        };
+      }
       console.log("newErrMsgs -> " + newErrMsgs);
       // errMsgs value 교체하기
       setErrMsgs({
@@ -150,19 +167,61 @@ const JoinForm = () => {
       });
     });
   }
+
   console.log(errMsgs);
+
+  // 아이디 중복 확인
+  function handleCheckIdClick() {
+    // id 받아오기
+    const {id} = data;
+    // 서버에 아이디 중복확인 요청
+    axios.get(
+      "http://localhost:8080/members/id/check", 
+      {
+        params: {
+          id
+        }
+      })
+    .then((response) => {
+      setCheckId({
+        ...checkId,
+        msg: response.data.data
+      });
+      setErrMsgs({
+        ...errMsgs,
+        id: ""
+      });
+    })
+    .catch((err) => {
+      setErrMsgs({
+        ...errMsgs,
+        id: err.response.data.errMsg
+      });
+      setCheckId({
+        msg: ""
+      });
+    });
+  }
+
+  // 로딩 상태가 true이면 화면에 로딩중 뜬다.
+  if(loding) {
+    return (
+      <div>로딩중...</div>
+    );
+  }
   
   // view 만들기
   return (
 
     <Form onSubmit={handleJoinSubmit}>
+      
       {/* name  */}
       <Form.Group as={Row} className="mb-3">
         <Form.Label column sm="2">
           Name <span className='important'>*</span>
         </Form.Label>
         <Col sm="10">
-          <Form.Control type="text" name="name" onChange={handleInputDataChange} />
+          <Form.Control type="text" name="name" onChange={handleInputDataChange} value={data.name} />
         </Col>
         {/* 에러 메시지 */}
         <Col className="error">
@@ -174,12 +233,16 @@ const JoinForm = () => {
         <Form.Label column sm="2">
           ID <span className='important'>*</span>
         </Form.Label>
-        <Col sm="10">
-          <Form.Control type="text" name="id" onChange={handleInputDataChange} />
+        <Col sm="8">
+          <Form.Control type="text" name="id" onChange={handleInputDataChange} value={data.id} />
         </Col>
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errMsgs.id}
+        <Col sm="2">
+          <Button onClick={handleCheckIdClick}>중복확인</Button>
+        </Col>
+        {/* 에러/중복확인 메시지 */}
+        <Col>
+          <span className="error">{errMsgs.id}</span>
+          <span className="pass">{checkId.msg}</span>
         </Col>
       </Form.Group>
       {/* pwd  */}
@@ -188,7 +251,7 @@ const JoinForm = () => {
           Password <span className='important'>*</span>
         </Form.Label>
         <Col sm="10">
-          <Form.Control type="password" name="pwd" onChange={handleInputDataChange} />
+          <Form.Control type="password" name="pwd" onChange={handleInputDataChange} value={data.pwd} />
         </Col>
         {/* 에러 메시지 */}
         <Col className="error">
@@ -201,7 +264,7 @@ const JoinForm = () => {
           PasswordConfirm <span className='important'>*</span>
         </Form.Label>
         <Col sm="10">
-          <Form.Control type="password" name="pwdConfirm" onChange={handleInputDataChange} />
+          <Form.Control type="password" name="pwdConfirm" onChange={handleInputDataChange} value={data.pwdConfirm} />
         </Col>
         {/* 에러 메시지 */}
         <Col className="error">
@@ -214,7 +277,7 @@ const JoinForm = () => {
           Email <span className='important'>*</span>
         </Form.Label>
         <Col sm="10">
-          <Form.Control type="text" name="email" onChange={handleInputDataChange} />
+          <Form.Control type="text" name="email" onChange={handleInputDataChange} value={data.email} />
         </Col>
         {/* 에러 메시지 */}
         <Col className="error">
@@ -227,7 +290,7 @@ const JoinForm = () => {
           Selfphone <span className='important'>*</span>
         </Form.Label>
         <Col sm="10">
-          <Form.Control type="text" name="selfPhone" onChange={handleInputDataChange} />
+          <Form.Control type="text" name="selfPhone" onChange={handleInputDataChange} value={data.selfPhone} />
         </Col>
         {/* 에러 메시지 */}
         <Col className="error">
@@ -240,7 +303,7 @@ const JoinForm = () => {
           HomePhone
         </Form.Label>
         <Col sm="10">
-          <Form.Control type="text" name="homePhone" onChange={handleInputDataChange} />
+          <Form.Control type="text" name="homePhone" onChange={handleInputDataChange} value={data.homePhone} />
         </Col>
         {/* 에러 메시지 */}
         <Col className="error">
@@ -266,25 +329,25 @@ const JoinForm = () => {
           {errMsgs.country}
         </Col>
         {/* city */}
-        <Form.Control type="text" placeholder="도시명" name="city" onChange={handleInputDataChange} />
+        <Form.Control type="text" placeholder="도시명" name="city" onChange={handleInputDataChange} value={data.city} />
         {/* 에러 메시지 */}
         <Col className="error">
           {errMsgs.city}
         </Col>
         {/* street */}
-        <Form.Control type="text" placeholder="동/거리명" name="street" onChange={handleInputDataChange} />
+        <Form.Control type="text" placeholder="동/거리명" name="street" onChange={handleInputDataChange} value={data.street} />
         {/* 에러 메시지 */}
         <Col className="error">
           {errMsgs.street}
         </Col>
         {/* detail */}
-        <Form.Control type="text" placeholder="상세정보" name="detail" onChange={handleInputDataChange} />
+        <Form.Control type="text" placeholder="상세정보" name="detail" onChange={handleInputDataChange} value={data.detail} />
         {/* 에러 메시지 */}
         <Col className="error">
           {errMsgs.detail}
         </Col>
         {/* zipcode */}
-        <Form.Control type="text" placeholder="우편번호" name="zipcode" onChange={handleInputDataChange} />
+        <Form.Control type="text" placeholder="우편번호" name="zipcode" onChange={handleInputDataChange} value={data.zipcode} />
         {/* 에러 메시지 */}
         <Col className="error">
           {errMsgs.zipcode}
@@ -298,9 +361,7 @@ const JoinForm = () => {
         <Col className="error">
           {errMsgs.file}
         </Col>
-        <Col className="imageBox">
-
-        </Col>
+        <Col className="imageBox" />
       </Form.Group>
 
       <Button type="submit" variant="light">가입</Button>
