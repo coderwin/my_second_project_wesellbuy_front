@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Route, Routes} from 'react-router-dom';
 import Header from './pages/Header';
 import Footer from './pages/Footer';
@@ -34,9 +34,29 @@ import CustomerServiceDetail from './pages/customerservice/CustomerServiceDetail
 
 
 function App() {
+
+  /// 상태 모음
+  // 로그인/비로그인 확인을 위한 상태
+  const [sessionForm, setSessionForm] = useState(null); // 로그인한 사용자 데이터 담는 상태
+
+  // 메서드 모음
+  /// 로그인 데이터 sessionForm에 담기
+  function hnadleSessionFormDataInput() {
+    // session에서 로그인한 사용자 데이터 불러오기
+    const sessionId = "LOGIN_MEMBER";
+    // 회원정보 가져오기
+    const memberInfo = JSON.parse(sessionStorage.getItem(sessionId));
+    // sessionForm에 넣어주기
+    setSessionForm(memberInfo);
+  }
+  /// sessionForm의 데이터 바꾸기
+  function handleSessionFormChangeData(value) {
+    setSessionForm(value);
+  }
+
   return (
     <>
-      <Header />
+      <Header sessionForm={sessionForm} OnChangeData={handleSessionFormChangeData} />
 
       <Routes>
         {/* item list */}
@@ -45,7 +65,7 @@ function App() {
         <Route path="/item/:num/update" element={<ItemUpdate />}></Route>
         <Route path="/item/rank" element={<ItemRank />}></Route>
         {/* login */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login OnInput={hnadleSessionFormDataInput}  />} />
         {/* help */}
         <Route path="/help/search/id" element={<IdSearch />} />
         <Route path="/help/search/id/answer" element={<IdSearchAnswer />} />

@@ -3,11 +3,11 @@ import {Route, Routes} from 'react-router-dom';
 import HeaderNav from '../components/header/HeaderNav';
 import HeaderTop from '../components/header/HeaderTop';
 
-function Header() {
+function Header({sessionForm, OnChangeData}) {
 
     return (
         <>
-            <HeaderTop />
+            <HeaderTop sessionForm={sessionForm} OnChangeData={OnChangeData} />
             <HeaderNav />
         </>
     );

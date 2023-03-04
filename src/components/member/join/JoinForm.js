@@ -125,7 +125,7 @@ const JoinForm = () => {
       // 가입성공 alert창 띄우기
       alert(response.data.data);
       // 로그인으로 이동
-      navigation("/login");
+      navigation("/login");   
     })
     .catch((err) => {
       console.log("요청 실패");

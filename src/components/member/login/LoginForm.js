@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { findAllByTestId } from '@testing-library/react';
 
-export const LoginForm = () => {
+export const LoginForm = ({OnInput}) => {
 
   // 기본 데이터 모음
   const defaultData = {
@@ -24,24 +25,31 @@ export const LoginForm = () => {
   /// 메서드 모음
   // 클라이언트가 입력한 데이터를 data 상태에 입력하기
   function handleInputDataChange(event) {
-    console.log(`value : ${event.target.value}`);
     setData({
       ...data,
       [event.target.name]: event.target.value
     });
   }
-  // 아이디 기억 클릭 처리
-  function handleRememberIdClick(e) {
+  // 아이디 기억 클릭 처리 토글 처리
+  function handleRememberIdChange(e) {
     console.log(e);
     // rememberId == true로 변경
-    setData({
-      ...data,
-      rememberId: true
-    });
+    if(data.rememberId === false) {
+      setData({
+        ...data,
+        rememberId: true
+      });
+    } else {
+      setData({
+        ...data,
+        rememberId: false
+      });
+    }
   }
 
   // /login 처음 입장했을 때 실행되는 메서드
   useEffect(() => {
+    console.log(document.cookie);
     // cookie에 key가 REMEMBER_ID인 cookie가 있는지 확이하기
     let cookieKey = "REMEMBER_ID";
     const cookieValue = getCookieValue(cookieKey);
@@ -52,28 +60,40 @@ export const LoginForm = () => {
         id: cookieValue,
         rememberId: true
       });
-    } 
-  });
+    }
+  }, []);
   
   // 쿠키 value 불러오기
   function getCookieValue(key) {
-    let cookieKey = key + "=";
-    let result = "";
-    const cookieArr = document.cookie.split(";");
-    console.log(document.cookie);
-    console.log(cookieArr);
-
+    let cookieKey = key + "="; // 쿠키내의 모습 만들기 
+    let result = ""; // 결과값
+    const cookieArr = document.cookie.split(";"); // 쿠키들을 배열로 만들기
+    
     for(let i = 0; i < cookieArr.length; i++) {
+      // 쿠키에서 처음이 " "로 시작할 때 처리
       if(cookieArr[i][0] === " ") {
-        cookieArr[i] = cookieArr[i].subString(1);
+        cookieArr[i] = cookieArr[i].substring(1);
       }
-
+      // 쿠키의 value 찾기
       if(cookieArr[i].indexOf(cookieKey) === 0) {
         result = cookieArr[i].slice(cookieKey.length, cookieArr[i].length);
         return result;
       }
     }
+    // key에 대한 value 없을 때
     return result;
+  }
+
+  // 쿠키 삭제
+  function deleteCookie(key) {
+    document.cookie = key + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;'
+  }
+
+  // 쿠키 생성
+  function createCookie(key, value) {
+    const cookieData = `${key}=${value};`;
+    // cookie에 저장
+    document.cookie = cookieData;
   }
 
   // 로그인 시도하기
@@ -84,21 +104,33 @@ export const LoginForm = () => {
     setLoding(true);
     // 로그인 서버로 요청
     try {
-      const data = await axios.post(
+      const result = await axios.post(
         "http://localhost:8080/members/login",
-        {
-          data
-        }
+        data
       );
       // 요청 성공
       console.log("요청 성공");
-      console.log(data);
+      // sessionStorage에 로그인 정보 저장
+      saveInSessionStorage("LOGIN_MEMBER", result.data.data);
+      // data의 rememberId 값을 통해 쿠키에 아이디 기억 정보 저장
+      const key = "REMEMBER_ID";// 아이디 기억 cookie key
+      if(data.rememberId) {
+        // cookie에 저장할 데이터 생성
+        // 쿠키 생성
+        createCookie(key, data.id);
+      } else {
+        // 쿠키 삭제
+        deleteCookie(key);
+      }
+      /// sessionForm 데이터 입력하기
+      OnInput();
       // "/"으로 이동
-      // navigation("/");
+      navigation("/");
 
     } catch(error) {
       // 요청 실패
       console.log("요청 실패");
+      console.log(error);
       // loding false로 바꿈
       setLoding(false);
       // error 상태에 데이터 넣기
@@ -108,6 +140,14 @@ export const LoginForm = () => {
       });
 
     }
+  }
+
+  // sessionSotrage에 데이터 저장
+  function saveInSessionStorage(key, value) {
+    // value를 string으로 변환
+    const sessionData = JSON.stringify(value);
+    // sessionStorage에 데이터 저장
+    sessionStorage.setItem(key, sessionData);
   }
 
   // loding == ture이면 로딩중
@@ -129,7 +169,7 @@ export const LoginForm = () => {
               type="checkbox" 
               label="Check me out" 
               name="rememberId" 
-              onClick={handleRememberIdClick}
+              onChange={handleRememberIdChange}
               checked={data.rememberId}
               />
         </Form.Group>
