@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import {Route, Routes} from 'react-router-dom';
 import Header from './pages/Header';
 import Footer from './pages/Footer';
@@ -32,6 +32,8 @@ import MemberUpdate from './pages/member/MemberUpdte';
 import Order from './pages/order/Order';
 import CustomerServiceDetail from './pages/customerservice/CustomerServiceDetail';
 
+// context 만들기
+export const CustomContext = createContext(null);
 
 function App() {
 
@@ -41,7 +43,7 @@ function App() {
 
   // 메서드 모음
   /// 로그인 데이터 sessionForm에 담기
-  function hnadleSessionFormDataInput() {
+  function handleSessionFormDataInput() {
     // session에서 로그인한 사용자 데이터 불러오기
     const sessionId = "LOGIN_MEMBER";
     // 회원정보 가져오기
@@ -56,42 +58,44 @@ function App() {
 
   return (
     <>
-      <Header sessionForm={sessionForm} OnChangeData={handleSessionFormChangeData} />
+      <CustomContext.Provider value={{sessionForm, handleSessionFormDataInput, handleSessionFormChangeData}}>
+        <Header />
 
-      <Routes>
-        {/* item list */}
-        <Route path="/" element={<Home />} />
-        <Route path="/item/:num" element={<ItemDetail />}></Route>
-        <Route path="/item/:num/update" element={<ItemUpdate />}></Route>
-        <Route path="/item/rank" element={<ItemRank />}></Route>
-        {/* login */}
-        <Route path="/login" element={<Login OnInput={hnadleSessionFormDataInput}  />} />
-        {/* help */}
-        <Route path="/help/search/id" element={<IdSearch />} />
-        <Route path="/help/search/id/answer" element={<IdSearchAnswer />} />
-        <Route path="/help/search/pwd" element={<PwdSearch />} />
-        <Route path="/help/search/pwd/answer" element={<PwdSearchAnswer />} />
-        {/* Join */}
-        <Route path="/join" element={<Join />} />
-        {/* member detail info */}
-        <Route path="/mydetail" element={<MemberDetail />} />
-        <Route path="/mydetail/update" element={<MemberUpdate />} />
-        {/* customerservice list */}
-        <Route path="/cs" element={<CustomerServiceList />} />
-        <Route path="/cs/:num" element={<CustomerServiceDetail />}></Route>
-        {/* recommendation list */}
-        <Route path="/recommendation/list" element={<RecommendationList />}  />
-        <Route path="/recommendation/:num" element={<RecommendationDetail />} />
-        <Route path="/recommendation/:num/update" element={<RecommendationUpdate />}  /> 
+        <Routes>
+          {/* item list */}
+          <Route path="/" element={<Home />} />
+          <Route path="/item/:num" element={<ItemDetail />}></Route>
+          <Route path="/item/:num/update" element={<ItemUpdate />}></Route>
+          <Route path="/item/rank" element={<ItemRank />}></Route>
+          {/* login */}
+          <Route path="/login" element={<Login />} />
+          {/* help */}
+          <Route path="/help/search/id" element={<IdSearch />} />
+          <Route path="/help/search/id/answer" element={<IdSearchAnswer />} />
+          <Route path="/help/search/pwd" element={<PwdSearch />} />
+          <Route path="/help/search/pwd/answer" element={<PwdSearchAnswer />} />
+          {/* Join */}
+          <Route path="/join" element={<Join />} />
+          {/* member detail info */}
+          <Route path="/mydetail" element={<MemberDetail />} />
+          <Route path="/mydetail/update" element={<MemberUpdate />} />
+          {/* customerservice list */}
+          <Route path="/cs" element={<CustomerServiceList />} />
+          <Route path="/cs/:num" element={<CustomerServiceDetail />}></Route>
+          {/* recommendation list */}
+          <Route path="/recommendation/list" element={<RecommendationList />}  />
+          <Route path="/recommendation/:num" element={<RecommendationDetail />} />
+          <Route path="/recommendation/:num/update" element={<RecommendationUpdate />}  /> 
 
-        {/* order list */}
-        <Route path="/order" element={<Order />} />
+          {/* order list */}
+          <Route path="/order" element={<Order />} />
 
-        {/* 404 page */}
-        <Route path="/*" element={<NotFound />} />
-      </Routes>
+          {/* 404 page */}
+          <Route path="/*" element={<NotFound />} />
+        </Routes>
 
-      <Footer />
+        <Footer />
+      </CustomContext.Provider>
     </>
   );
 }

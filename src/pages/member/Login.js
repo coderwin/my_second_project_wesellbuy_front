@@ -3,11 +3,11 @@ import {Route, Routes} from 'react-router-dom';
 import LoginForm from '../../components/member/login/LoginForm';
 import SearchButtons from '../../components/member/login/SearchButtons';
 
-function Login({OnInput}) {
+function Login() {
 
     return (
         <>
-            <LoginForm OnInput={OnInput} />
+            <LoginForm />
             <SearchButtons />
         </>
         

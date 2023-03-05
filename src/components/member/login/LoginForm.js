@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { findAllByTestId } from '@testing-library/react';
+import { CustomContext } from '../../../App';
 
-export const LoginForm = ({OnInput}) => {
+export const LoginForm = () => {
 
   // 기본 데이터 모음
   const defaultData = {
@@ -19,6 +20,8 @@ export const LoginForm = ({OnInput}) => {
   const [data, setData] = useState(defaultData); // 로그인 정보
   const [loding, setLoding] = useState(false); // 데이터 처리 중
   const [error, setError] = useState(defaultError); // 에러 정보
+  // 외부에서 변수, 함수, 상태 불러오기
+  const {handleSessionFormDataInput} = useContext(CustomContext);
   // 필요 도구 모음
   const navigation = useNavigate(); // 페이지 이동
 
@@ -32,7 +35,6 @@ export const LoginForm = ({OnInput}) => {
   }
   // 아이디 기억 클릭 처리 토글 처리
   function handleRememberIdChange(e) {
-    console.log(e);
     // rememberId == true로 변경
     if(data.rememberId === false) {
       setData({
@@ -49,7 +51,6 @@ export const LoginForm = ({OnInput}) => {
 
   // /login 처음 입장했을 때 실행되는 메서드
   useEffect(() => {
-    console.log(document.cookie);
     // cookie에 key가 REMEMBER_ID인 cookie가 있는지 확이하기
     let cookieKey = "REMEMBER_ID";
     const cookieValue = getCookieValue(cookieKey);
@@ -123,7 +124,7 @@ export const LoginForm = ({OnInput}) => {
         deleteCookie(key);
       }
       /// sessionForm 데이터 입력하기
-      OnInput();
+      handleSessionFormDataInput();
       // "/"으로 이동
       navigation("/");
 

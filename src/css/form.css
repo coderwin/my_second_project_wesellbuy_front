@@ -10,3 +10,7 @@
 .pass {
     color: blue;
 }
+/* 마우스 포인터 */
+.mousePointer {
+    cursor: pointer;
+}

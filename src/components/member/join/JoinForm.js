@@ -168,8 +168,6 @@ const JoinForm = () => {
     });
   }
 
-  console.log(errMsgs);
-
   // 아이디 중복 확인
   function handleCheckIdClick() {
     // id 받아오기

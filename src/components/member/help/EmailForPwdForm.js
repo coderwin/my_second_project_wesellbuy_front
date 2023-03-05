@@ -1,0 +1,41 @@
+import React, { useContext } from 'react';
+import { Button, Col, Form } from 'react-bootstrap';
+import { SearchPwdContext } from './PwdSearchForm';
+
+export const EmailForPwdForm = () => {
+
+  // 외부 상태, 변수, 메서드 불러오기
+  const {loding, handleDataChange, handleSearchPwdSubmit, error, data} = useContext(SearchPwdContext);
+
+  // 작업 처리 중일 때 view
+  if(loding) return <div>요청 처리 중...</div>
+
+  return (
+    <Form onSubmit={handleSearchPwdSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>아이디</Form.Label>
+            <Form.Control type="text" placeholder="Enter ID" name="id" value={data.id} onChange={handleDataChange} />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>이메일</Form.Label>
+            <Form.Control type="text" placeholder="이메일" name="email" value={data.email} onChange={handleDataChange} />
+        </Form.Group>
+
+        {/* errorMsg box */}
+        <Form.Group>
+          <Col className="error">
+            {error}
+          </Col>
+        </Form.Group>
+       
+        <Button variant="primary" type="submit">
+        찾기
+        </Button>
+
+        
+    </Form>
+  )
+}
+
+export default EmailForPwdForm;

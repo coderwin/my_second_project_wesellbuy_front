@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import axios from 'axios';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { Nav } from 'react-bootstrap'
 import { json, useNavigate } from 'react-router-dom';
+import { CustomContext } from '../../App';
 
-const HeaderTop = ({sessionForm, OnChangeData}) => {
+const HeaderTop = () => {
 
     const navigation = useNavigate();
     // /login으로 가기
@@ -21,18 +23,39 @@ const HeaderTop = ({sessionForm, OnChangeData}) => {
     const handleOrderClick = () => {
         navigation("/order");
     }
+    // 서버에 로그아웃 요청하기
+    async function logout() {
+        const {data} = await axios.post(
+            "http://localhost:8080/members/logout"
+        );
+        return data;
+    }
     // 로그아웃 하기
-        // - 아직 못 함
-    const handleLogoutClick = () => {
-        // session 아이디 제거하기 - 서버 연결 전 임시로
-        sessionStorage.clear();
-        // 홈으로
-        navigation("/");
-        // sessionForm 값 초기화하기
-        OnChangeData(null);
+    const handleLogoutClick = async () => {
+        try {
+            // view 바꾸기 -> 작업 처리 중...
+            setLoding(true);
+            // 서버에 로그아웃 요청
+            const result = await logout();
+            // 로그아웃 성공 메시지 출력
+            console.log(result.data);
+            // session 아이디 제거하기 - 서버 연결 전 임시로
+            sessionStorage.clear();
+            // 홈으로
+            navigation("/");
+            // sessionForm 값 초기화하기
+            handleSessionFormChangeData(null);
+        } catch(error) {
+            console.log(error);
+            const errMsg = "로그아웃 처리중 에러 발생";
+            alert(errMsg);
+        }
     }
 
     // 상태 모음
+    const {loding, setLoding} = useState(false); // 로딩/작업진행중 상태
+    // 외부에서 필요한 변수, 함수, 상태 불러오기
+    const {sessionForm, handleSessionFormChangeData} = useContext(CustomContext);
 
     // sessionFrom에 따라 로그인 part가 render 된다 -> 사용 안 함(App.js에서 처리 후부터)
     // useEffect(() => {
@@ -83,6 +106,8 @@ const HeaderTop = ({sessionForm, OnChangeData}) => {
     // Q. 렌더링 되는 것이 아니라 여기로 오는 건가?
     console.log("로그인 상태")
     
+    // 작업 진행 상태 일 때
+    if(loding) return <div>요청 처리 중...</div>
     return (
         <>
             {resultBox}

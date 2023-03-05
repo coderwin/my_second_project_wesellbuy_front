@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 const SearchButtons = () => {
 
+    // navigation 생성
     const navigation = useNavigate();
 
+    /// 메서드 모음
     // 아이디 찾기
     const handleSearchIdClick = () => {
         navigation("/help/search/id");
@@ -14,7 +16,7 @@ const SearchButtons = () => {
     const handleSearchPwdClick = () => {
         navigation("/help/search/pwd");
     }
-
+    
     return (
         <Container>
             <Row>
