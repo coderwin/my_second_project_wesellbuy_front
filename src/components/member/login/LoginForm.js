@@ -107,7 +107,10 @@ export const LoginForm = () => {
     try {
       const result = await axios.post(
         "http://localhost:8080/members/login",
-        data
+        data,
+        {
+          withCredentials: true
+        }
       );
       // 요청 성공
       console.log("요청 성공");

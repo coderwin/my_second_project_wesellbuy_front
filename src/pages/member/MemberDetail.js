@@ -1,11 +1,12 @@
-import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import React, { useState } from 'react';
+import MemberDetailForm from '../../components/member/MemberDetailForm';
 
 function MemberDetail() {
 
+
     return (
         <>
-            <div>여기는 My detail 입니다.</div>
+            <MemberDetailForm />
         </>
     );
 }

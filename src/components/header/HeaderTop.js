@@ -25,18 +25,28 @@ const HeaderTop = () => {
     }
     // 서버에 로그아웃 요청하기
     async function logout() {
+        // loding 상태 true
+        setLoding(true);
+        // 서버 로그아웃 하기
         const {data} = await axios.post(
             "http://localhost:8080/members/logout"
         );
         return data;
     }
+    
+    // 상태 모음
+    // 로딩/작업진행중 상태
+    const [loding, setLoding] = useState(false); 
+    // 외부에서 필요한 변수, 함수, 상태 불러오기
+    const {sessionForm, handleSessionFormChangeData} = useContext(CustomContext);
+
     // 로그아웃 하기
     const handleLogoutClick = async () => {
         try {
-            // view 바꾸기 -> 작업 처리 중...
-            setLoding(true);
             // 서버에 로그아웃 요청
             const result = await logout();
+            // loding false로 바꾸기
+            setLoding(false);
             // 로그아웃 성공 메시지 출력
             console.log(result.data);
             // session 아이디 제거하기 - 서버 연결 전 임시로
@@ -52,10 +62,7 @@ const HeaderTop = () => {
         }
     }
 
-    // 상태 모음
-    const {loding, setLoding} = useState(false); // 로딩/작업진행중 상태
-    // 외부에서 필요한 변수, 함수, 상태 불러오기
-    const {sessionForm, handleSessionFormChangeData} = useContext(CustomContext);
+    
 
     // sessionFrom에 따라 로그인 part가 render 된다 -> 사용 안 함(App.js에서 처리 후부터)
     // useEffect(() => {
@@ -115,4 +122,4 @@ const HeaderTop = () => {
     );
 }
 
-export default HeaderTop
+export default HeaderTop;

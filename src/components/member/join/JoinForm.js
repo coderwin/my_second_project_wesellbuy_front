@@ -298,7 +298,7 @@ const JoinForm = () => {
       {/* homephone  */}
       <Form.Group as={Row} className="mb-3">
         <Form.Label column sm="2">
-          HomePhone
+          Homephone
         </Form.Label>
         <Col sm="10">
           <Form.Control type="text" name="homePhone" onChange={handleInputDataChange} value={data.homePhone} />
