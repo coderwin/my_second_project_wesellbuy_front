@@ -4,6 +4,14 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import '../../../css/form.css';
 
+/**
+ * member save component
+ * writer : 이호진
+ * init : 2023.03.07
+ * updated by writer :
+ * update :
+ * description : 회원가입/회원정보 저장  component
+ */
 const JoinForm = () => {
 
   // 상태 생성

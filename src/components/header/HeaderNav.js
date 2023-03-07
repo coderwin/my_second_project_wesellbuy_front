@@ -18,6 +18,10 @@ const HeaderNav = () => {
   const handleCustomerServiceClick = () => {
     navigation("/cs");
   }
+  // 상품등록
+  const handleItemSaveClick = () => {
+    navigation("/item/new");
+  }
 
 
   return (
@@ -27,10 +31,10 @@ const HeaderNav = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>  
+            <NavDropdown title="상품" id="basic-nav-dropdown">
+              <NavDropdown.Item onClick={handleItemSaveClick}>
+                상품등록
+              </NavDropdown.Item> 
             </NavDropdown>
             <Nav.Link onClick={handleRecommendationClick}>추천합니다</Nav.Link>
             <Nav.Link onClick={handleCustomerServiceClick}>고객지원</Nav.Link>

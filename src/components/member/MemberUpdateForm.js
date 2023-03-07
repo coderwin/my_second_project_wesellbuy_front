@@ -131,7 +131,7 @@ const MemberUpdateForm = () => {
       let img = document.createElement("img");
       console.log(event.target.result);
       img.setAttribute("src", event.target.result);
-      // ./imageBox에 Image 태그 담기
+      // .imageBox에 Image 태그 담기
       document.querySelector(".imageBox").appendChild(img);
     }
     // reader가 이미지 읽도록 하기
@@ -180,7 +180,7 @@ const MemberUpdateForm = () => {
       setLoding(false);
       // newErrorMsgs 객체 생성하기
       let newErrorMsgs = {};
-      // filed 값에 따라서 데이터 넣기
+      // field 값에 따라서 데이터 넣기
       for(let key in err.response.data.errors) {
         // newErrorMsgs에 에러 메시지 모두 담기
         const newErrMsg = err.response.data.errors[key];
@@ -230,7 +230,7 @@ const MemberUpdateForm = () => {
   }
 
   // loding true일 때
-  if(loding) <div>요청 처리 중...</div>
+  if(loding) return <div>요청 처리 중...</div>;
 
   return (
     <Form onSubmit={handleUpdateSubmit}>

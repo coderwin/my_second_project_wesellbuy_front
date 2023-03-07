@@ -5,7 +5,14 @@ import noImage from '../../images/common/no_image.png';
 import { useNavigate } from 'react-router-dom';
 import { CustomContext } from '../../App';
 
-
+/**
+ * Member detail component
+ * writer : 이호진
+ * init : 2023.03.06
+ * updated by writer :
+ * update :
+ * description : 회원 정보 상세보기 component
+ */
 const MemberDetailForm = () => {
   /// 변수 모음
   // defaultData
@@ -24,6 +31,9 @@ const MemberDetailForm = () => {
   const navigation = useNavigate();
   // CustomContext 사용하기
   const {handleSessionFormChangeData} = useContext(CustomContext);
+  // country에 들어가는 국가 모음
+  const countryValues = ["ko", "us", "gb", "cn", "jp"];
+  const countryNames= ["대한민국", "미국", "영국", "중국", "일본"];
 
   /// 상태 모음
   const [loding, setLoding] = useState(false); // 작업 상태
@@ -137,6 +147,19 @@ const MemberDetailForm = () => {
       setError(errMsg);
     }
   }
+  // country 이름 출력하기
+  function changeCountryName() {
+    
+    // countryName 변수 생성
+    let countryName = "";
+    // countryValue와 data.address.country 같은 것 찾기
+    for(let i = 0; i < countryValues.length; i++) {
+      if(countryValues[i] === data.address.country) {
+        countryName = countryNames[i];
+      }
+    }
+    return countryName;
+  }
 
   // 내정보 들어올 때 처음으로 시작
   useEffect(() => {
@@ -147,9 +170,9 @@ const MemberDetailForm = () => {
   }, []);
 
   // loding true일 때
-  if(loding) <div>요청 처리 중...</div>
+  if(loding) return (<div>요청 처리 중...</div>);
   // 서버 요청 처리 중 에러 발생 때
-  if(error) <div>요청 작업 중 에러 발생</div>
+  if(error) return (<div>요청 작업 중 에러 발생</div>);
     
   return (
     <Form>
@@ -220,7 +243,7 @@ const MemberDetailForm = () => {
               <Form.Label>Country</Form.Label>
               <Form.Control
                 type="text"
-                value={data.address.country}
+                value={changeCountryName()}
                 readOnly
               />
             </Form.Group>

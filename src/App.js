@@ -31,6 +31,7 @@ import PwdSearchAnswer from './pages/member/help/PwdSearchAnswer';
 import MemberUpdate from './pages/member/MemberUpdte';
 import Order from './pages/order/Order';
 import CustomerServiceDetail from './pages/customerservice/CustomerServiceDetail';
+import ItemSaveForm from './components/item/ItemSaveForm';
 
 // context 만들기
 export const CustomContext = createContext(null);
@@ -64,6 +65,7 @@ function App() {
         <Routes>
           {/* item list */}
           <Route path="/" element={<Home />} />
+          <Route path="/item/new" element={<ItemSaveForm />} />
           <Route path="/item/:num" element={<ItemDetail />}></Route>
           <Route path="/item/:num/update" element={<ItemUpdate />}></Route>
           <Route path="/item/rank" element={<ItemRank />}></Route>
