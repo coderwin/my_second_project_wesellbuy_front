@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Carousel } from 'react-bootstrap'
+import { ItemDetailContext } from '../../item/ItemDetailForm';
 import ImageForm from './ImageForm';
 
 /**
@@ -12,53 +13,37 @@ import ImageForm from './ImageForm';
  *               > 속성
  *                 > srcArr : img 태그의 src 속성의 값들을 갖는 배열 prop
  */
-const ImagesBox = ({srcArr}) => {
+const ImagesBox = () => {
 
   /// 변수 모음
-  let imageForms = ""; // 모든 imageForm 
+  // 외부의 변수, 상태, 메서드 불러오기
+  const {srcArr} = useContext(ItemDetailContext);
+
+  /// view 만들기
+  let imageForms = null; // 모든 imageForm 
   // ImageForm들을 생성
   if(srcArr) {
-    imageForms = srcArr.map((src) => {
-      return (<ImageForm srcValue={src} />);
-    });
-  }
-  
-  // ImageForm 루프 돌기
-  return (
-    <Carousel>
-      {/* 클라이언트 저장 이미지가 나온다 */}
-      {imageForms}
-      
-      {/* 아래는 예시 */}
-      <Carousel.Item>
+    imageForms = srcArr.map((src, num) => {
+      console.log(src);
+      return (<Carousel.Item key={num}>
         <img
           className="d-block w-100"
-          src="holder.js/800x400?text=First slide&bg=373940"
-          alt="First slide"
+          src={src}
+          alt={src}
         />
         {/* 이미지 위에 글을 입력가능*/}
         <Carousel.Caption>
         </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Second slide&bg=282c34"
-          alt="Second slide"
-        />
-
-        <Carousel.Caption>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Third slide&bg=20232a"
-          alt="Third slide"
-        />
-        <Carousel.Caption>
-        </Carousel.Caption>
-      </Carousel.Item>
+    </Carousel.Item>);
+    });
+  }
+  // image error 해결하기
+  // const CustomLink = styled.a;
+  // ImageForm 루프 돌기
+  return (
+    <Carousel interval={1500}>
+      {/* 클라이언트 저장 이미지가 나온다 */}
+      {imageForms !== null && imageForms}
     </Carousel>
   )
 }

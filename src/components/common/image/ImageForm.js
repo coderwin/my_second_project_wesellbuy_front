@@ -9,14 +9,17 @@ import { Carousel } from 'react-bootstrap'
  * update :
  * description : ImagesBox component 내의 각각의 이미지를 설정한다 component
  *               > image태그의 src값이다.
+ *               > 태그로 받으니 에러가 난다.
+ *  
+ * 
  */
-const ImageForm = ({srcValue}) => {
+const ImageForm = ({src}) => {
+  console.log("imageForm : " + src);
   return (
     <Carousel.Item>
         <img
-        className="d-block w-100"
-        src={srcValue}
-        alt="First slide"
+          src={src}
+          alt={src}
         />
         {/* 이미지 위에 글을 입력가능*/}
         <Carousel.Caption>

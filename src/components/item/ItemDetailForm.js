@@ -46,17 +46,23 @@ const ItemDetailForm = () => {
   const [error, setError] = useState(null);// 에러 상태
   const [data, setData] = useState(defaultData);// 데이터 상태
   const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열 
+  const [memberInfo, setMemberInfo] = useState(null);// 로그인 사용자 정보 상태
 
   /// 메서드 모음
   // 페이지 처음 시작
   useEffect(() => {
     // 상품 상세보기 데이터 불러오기
     inputData();
-    // srcArr 만들기 => await 하지 않고 바로 실행 안 될까?
-    setSrcArr(createSrcArr(data.pictureForms));
+    // 상품 좋아요 목록 불러와서 sessionStorage에 담기
+    inputLikesListInSessionStorage();
+    // srcArr 만들기 => await 하지 않고 바로 실행 안 될까? -> 바로 실행된다
+      // inputData()에서 아래 로직을 실행하지만 -> 더 생각해보기
+    // setSrcArr(createSrcArr(data.pictureForms));
+    // console.log(JSON.stringify(srcArr));
   }, []);
 
   // 상품 상세정보 데이터에 담기
+    // 이미지 srcArr도 담기 - inputSrcArr
   async function inputData() {
     try {
       // 상품 detail 불러오기
@@ -69,8 +75,9 @@ const ItemDetailForm = () => {
         ...data,
         ...response.data.data
       });
-      // 이미지 srcArr 만들기 -> 보류
-      // setSrcArr(createSrcArr(data.pictureForms));
+      // 이미지 srcArr 만들기 -> 사용 -> 더 생각해보기
+      setSrcArr(createSrcArr(response.data.data.pictureForms));
+      console.log(JSON.stringify(srcArr));// 여기까지는 바로 실행된다.
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
@@ -79,6 +86,52 @@ const ItemDetailForm = () => {
       // errMsg 보여주기
       alert(err.response.data.errMsg);
     }
+  }
+  // sessionStorage에 상품좋아요목록 담기
+  async function inputLikesListInSessionStorage() {
+    // memberInfo가 존재하면 실행한다.
+    if(memberInfo) {
+      try {
+        const response = await getLikesList();
+        // 요청 성공
+        setLoding(false);
+        console.log("요청 성공");
+        // sessionStorage에 담기
+        const key = "itemLikesList";
+        sessionStorage.setImte("itemLikesList", JSON.stringify(response.data.data));
+
+      } catch(err) {
+        // 요청 실패
+        setLoding(false);
+        console.log("요청 실패");
+        console.log(err);
+      }
+    }
+  }
+  // sessionStorage에서 사용자 정보 불러오기
+  function getMemberInfo() {
+    // sessionStorage에 key="LOGIN_MEMBER" 있는지 확인
+    const key = "LOGIN_MEMBER";
+    const memberData = JSON.parse(sessionStorage.getItem(key));
+    // 데이터가 없으면
+    if(memberData === null || memberData === undefined) {
+    
+    // 데이터가 있으면
+    } else {
+      // memberInfo에 memberData 대입
+      setMemberInfo(memberData);
+    }
+  }
+  // 서버에서 회원의 좋아요 목록 불러오기
+  async function getLikesList() {
+    // loding true
+    setLoding(true);
+    return await axios.get(
+      "http://localhost:8080/items/likes",
+      {
+        withCredentials: true
+      }
+    );
   }
   // 이미지 srcArr 만들기
   function createSrcArr(pictureForms) {
@@ -112,7 +165,7 @@ const ItemDetailForm = () => {
   if(loding) return (<div>준비중...</div>);
 
   return (
-    <ItemDetailContext.Provider value={{data, srcArr}}>
+    <ItemDetailContext.Provider value={{data, setData, srcArr, memberInfo}}>
       <Container>
         <Row>
           {/* item detail box */}
@@ -123,7 +176,7 @@ const ItemDetailForm = () => {
             </Row>
             {/* reply(댓글) box */}
             <Row>
-              <ReplyBoxForm />
+              <ReplyBoxForm replyFormList={data.replyFormList} />
             </Row>
           </Col>
           {/* item Order box */}
