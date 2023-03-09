@@ -1,12 +1,20 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import ItemListForm from '../../components/item/ItemListForm';
 
+/**
+ * Item list page
+ * writer : 이호진
+ * init : 2023.02.21
+ * updated by writer :
+ * update :
+ * description : 상품 목록 page
+ */
 function Home() {
 
     return (
-        <>
-            <div>여기는 Home 입니다.(item list)</div>
-        </>
+      <>
+        <ItemListForm />
+      </>
     );
 }
 
