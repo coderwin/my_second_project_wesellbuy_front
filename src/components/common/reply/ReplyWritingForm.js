@@ -70,7 +70,8 @@ const ReplyWritingForm = () => {
       );
       // reload to 현재페이지
       // 로그인한 상황에서 header 부분에 로그인으로 바뀔 수 있다.
-      navigation(0);
+        // 그래서 0에서 /item/:num으로 바꿈
+      navigation(`/item/${boardNum}`);
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");

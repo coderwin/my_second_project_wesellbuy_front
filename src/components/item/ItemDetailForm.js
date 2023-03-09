@@ -165,7 +165,7 @@ const ItemDetailForm = () => {
   if(loding) return (<div>준비중...</div>);
 
   return (
-    <ItemDetailContext.Provider value={{data, setData, srcArr, memberInfo}}>
+    <ItemDetailContext.Provider value={{data, setLoding, srcArr, memberInfo}}>
       <Container>
         <Row>
           {/* item detail box */}

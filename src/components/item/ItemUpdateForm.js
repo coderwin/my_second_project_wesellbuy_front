@@ -1,11 +1,12 @@
 import axios from 'axios';
-import React, { createContext, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useEffect, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 import ItemDefaultForm from './save/ItemDefaultForm';
-import BookForm from './save/BookForm';
-import FurnitureForm from './save/FurnitureForm';
-import HomeApplianceForm from './save/HomeApplianceForm';
+import BookUpdateForm from './update/BookUpdateForm';
+import FurnitureUpdateForm from './update/FurnitureUpdateForm';
+import HomeApplianceUpdateForm from './update/HomeApplianceUpdateForm';
 import { Button, Col, Form, Row, Image } from 'react-bootstrap';
+import ImagesBoxSpread from '../common/image/ImagesBoxSpread';
 
 /**
  * Item save component
@@ -15,9 +16,9 @@ import { Button, Col, Form, Row, Image } from 'react-bootstrap';
  * update :
  * description : Item 등록 component
  */
-export const ItemSaveContext = createContext(null); // itemSave Contexnt
+export const ItemUpdateContext = createContext(null); // itemUpdate Contexnt
 
-const ItemSaveForm = () => {
+const ItemUpdateForm = () => {
 
   /// 변수 모음
   // defaultData
@@ -29,7 +30,8 @@ const ItemSaveForm = () => {
     type: "", // 상품종류 설정
     author: "", // 저자(type=B에 필요)
     publisher: "", // 출판사(type=B에 필요)
-    company: "" // 제조회사(type=HA,F에 필요)
+    company: "", // 제조회사(type=HA,F에 필요)
+    pictureForms: []// 이미지 info 모음
   }
   // defaultErrMsgs
   const defaultErrMsgs = {
@@ -45,6 +47,7 @@ const ItemSaveForm = () => {
   }
   // navigation
   const navigation = useNavigate();
+  const {num: boardNum} = useParams();// 상품번호 불러오기
   // type에 들어가는 상품종류 모음
   const typeValues = ["", "B", "F", "HA", "ITEM"];
   const typeNames = ["선택", "책", "가구", "가전제품", "기타"];
@@ -55,11 +58,63 @@ const ItemSaveForm = () => {
   const [error, setError] = useState(null);// 에러 상태
   const [errMsgs, setErrMsgs] = useState(defaultErrMsgs); // 에러 메시지 상태
   const [files, setFiles] = useState(null);// 파일들 상태
+  const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열 
 
   /// 메서드 모음
+  // 페이지 처음 시작
+  useEffect(() => {
+    // 상품 상세보기 데이터 불러오기
+    inputData();
+  }, []);
+
+  // 상품 상세정보 데이터에 담기
+    // 이미지 srcArr도 담기 - inputSrcArr
+  async function inputData() {
+    try {
+      // 상품 detail 불러오기
+      const response = await getItemDetailInfo(boardNum);
+      // 요청 성공
+      console.log("요청 성공");
+      setLoding(false);
+      // data 데이터 담기
+      setData({
+        ...data,
+        name: response.data.data.name,
+        stock: response.data.data.stock,
+        price: response.data.data.price,
+        content: response.data.data.content,
+        type: response.data.data.type,
+        author: response.data.data.author,
+        publisher: response.data.data.publisher,
+        company: response.data.data.company,
+        pictureForms: response.data.data.pictureForms
+      });
+    } catch(err) {
+      // 요청 실패
+      console.log("요청 실패");
+      setLoding(false);
+      console.log(err);
+      // errMsg 보여주기
+      alert(err.response.data.errMsg);
+    }
+  }
+  // 이미지 src 만들기
+  function createSrc(storedFileName) {
+    return `http://localhost:8080/items/images/${storedFileName}`;
+  }
+  // 상품 상세보기 데이터 불러오기
+  async function getItemDetailInfo(boardNum) {
+    // loding true로 바꾸기
+    setLoding(true);
+    // 서버에 item detail 요청하기
+    // 누구든 볼수 있음 - 인증 불필요
+    // 그래도 CORS 정책을 따라야 할 듯
+    return await axios.get(
+      `http://localhost:8080/items/${boardNum}`
+    );
+  }
   // input에 데이터 바뀌면 data 데이터 변경한다
   function handleDataChange(e) {
-    console.log(`${e.target.name} : ${e.target.value}`);
     setData({
       ...data,
       [e.target.name]: e.target.value
@@ -84,9 +139,9 @@ const ItemSaveForm = () => {
     // 데이터 서버로 보내기
     try {
       // 데이터 저장하기
-      const response = await save(formData);
+      const response = await update(formData, boardNum);
       // 저장 성공
-      console.log("상품 저장 성공");
+      console.log("상품 수정 성공");
       // loding false로
       setLoding(false);
       // 상품 등록 완료 alert창 띄우기
@@ -97,7 +152,7 @@ const ItemSaveForm = () => {
       navigation(`/item/${itemNum}`);
     } catch(err) {
       // 요청 실패
-      console.log("상품 저장 실패");
+      console.log("상품 수정 실패");
       // loding false로 
       setLoding(false);
       // 다른 에러일 경우
@@ -133,11 +188,11 @@ const ItemSaveForm = () => {
       }
     }
   }
-  // 상품 데이터 서버로 보내기
-  async function save(formData) {
+  // 상품 수정 데이터 서버로 보내기
+  async function update(formData, boardNum) {
 
-    return await axios.post(
-      "http://localhost:8080/items",
+    return await axios.put(
+      `http://localhost:8080/items/${boardNum}`,
       formData,
       {
         headers: {
@@ -192,38 +247,63 @@ const ItemSaveForm = () => {
   // 취소 클릭
   function handleCancelClick() {
     // "/"으로 이동한다
-    navigation("/");
+    // 뒤로 이동한다
+    navigation(-1);
+    // 상세보기로 간다 => 위에 작동 보고 판단
+    // navigation(`/item/${boardNum}`);
   }
-  // select의 value가 chnage 되었을 때
-  function handleSelectDataChange(e) {
-    // data의 athor, publisher, company 초기화 시켜주기
-    resetSomeDatas();
-    // data.type 데이터 바꿔주기
-    handleDataChange(e);
-  }
-  // data의 author, publisher, company 초기화 시키기
-  //    -> 적절한 이름이 없을까?
-  function resetSomeDatas() {
-    const defaultValues = {
-      author: "",
-      publisher: "",
-      company: ""
-    }
-    setData({
-      ...data,
-      ...defaultValues
+  // 상품 typeValue에 따른 TypeName으로 바꾸기
+  function changeTypeValueToName() {
+    let typeName = ""; // 상품종류 이름
+    // typeValues를 순회하여 typeName을 찾는다.
+    typeValues.forEach((value, i) => {
+      // value와 data.type이 같으면
+        // typeNames의 typeName을 고른다
+      if(value === data.type) {
+        typeName = typeNames[i];
+      }
     });
+    // typeName 반환한다.
+    return typeName;
+  }
+  // 이미지 삭제 클릭했을 때
+  async function handleDeleteImageClick(e) {
+    // 정말로 삭제할 건지 물어보기
+    const answer = window.confirm("정말로 삭제하시겠습니까?");
+
+    if(answer === true) {
+      try {
+        // 서버로 이미지 삭제요청 보내기
+        const response = await deleteImage(boardNum, e.target.id);
+        // 요청 성공
+        console.log("요청 성공");
+        alert(response.data.data);
+      } catch(err) {
+        console.log("요청 실패");
+        alert(err.response.data.errMsg);
+      }
+      return;
+    }
+  }
+  // 서버로 이미지 삭제요청 보내기
+  async function deleteImage(boardNum, pictureNum) {
+
+    return await axios.delete(
+      `http://localhost:8080/${boardNum}/pictures/${pictureNum}`,
+      {
+        withCredentials: true
+      }
+    );
   }
 
   /// view
-
 
   // 서버로 데이터 요청 할 때 view
   if(loding) return (<div>요청 처리 중...</div>);
 
   return (
     <>
-      <ItemSaveContext.Provider value={{data, errMsgs, handleDataChange}}>
+      <ItemUpdateContext.Provider value={{data, errMsgs, handleDataChange}}>
         <Form onSubmit={handleSaveSubmit}>
           {/* 상품명 */}
           <Form.Group
@@ -257,18 +337,13 @@ const ItemSaveForm = () => {
             >
               종류
             </Form.Label>
-            <Form.Select
-              as={Col}
-              sm="5" 
-              name="type" 
-              onChange={handleSelectDataChange}
-            >
-              {
-                typeValues.map((value, i) => {
-                  return (<option key={i} value={value}>{typeNames[i]}</option>);
-                })
-              }
-            </Form.Select>
+            <Col sm="10">
+              <Form.Control
+                type="text"
+                name="type"
+                value={changeTypeValueToName}
+              />
+            </Col>
           </Form.Group>
           {/* 제고수량 */}
           <Form.Group
@@ -341,9 +416,9 @@ const ItemSaveForm = () => {
             </Col>
           </Form.Group>
           {/* type에 따른 input 태그들 */}
-          {data.type === "B" && <BookForm />}
-          {data.type === "F" && <FurnitureForm />}
-          {data.type === "HA" && <HomeApplianceForm />}
+          {data.type === "B" && <BookUpdateForm />}
+          {data.type === "F" && <FurnitureUpdateForm />}
+          {data.type === "HA" && <HomeApplianceUpdateForm />}
           {/* 이미지 모음 */}
           <Form.Group
             as={Row}
@@ -371,14 +446,15 @@ const ItemSaveForm = () => {
             as={Row}
             className="mb-3"
           >
-            <Button type="submit">등록</Button>
+            <Button type="submit">수정</Button>
             <Button type="button" onClick={handleCancelClick}>취소</Button>
           </Form.Group>
         </Form>
-      </ItemSaveContext.Provider>
-      
+        {/* 기존 이미지 모음 */}
+        <ImagesBoxSpread pictureForms={data.pictureForms} createSrc={createSrc} OnDeleteImageClick={handleDeleteImageClick} />
+      </ItemUpdateContext.Provider>
     </>
   )
 }
 
-export default ItemSaveForm
+export default ItemUpdateForm
