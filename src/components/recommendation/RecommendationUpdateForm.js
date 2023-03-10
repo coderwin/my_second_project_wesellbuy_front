@@ -1,55 +1,38 @@
 import axios from 'axios';
-import React, { createContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import BookUpdateForm from './update/BookUpdateForm';
-import FurnitureUpdateForm from './update/FurnitureUpdateForm';
-import HomeApplianceUpdateForm from './update/HomeApplianceUpdateForm';
-import { Button, Col, Form, Row, Image } from 'react-bootstrap';
 import ImagesBoxSpread from '../common/image/ImagesBoxSpread';
 
 /**
- * Item update component
+ * Recommendation update component
  * writer : 이호진
- * init : 2023.03.07
+ * init : 2023.03.10
  * updated by writer :
  * update :
- * description : Item 수정 component
+ * description : Recommendation 수정 component
  */
-export const ItemUpdateContext = createContext(null); // itemUpdate Contexnt
+export const RecommendationUpdateContext = createContext(null);// recommendationUpdate Context
 
-const ItemUpdateForm = () => {
-
+const RecommendationUpdateForm = () => {
   /// 변수 모음
   // defaultData
   const defaultData = {
-    name: "", // 상품명
-    stock: 1, // 제고 수량
-    price: "", // 가격
-    content: "", // 상품 설명
-    type: "", // 상품종류 설정
-    author: "", // 저자(type=B에 필요)
-    publisher: "", // 출판사(type=B에 필요)
-    company: "", // 제조회사(type=HA,F에 필요)
-    pictureForms: []// 이미지 info 모음
+    itemName: "",// 추천받은 상품 이름
+    sellerId: "",// 추천받은 판매자 아이디
+    content: "",// 추천 이유)
+    recommendationPictureFormList: []// 이미지 info 모음
   }
   // defaultErrMsgs
   const defaultErrMsgs = {
-    name: "", // 상품명
-    stock: "", // 제고 수량
-    price: "", // 가격
-    content: "", // 상품 설명
-    type: "", // 상품종류 설정
-    author: "", // 저자(type=B에 필요)
-    publisher: "", // 출판사(type=B에 필요)
-    company: "", // 제조회사(type=HA,F에 필요)
+    itemName: "",// 추천받은 상품 이름
+    sellerId: "",// 추천받은 판매자 아이디
+    content: "",// 추천 이유)
     files: ""// 파일 에러메시지
   }
   // navigation
   const navigation = useNavigate();
   const {num: boardNum} = useParams();// 상품번호 불러오기
-  // type에 들어가는 상품종류 모음
-  const typeValues = ["", "B", "F", "HA", "ITEM"];
-  const typeNames = ["선택", "책", "가구", "가전제품", "기타"];
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청 처리 상태
@@ -62,31 +45,26 @@ const ItemUpdateForm = () => {
   /// 메서드 모음
   // 페이지 처음 시작
   useEffect(() => {
-    // 상품 상세보기 데이터 불러오기
+    // 추천합니다글 상세보기 데이터 불러오기
     inputData();
   }, []);
 
-  // 상품 상세정보 데이터에 담기
+  // 추천합니다글 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
   async function inputData() {
     try {
-      // 상품 detail 불러오기
-      const response = await getItemDetailInfo(boardNum);
+      // 추천합니다글 detail 불러오기
+      const response = await getRecommendationDetailInfo(boardNum);
       // 요청 성공
       console.log("요청 성공");
       setLoding(false);
       // data 데이터 담기
       setData({
         ...data,
-        name: response.data.data.name,
-        stock: response.data.data.stock,
-        price: response.data.data.price,
+        itemName: response.data.data.itemName,
+        sellerId: response.data.data.sellerId,
         content: response.data.data.content,
-        type: response.data.data.type,
-        author: response.data.data.author,
-        publisher: response.data.data.publisher,
-        company: response.data.data.company,
-        pictureForms: response.data.data.pictureForms
+        recommendationPictureFormList: response.data.data.recommendationPictureFormList
       });
     } catch(err) {
       // 요청 실패
@@ -99,17 +77,17 @@ const ItemUpdateForm = () => {
   }
   // 이미지 src 만들기
   function createSrc(storedFileName) {
-    return `http://localhost:8080/items/images/${storedFileName}`;
+    return `http://localhost:8080/recommendations/images/${storedFileName}`;
   }
-  // 상품 상세보기 데이터 불러오기
-  async function getItemDetailInfo(boardNum) {
+  // 추천합니다글 상세보기 데이터 불러오기
+  async function getRecommendationDetailInfo(boardNum) {
     // loding true로 바꾸기
     setLoding(true);
-    // 서버에 item detail 요청하기
+    // 서버에 recommendation detail 요청하기
     // 누구든 볼수 있음 - 인증 불필요
     // 그래도 CORS 정책을 따라야 할 듯
     return await axios.get(
-      `http://localhost:8080/items/${boardNum}`
+      `http://localhost:8080/recommendations/${boardNum}`
     );
   }
   // input에 데이터 바뀌면 data 데이터 변경한다
@@ -140,18 +118,16 @@ const ItemUpdateForm = () => {
       // 데이터 저장하기
       const response = await update(formData, boardNum);
       // 저장 성공
-      console.log("상품 수정 성공");
+      console.log("수정 성공");
       // loding false로
       setLoding(false);
-      // 상품 수정 완료 alert창 띄우기
+      // 고객지원글 수정 완료 alert창 띄우기
       alert(response.data.data);
-      // itemNum 가져오기
-      const {itemNum} = response.data;
-      // ItemDetailForm으로 이동하기 - 나중에 작동시키기
-      navigation(`/item/${itemNum}`);
+      // RecommendationDetailForm으로 이동하기 - 나중에 작동시키기
+      navigation(`/recommendation/${boardNum}`);
     } catch(err) {
       // 요청 실패
-      console.log("상품 수정 실패");
+      console.log("수정 실패");
       // loding false로 
       setLoding(false);
       // 다른 에러일 경우
@@ -187,11 +163,11 @@ const ItemUpdateForm = () => {
       }
     }
   }
-  // 상품 수정 데이터 서버로 보내기
+  // 추천합니다글 수정 데이터 서버로 보내기
   async function update(formData, boardNum) {
 
     return await axios.put(
-      `http://localhost:8080/items/${boardNum}`,
+      `http://localhost:8080/recommendations/${boardNum}`,
       formData,
       {
         headers: {
@@ -249,21 +225,7 @@ const ItemUpdateForm = () => {
     // 뒤로 이동한다
     navigation(-1);
     // 상세보기로 간다 => 위에 작동 보고 판단
-    // navigation(`/item/${boardNum}`);
-  }
-  // 상품 typeValue에 따른 TypeName으로 바꾸기
-  function changeTypeValueToName() {
-    let typeName = ""; // 상품종류 이름
-    // typeValues를 순회하여 typeName을 찾는다.
-    typeValues.forEach((value, i) => {
-      // value와 data.type이 같으면
-        // typeNames의 typeName을 고른다
-      if(value === data.type) {
-        typeName = typeNames[i];
-      }
-    });
-    // typeName 반환한다.
-    return typeName;
+    // navigation(`/recommendations/${boardNum}`);
   }
   // 이미지 삭제 클릭했을 때
   async function handleDeleteImageClick(e) {
@@ -277,10 +239,10 @@ const ItemUpdateForm = () => {
         // 요청 성공
         console.log("요청 성공");
         alert(response.data.data);
-        // pictureForms의 이미지를 지운다
+        // recommendationPictureFormList의 이미지를 지운다
         setData({
           ...data,
-          pictureForms: data.pictureForms.filter((picture) => {
+          recommendationPictureFormList: data.recommendationPictureFormList.filter((picture) => {
             return picture.num !== e.target.id;
           })
         });
@@ -295,7 +257,7 @@ const ItemUpdateForm = () => {
   async function deleteImage(boardNum, pictureNum) {
 
     return await axios.delete(
-      `http://localhost:8080/items/${boardNum}/pictures/${pictureNum}`,
+      `http://localhost:8080/recommendations/${boardNum}/pictures/${pictureNum}`,
       {
         withCredentials: true
       }
@@ -309,96 +271,51 @@ const ItemUpdateForm = () => {
 
   return (
     <>
-      <ItemUpdateContext.Provider value={{data, errMsgs, handleDataChange}}>
+      <RecommendationUpdateContext.Provider value={{data, errMsgs, handleDataChange}}>
         <Form onSubmit={handleUpdateSubmit}>
-          {/* 상품명 */}
+          {/* 추천상품명 */}
           <Form.Group
             as={Row}
             className="mb-3"
           >
             <Form.Label column sm="2">
-              NAME <span className='important'>*</span>
+              ITEMNAME <span className='important'>*</span>
             </Form.Label>
             <Col sm="10">
               <Form.Control
                 type="text"
-                name="name"
-                value={data.name}
+                name="itemName"
+                value={data.itemName}
                 onChange={handleDataChange}
               />
             </Col>
             {/* 에러 메시지 */}
             <Col className="error">
-              {errMsgs.name}
+              {errMsgs.itemName}
             </Col>
           </Form.Group>
-          {/* 상품종류 */}
+          {/* 추천 판매자 아이디 */}
           <Form.Group
             as={Row}
             className="mb-3"
           >
-            <Form.Label 
-              column 
-              sm="2"
-            >
-              종류
+            <Form.Label column sm="2">
+              SELLERID <span className='important'>*</span>
             </Form.Label>
-            <Col sm="10">
+            <Col sm="2">
               <Form.Control
                 type="text"
-                name="type"
-                value={changeTypeValueToName}
-              />
-            </Col>
-          </Form.Group>
-          {/* 제고수량 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">
-              STOCK <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="2">
-              <Form.Control
-                type="number"
-                name="stock"
-                min="1"
-                value={data.stock}
+                name="sellerId"
+                value={data.sellerId}
                 onChange={handleDataChange}
               />
-              <span>개</span>
             </Col>
             {/* 에러 메시지 */}
             <Col className="error">
-              {errMsgs.stock}
+              {errMsgs.sellerId}
             </Col>
           </Form.Group>
-          {/* 가격 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">
-              PRICE <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="2">
-              <Form.Control
-                type="number"
-                name="price"
-                min="0"
-                value={data.price}
-                placeholder="0"
-                onChange={handleDataChange}
-              />
-              <span>원</span>
-            </Col>
-            {/* 에러 메시지 */}
-            <Col className="error">
-              {errMsgs.price}
-            </Col>
-          </Form.Group>
-          {/* 설명 */}
+          {/* 추천 이유 */}
           <Form.Group
             as={Row}
             className="mb-3"
@@ -412,7 +329,7 @@ const ItemUpdateForm = () => {
                 name="content"
                 rows={10}
                 value={data.content}
-                placeholder="상품을 설명해주세요"
+                placeholder="추천 이유를 설명해주세요"
                 onChange={handleDataChange}
               />
             </Col>
@@ -421,10 +338,6 @@ const ItemUpdateForm = () => {
               {errMsgs.content}
             </Col>
           </Form.Group>
-          {/* type에 따른 input 태그들 */}
-          {data.type === "B" && <BookUpdateForm />}
-          {data.type === "F" && <FurnitureUpdateForm />}
-          {data.type === "HA" && <HomeApplianceUpdateForm />}
           {/* 이미지 모음 */}
           <Form.Group
             as={Row}
@@ -457,10 +370,10 @@ const ItemUpdateForm = () => {
           </Form.Group>
         </Form>
         {/* 기존 이미지 모음 */}
-        <ImagesBoxSpread pictureForms={data.pictureForms} createSrc={createSrc} OnDeleteImageClick={handleDeleteImageClick} />
-      </ItemUpdateContext.Provider>
+        <ImagesBoxSpread pictureForms={data.recommendationPictureFormList} createSrc={createSrc} OnDeleteImageClick={handleDeleteImageClick} />
+      </RecommendationUpdateContext.Provider>
     </>
   )
 }
 
-export default ItemUpdateForm
+export default RecommendationUpdateForm

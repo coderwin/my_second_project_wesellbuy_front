@@ -1,8 +1,6 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { ReplyFormListContext } from './ReplyBoxForm';
 
 /**
  * each reply component
@@ -12,7 +10,7 @@ import { ReplyFormListContext } from './ReplyBoxForm';
  * update :
  * description : 댓글 하나하나의 context 폼 component
  */
-const ReplyForm = ({OnDeleteRepliesChange, reply}) => {
+const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => {
 
   /// 변수 모음
   // defaultData
@@ -23,8 +21,6 @@ const ReplyForm = ({OnDeleteRepliesChange, reply}) => {
     memberId: "", // 작성자 아이디
     createDate: "", // 작성 날짜
   }
-  // 외부 변수, 상태, 메서드 불러오기
-  const {updateReply, deleteReply} = useContext(ReplyFormListContext);
   // URI에서 boradNum 불러오기
   const {num: boardNum} = useParams();// 게시글 번호
 
@@ -44,7 +40,7 @@ const ReplyForm = ({OnDeleteRepliesChange, reply}) => {
     });
     // sessionStorage에 회원정보 있으면 memberInfo에 memberData 대입하기
     const memberData = getMemberInfo();
-    if(memberData !== null || memberData !== undefined) {
+    if(memberData) {
       setMemberInfo(memberData);
     }
   }, []);

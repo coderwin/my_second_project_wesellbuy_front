@@ -16,7 +16,7 @@ import { ItemDetailContext } from '../ItemDetailForm';
 const ItemDetailBoxForm = () => {
 
   /// 변수 모음
-  const {data, setLoding, memberInfo} = useContext(ItemDetailContext);// 외부의 변수, 상태, 메서드 불러오기
+  const {data, setLoding, memberInfo, srcArr} = useContext(ItemDetailContext);// 외부의 변수, 상태, 메서드 불러오기
   const {num: boardNum} = useParams();// 상품번호 불러오기
   const navigation = useNavigate();// navigation
 
@@ -29,7 +29,7 @@ const ItemDetailBoxForm = () => {
     //좋아요 하트 표시 하기
     expressItemLikes();
   }, []);
-  /// view 모음
+  /// 메서드 모음
   // 좋아요 표시 하기
   function expressItemLikes() {
     // sessionStorage에서 itemLikesList 불러오기
@@ -201,7 +201,7 @@ const ItemDetailBoxForm = () => {
         {/* 이미지 모음 */}
         {
           data.pictureForms.length !== 0 && (<ListGroupItem>
-            <ImagesBox/>
+            <ImagesBox srcArr={srcArr}/>
           </ListGroupItem>)
         }
         {/* 판매자 아이디 */}

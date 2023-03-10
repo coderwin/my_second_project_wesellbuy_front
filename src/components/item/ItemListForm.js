@@ -4,7 +4,7 @@ import ItemRankBox from './list/ItemRankBox';
 import ItemSearchNavForm from './list/ItemSearchNavForm';
 import ItemTypeNavForm from './list/ItemTypeNavForm';
 import ItemListBoxForm from './list/ItemListBoxForm';
-import PageButtonForm from './list/PageButtonForm';
+import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../css/form.css';
@@ -22,6 +22,7 @@ export const ItemListContext = createContext(null); // itemList Context
 const ItemListForm = () => {
 
   /// 변수 모음
+  // 검색 데이터 default 변수
   const defaultData = {
     name: "",// 상품명
     memberId: "",// 판매자 아이디
@@ -231,7 +232,7 @@ const ItemListForm = () => {
           <Row>
             <Col>
               {/* footer - 페이지 버튼 */}
-              <PageButtonForm />
+              <PageButtonForm data={data} handleDataChange={handleDataChange} totalPages={cardDatas.totalPages}  />
             </Col>
           </Row>
         </Container>

@@ -13,11 +13,11 @@ import ImageForm from './ImageForm';
  *               > 속성
  *                 > srcArr : img 태그의 src 속성의 값들을 갖는 배열 prop
  */
-const ImagesBox = () => {
+const ImagesBox = ({srcArr}) => {
 
   /// 변수 모음
-  // 외부의 변수, 상태, 메서드 불러오기
-  const {srcArr} = useContext(ItemDetailContext);
+  // 외부의 변수, 상태, 메서드 불러오기 --> 현재 사용 안 함
+  // const {srcArr} = useContext(ItemDetailContext);
 
   /// view 만들기
   let imageForms = null; // 모든 imageForm 

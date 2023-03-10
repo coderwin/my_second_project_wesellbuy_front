@@ -50,6 +50,8 @@ const ItemRankForm = () => {
 
   /// view 모음
 
+  // 요청 처리 view
+  if(loding) return(<div>준비중...</div>);
 
   return (
     <ItemRankContext.Provider value={{handleSearchClick, setLoding}}>

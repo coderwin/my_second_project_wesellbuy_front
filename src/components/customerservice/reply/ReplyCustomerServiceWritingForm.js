@@ -4,14 +4,14 @@ import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom';
 
 /**
- * reply writing component
+ * CustomerService reply writing component
  * writer : 이호진
- * init : 2023.03.07
+ * init : 2023.03.10
  * updated by writer :
  * update :
  * description : 댓글 등록/작성 component
  */
-const ReplyWritingForm = ({saveReply}) => {
+const ReplyCustomerServiceWritingForm = ({saveReply}) => {
 
   /// 변수 모음
   const defaultData = {
@@ -67,8 +67,8 @@ const ReplyWritingForm = ({saveReply}) => {
       );
       // reload to 현재페이지
       // 로그인한 상황에서 header 부분에 로그인으로 바뀔 수 있다.
-        // 그래서 0에서 /item/:num으로 바꿈
-      navigation(`/item/${boardNum}`);
+        // 그래서 0에서 /cs/:num으로 바꿈
+      navigation(`/cs/${boardNum}`);
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
@@ -171,4 +171,4 @@ const ReplyWritingForm = ({saveReply}) => {
   )
 }
 
-export default ReplyWritingForm;
+export default ReplyCustomerServiceWritingForm;

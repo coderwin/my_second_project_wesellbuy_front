@@ -10,11 +10,12 @@ import ReplyForm from './ReplyForm'
  * updated by writer :
  * update :
  * description : 댓글 리스트 component
+ *               > props
+ *                 - replyFormList : 댓글 목록 데이터
+ *                 - replies: 댓글 목록 담은 상태
+ *                 - setReplies: replies 상태 변경 함수
  */
-const ReplyListForm = () => {
-
-  /// 외부 변수, 상태, 메서드 불러오기
-  const {replyFormList, replies, setReplies} = useContext(ReplyFormListContext);
+const ReplyListForm = ({replyFormList, replies, setReplies, updateReply, deleteReply}) => {
 
 
   /// 메서드 모음
@@ -34,7 +35,7 @@ const ReplyListForm = () => {
   // replyFormList가 undefined가 아닐 때
   if(replyFormList) {
     view = replies.map((reply) => {
-      return <ReplyForm key={reply.num} OnDeleteRepliesChange={handleDeleteRepliesChange} reply={reply} />;
+      return <ReplyForm key={reply.num} OnDeleteRepliesChange={handleDeleteRepliesChange} reply={reply} updateReply={updateReply} deleteReply={deleteReply} />;
     });
   }
 

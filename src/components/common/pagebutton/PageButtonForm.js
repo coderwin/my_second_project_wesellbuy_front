@@ -1,5 +1,6 @@
-import React from 'react'
+import React from 'react';
 import { Pagination } from 'react-bootstrap';
+
 
 /**
  * Item list pageButton component
@@ -7,7 +8,7 @@ import { Pagination } from 'react-bootstrap';
  * init : 2023.03.09
  * updated by writer :
  * update :
- * description : 상품 목록 페이지 버튼 component
+ * description : 목록 페이지 버튼 component
  * 
  * comment : value가 잘 작동할지 모르겠다
  *           id로 바꿔야 될 수도

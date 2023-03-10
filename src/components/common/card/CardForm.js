@@ -41,7 +41,7 @@ const CardForm = ({data, likesList, memberInfo})=> {
   // 상품 설명은 30 글자로만
   function inputContent() {
     // 상품의 설명은 30 글자만 한다.
-    const newContent = data.content.slice(0, 30);
+    const newContent = data.content.slice(0, 30) + "...";
     // content에 담기
     setContent(newContent);
   }
