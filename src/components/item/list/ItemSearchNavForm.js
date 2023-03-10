@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Button, Col, Container, Form, Nav, Navbar } from 'react-bootstrap';
+import { Button, Col, Container, Form, Nav, Navbar, Row } from 'react-bootstrap';
 import { ItemListContext } from '../ItemListForm';
 
 /**
@@ -14,7 +14,7 @@ const ItemSearchNavForm = () => {
 
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {data, handleDataChange} = useContext(ItemListContext);
+  const {data, handleDataChange, handleSearchClick} = useContext(ItemListContext);
   // type에 들어가는 상품종류 모음
   const dtypeValues = ["", "B", "F", "HA", "ITEM"];
   const dtypeNames = ["선택", "책", "가구", "가전제품", "기타"];
@@ -97,7 +97,7 @@ const ItemSearchNavForm = () => {
                   })
                 }
             </Form.Select>
-            <Button type="button" onClick={}>Search</Button>
+            <Button type="button" onClick={handleSearchClick}>Search</Button>
           </Form>  
         </Navbar.Collapse>
         {/* 페이지 사이즈 설정 */}

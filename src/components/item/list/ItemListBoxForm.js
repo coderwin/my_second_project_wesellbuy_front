@@ -1,5 +1,6 @@
-import React from 'react'
-import CardWithHeaderForm from '../../common/CardWithHeaderForm';
+import React, { useContext } from 'react'
+import { CardGroup } from 'react-bootstrap';
+import CardForm from '../../common/card/CardForm';
 import { ItemListContext } from '../ItemListForm';
 
 /**
@@ -15,26 +16,27 @@ const ItemListBoxForm = () => {
   /// 변수 모음
   // 외부의 변수 불러오기
   const {cardDatas, likesList, memberInfo} = useContext(ItemListContext);
-  const cardsOnARow = 3;// 한 줄에 게시글(카드) 개수
+  
   /// 상태 모음
 
   /// 메서드 모음
 
   /// view 모음
-  const view = null;// view 변수
+  let view = null;// view 변수
   // cardDatas에 데이터가 있으면 실행된다
+    // 모두 출력말고 한줄에 원하는 개수의 Card만 뿌려줄 수 없을까?
+      // css로 조절해야하나?
   if(cardDatas) {
-    for(let i = 0; i < cardsOnARow; i++) {
-      view += (
-
-        <CardWithHeaderForm 
-          key={rankcardData[i].num} 
-          data={rankcardData[i]} 
+    // 모든 cardData 뿌려주기
+    view = cardDatas.map((cardData, i) => {
+      return (
+        <CardForm  
+          data={cardData} 
           likesList={likesList} 
           memberInfo={memberInfo} 
         /> 
-      );
-    }
+        );
+    });
   }
 
   return (

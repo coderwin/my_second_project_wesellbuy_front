@@ -1,11 +1,13 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { Col, Container, ListGroupItem, Row } from 'react-bootstrap';
+import { Button, Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import ItemRankBox from './list/ItemRankBox';
 import ItemSearchNavForm from './list/ItemSearchNavForm';
 import ItemTypeNavForm from './list/ItemTypeNavForm';
 import ItemListBoxForm from './list/ItemListBoxForm';
 import PageButtonForm from './list/PageButtonForm';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import '../../css/form.css';
 
 /**
  * Item list component
@@ -28,6 +30,8 @@ const ItemListForm = () => {
     size: 5,// 페이지 size
     page: 0// 페이지 번호
   }
+  // navigation
+  const navigation = useNavigate();
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청처리 상태
@@ -49,7 +53,13 @@ const ItemListForm = () => {
     if(memberInfo) {
       inputLikesList();
     }
-  });
+  }, []);
+  // 찾기(Search) 버튼 클릭 했을 때
+  // cardDatas 담아주기
+  async function handleSearchClick() {
+    // 상품목록 cardDatas에 담기
+    await inputCardDatas();
+  }
   // rankCardDatas에 상품목록 담기
   async function inputRankCardDatas() {
     // lodign true
@@ -174,22 +184,36 @@ const ItemListForm = () => {
       dtype: e.target.id
     });
   }
+  // 전체순위보기 클릭했을 때
+  function handleShowRankClick() {
+    // 전체순위 page로 이동한다
+    navigation("/item/rank");
+  }
+
   /// view 모음
 
   if(loding) return (<div>준비중...</div>); 
 
   return (
     <>
-      <ItemListContext.Provider value={{data, handleDataChange, handleTypeNavClick, cardDatas, rankCardDatas, likesList}} >
+      <ItemListContext.Provider value={{data, handleDataChange, handleTypeNavClick, handleSearchClick, cardDatas, rankCardDatas, likesList}} >
         <Container>
           <ListGroup>
             <ListGroupItem>
-              {/* 상품 순위 1, 2, 3 순위 */}
-              <ItemRankBox />
+              <Row>
+                <Col>
+                  {/* 상품 순위 1, 2, 3 순위 */}
+                  <ItemRankBox />
+                </Col>
+                <Col>
+                  {/* 전체 순위 보기 */}
+                  <Button variant="link" onClick={handleShowRankClick}>전체순위보기</Button>
+                </Col>
+              </Row>
             </ListGroupItem>
           </ListGroup>
           <Row>
-            <Col md="13">
+            <Col md="12">
               {/* 위쪽 Nav - 검색 */}
               <ItemSearchNavForm />
             </Col>

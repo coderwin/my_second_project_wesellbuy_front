@@ -1,4 +1,6 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -17,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 const CardForm = ({data, likesList, memberInfo})=> {
 
   /// 변수 모음
+  // memberId(판매자도 칸을 만들지 생각해보기)
   const {num: boardNum, title, price, memberId, pictureForm} = data;
   const navigation = useNavigate();// navigation
 

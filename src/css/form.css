@@ -1,16 +1,22 @@
 /* 중요 사항 */
 .important {
-    color: red;
+  color: red;
 }
 /* 에러 메시지 */
 .error {
-    color: red;
+  color: red;
 }
 /* 확인 완료 */
 .pass {
-    color: blue;
+  color: blue;
 }
 /* 마우스 포인터 */
 .mousePointer {
-    cursor: pointer;
+  cursor: pointer;
+}
+/* 화면바닥에 고정 */
+.footerFixed {
+  position: finxed;
+  bottom: 0;
+  left: 0;
 }

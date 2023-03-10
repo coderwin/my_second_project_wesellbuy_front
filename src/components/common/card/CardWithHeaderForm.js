@@ -1,4 +1,6 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -159,7 +161,7 @@ const CardWithHeaderForm = ({data, likesList, memberInfo})=> {
         <span className="likes" onClick={handleLikesClick}>
           {likesState ? "💓" : "♥️"}
         </span>
-        <Button id={boardNum} variant="primary" onClick={handleDetailClick}>상세보기</Button>
+        <Button type="button" id={boardNum} variant="primary" onClick={handleDetailClick}>상세보기</Button>
       </Card.Footer>
     </Card>
   )
