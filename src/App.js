@@ -35,6 +35,9 @@ import CustomerServiceDetail from './pages/customerservice/CustomerServiceDetail
 import ItemSaveForm from './components/item/ItemSaveForm';
 import ItemSave from './pages/item/ItemSave';
 import CustomerServiceSave from './pages/customerservice/CustomerServiceSave';
+import OrderSave from './pages/order/OrderSave';
+import OrderList from './pages/order/OrderList';
+import OrderDetail from './pages/order/OrderDetail';
 
 // context 만들기
 export const CustomContext = createContext(null);
@@ -95,7 +98,9 @@ function App() {
           <Route path="/recommendation/:num/update" element={<RecommendationUpdate />}  /> 
 
           {/* order list */}
-          <Route path="/order" element={<Order />} />
+          <Route path="/order/new" element={<OrderSave />} />
+          <Route path="/order/list" element={<OrderList />} />
+          <Route path="/order/:num" element={<OrderDetail />} />
 
           {/* 404 page */}
           <Route path="/*" element={<NotFound />} />
