@@ -2,28 +2,31 @@ import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
-import CustomerServiceListBoxForm from './list/CustomerServiceListBoxForm';
-import CustomerServiceSearchNavForm from './list/CustomerServiceSearchNavForm';
+import OrderSearchNavForm from './list/OrderSearchNavForm';
+import OrderListBoxForm from './list/orderListBoxForm';
 
 /**
- * CustomerService list component
+ * Order listcomponent
  * writer : 이호진
- * init : 2023.03.10
+ * init : 2023.03.11
  * updated by writer :
  * update :
- * description : 고객지원글 목록 component
+ * description : 주문 목록 component
  */
-export const CustomerServiceListContext = createContext(null); // CustomerServiceList Context
+export const OrderListContext = createContext(null); //OrderList Context
 
-const CustomerServiceListForm = () => {
+const OrderListForm = () => {
+  
   /// 변수 모음
   // 검색 데이터 default 변수
   const defaultData = {
-    reportedId: "", // 신고당한 회원 아이디
+    orderStatus: "", // 주문 상태
+    deliveryStatus: "", // 배달 상태
     createData: "",// 추천합니다글 생성 날짜(shape : 0000-00-00) 
     size: 10,// 페이지 size
     page: 0// 페이지 번호
   }
+  
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청처리 상태
@@ -32,16 +35,16 @@ const CustomerServiceListForm = () => {
   /// 메서드 모음
   // 처음 시작
   useEffect(() => {
-    // 고객지원글 목록에 담기
+    // 주문 목록에 담기
     inputListDatas();
   }, []);
-  // datas에 고객지원글 목록에 담기
+  // datas에 주문 목록에 담기
   async function inputListDatas() {
     // lodign true
     setLoding(true);
     try {
-      // 서버에서 고객지원글 목록 불러오기
-      const {data} = await getCustomerServiceList();
+      // 서버에서 주문 목록 불러오기
+      const {data} = await getOrderList();
       // loding false
       setLoding(false);
       // 요청 성공
@@ -57,13 +60,12 @@ const CustomerServiceListForm = () => {
       console.log(err);
     }
   }
-  // 서버에서 나의 고객지원글 불러오기
-  async function getCustomerServiceList() {
+  // 서버에서 나의 주문 불러오기
+  async function getOrderList() {
     return await axios.get(
-      "http://localhost:8080/customerservices",
+      "http://localhost:8080/orders",
       {
-        params: data,
-        withCredentials: true
+        params: data
       }
     );
   }
@@ -78,7 +80,7 @@ const CustomerServiceListForm = () => {
   // 찾기(Search) 버튼 클릭 했을 때
     // listDatas에 담아주기
   async function handleSearchClick() {
-    // 고객지원글 목록을 listDatas에 담기
+    // 주문목록을 listDatas에 담기
     await inputListDatas();
   }
 
@@ -88,20 +90,20 @@ const CustomerServiceListForm = () => {
   if(loding) return(<div>준비중...</div>);
 
   return (
-    <CustomerServiceListContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas}}>
+    <OrderListContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas}}>
       <Container>
-        {/* 고객지원글 찾기 Nav */}
+        {/* 주문 찾기 Nav */}
         <Row>
           <Col md="12">
             {/* 위쪽 Nav - 검색 */}
-            <CustomerServiceSearchNavForm />
+            <OrderSearchNavForm />
           </Col>
         </Row>
-        {/* 고객지원글 목록 box */}
+        {/* 주문 목록 box */}
         <Row id="top">
           <Col md="10">
-            {/* body - 고객지원글 목록  */}
-            <CustomerServiceListBoxForm />
+            {/* body - 주문 목록  */}
+            <OrderListBoxForm />
           </Col>
         </Row>
         {/* footer - 페이지 버튼 */}
@@ -117,8 +119,8 @@ const CustomerServiceListForm = () => {
           </Col>
         </Row>
       </Container>
-    </CustomerServiceListContext.Provider> 
+    </OrderListContext.Provider> 
   )
 }
 
-export default CustomerServiceListForm
+export default OrderListForm;

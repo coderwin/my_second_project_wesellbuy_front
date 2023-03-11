@@ -9,6 +9,10 @@ import { Pagination } from 'react-bootstrap';
  * updated by writer :
  * update :
  * description : 목록 페이지 버튼 component
+ *                > props
+ *                  - data: 검색 데이터 모음 prop
+ *                  - handleDataChange: data value 바꾸는 메서드 prop
+ *                  - totalPages: 전체페이지 prop
  * 
  * comment : value가 잘 작동할지 모르겠다
  *           id로 바꿔야 될 수도

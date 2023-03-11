@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
-import { Col, Container, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Button, Col, Container, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import OrderItemForm from './save/OrderItemForm';
 
@@ -227,7 +227,7 @@ const OrderSaveForm = () => {
           <Col sm="2">주문수량</Col>
           <Col sm="2">상품가격</Col>
           <Col sm="2">총가격</Col>
-          <Col sm="2"></Col>// 삭제 버튼
+          <Col sm="2"></Col>{/* 삭제 버튼  */}
         </ListGroupItem>
         {/* order body -> 주문 상품들 뿌려주기 */}
         {

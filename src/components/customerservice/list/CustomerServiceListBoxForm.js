@@ -41,7 +41,6 @@ const CustomerServiceListBoxForm = () => {
     view = listDatas.map((data) => {
       return (
         <tr key={data.num}>
-          <th>{data.rank}</th>
           <th id={data.num} onClick={handleItemNameClick} className="mousePointer">{data.reportedId}</th>
           <th>{data.createDate}</th>
         </tr>
