@@ -48,6 +48,7 @@ const RecommendationSearchNavForm = () => {
               aria-label="Search"
               name="itemName"
               value={data.itemName}
+              onChange={handleDataChange}
             />
           </Form>
           {/* 상품 판매자 아이디 search */}
@@ -59,6 +60,7 @@ const RecommendationSearchNavForm = () => {
               aria-label="Search"
               name="sellerId"
               value={data.sellerId}
+              onChange={handleDataChange}
             />
           </Form>
           {/* 작성자 아이디 search */}
@@ -70,6 +72,7 @@ const RecommendationSearchNavForm = () => {
               aria-label="Search"
               name="memberId"
               value={data.memberId}
+              onChange={handleDataChange}
             />
           </Form>
           <Form className="d-flex">
@@ -87,6 +90,7 @@ const RecommendationSearchNavForm = () => {
               aria-label="Search"
               name="createDate"
               value={data.createDate}
+              onChange={handleDataChange}
             />
             
             <Button type="button" onClick={handleSearchClick}>Search</Button>

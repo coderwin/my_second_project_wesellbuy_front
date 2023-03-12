@@ -38,6 +38,7 @@ import CustomerServiceSave from './pages/customerservice/CustomerServiceSave';
 import OrderSave from './pages/order/OrderSave';
 import OrderList from './pages/order/OrderList';
 import OrderDetail from './pages/order/OrderDetail';
+import OrderListForSeller from './pages/order/OrderListForSeller';
 
 // context 만들기
 export const CustomContext = createContext(null);
@@ -101,6 +102,14 @@ function App() {
           <Route path="/order/new" element={<OrderSave />} />
           <Route path="/order/list" element={<OrderList />} />
           <Route path="/order/:num" element={<OrderDetail />} />
+          <Route path="/order/list/seller" element={<OrderListForSeller />} />
+
+          {/* delivery list for deliver */}
+          {/* 서버를 따로 만들어야 하지 않을까? */}
+          <Route path="/deliver" />
+
+          {/* admin list for admin */}
+          {/* 서버를 따로 만들어야 하지 않을까? */}
 
           {/* 404 page */}
           <Route path="/*" element={<NotFound />} />

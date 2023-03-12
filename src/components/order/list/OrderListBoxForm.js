@@ -1,4 +1,5 @@
 import React, { useContext} from 'react'
+import { Table } from 'react-bootstrap';
 import "../../../css/form.css";
 import {OrderListContext} from '../OrderListForm';
 import OrderForm from './OrderForm';
@@ -29,7 +30,7 @@ const OrderListBoxForm = () => {
     // 데이터 만들기
     view = listDatas.map((data, i) => {
       return (
-        <OrderForm key={i} data={data} searchCond={searchCond} />
+        <OrderForm key={i} data={data} numPosition={i} totalPages={listDatas.totalPages} searchCond={searchCond} />
       );
     });
   // 없으면 데이터가 존재하지 않는다고 알려주기
@@ -44,9 +45,20 @@ const OrderListBoxForm = () => {
   }
 
   return (
-    <>
-      {view}
-    </>
+    <Table>
+      <thead>
+        <tr>
+          <th>주문순서</th>
+          <th>주문날짜</th>
+          <th>주문상태</th>
+          <th>배달상태</th>
+          <th></th>{/* 취소 버튼 */}
+        </tr>
+      </thead>
+      <tbody>
+        {view}
+      </tbody>
+    </Table>
   )
 }
 

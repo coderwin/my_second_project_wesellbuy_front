@@ -1,4 +1,5 @@
 import React from 'react'
+import OrderListForm from '../../components/order/OrderListForm'
 
 /**
  * Order list page
@@ -10,7 +11,9 @@ import React from 'react'
  */
 const OrderList = () => {
   return (
-    <OrderListForm />
+    <>
+      <OrderListForm />
+    </>
   )
 }
 

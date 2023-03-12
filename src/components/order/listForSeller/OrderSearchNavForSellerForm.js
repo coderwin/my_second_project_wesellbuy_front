@@ -1,20 +1,20 @@
 import React, { useContext } from 'react'
 import { Button, Col, Container, Form, Nav, Navbar, Row } from 'react-bootstrap';
-import { OrderListContext } from '../OrderListForm';
+import { OrderListForSellerContext } from '../OrderListForSellerForm';
 
 /**
- * Order list search component
+ * Order list search for seller component
  * writer : 이호진
- * init : 2023.03.11
+ * init : 2023.03.12
  * updated by writer :
  * update :
- * description : 주문 검색 component
+ * description : 주문받은 상품 목록 검색 for seller component
  */
-const OrderSearchNavForm = () => {
+const OrderSearchNavForSellerForm = () => {
 
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {data, handleDataChange, handleSearchClick} = useContext(OrderListContext);
+  const {data, handleDataChange, handleSearchClick} = useContext(OrderListForSellerContext);
   // input 달력(Datapicker) 환경설정 변수
   const dateOptions = {
     alloInvalid: true,
@@ -43,6 +43,18 @@ const OrderSearchNavForm = () => {
         <Navbar.Collapse id="navbarScroll">
           <Nav>
           </Nav>
+          {/* 주문자 아이디 */}
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="주문자 아이디"
+              className="me-2"
+              aria-label="Search"
+              name="reportedId"
+              value={data.orderId}
+              onChange={handleDataChange}
+            />
+          </Form>
           {/* 주문 상태 search */}
           <Form className="d-flex">
             <Form.Select
@@ -92,6 +104,7 @@ const OrderSearchNavForm = () => {
               aria-label="Search"
               name="createDate"
               value={data.createDate}
+              onChange={handleDataChange}
             />
             
             <Button type="button" onClick={handleSearchClick}>Search</Button>
@@ -123,4 +136,4 @@ const OrderSearchNavForm = () => {
   )
 }
 
-export default OrderSearchNavForm;
+export default OrderSearchNavForSellerForm;

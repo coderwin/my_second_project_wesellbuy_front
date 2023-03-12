@@ -2,31 +2,30 @@ import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import CustomerServiceDetailBoxForm from './detail/CustomerServiceDetailBoxForm';
-import ReplyCustomerServiceBoxForm from './reply/ReplyCustomerServiceBoxForm';
+import OrderDetailBoxForm from './detail/OrderDetailBoxForm';
 
 /**
- * CustomerService detail component
+ * Order detail component
  * writer : 이호진
- * init : 2023.03.10
+ * init : 2023.03.12
  * updated by writer :
  * update :
- * description : 고객지원글 상세보기 component
+ * description : 주문 상세보기 component
  */
-export const CustomerServiceDetailContext = createContext(null);// CustomerServiceDetailForm Context
+export const OrderDetailContext = createContext(null);// OrderDetailForm Context
 
-const CustomerServiceDetailForm = () => {
+const OrderDetailForm = () => {
   /// 변수 모음
   const defaultData = {
     num: "", // 게시글 번호
-    reportedId: "", // 신고된 회원 아이디
-    content: "", // 신고 내용
-    memberId: "", // 회원 아이디
-    createDate: "", // 작성 날짜
-    replyList: "" // 댓글 모음
+    orderStatus: "", // 주문 상태
+    id: "", // 주문한 회원 id
+    memberPhone: "", // 주문한 회원 연락처
+    address: "", // 주문한 회원 주소
+    deliveryStatus: "", // 배달 상태
+    orderItemDetailList: "", // 주문상품 정보 모음
+    totalPrice: "" // 전체 주문 가격
   }
-  // navigation
-  const navigation = useNavigate();
   // URI의 파라미터 얻어오기
     // num을 itemNum으로 교체
   const {num: boardNum} = useParams();
@@ -40,17 +39,17 @@ const CustomerServiceDetailForm = () => {
   /// 메서드 모음
   // 페이지 처음 시작
   useEffect(() => {
-    // 고객지원글 상세보기 데이터 불러오기
+    // 주문 상세보기 데이터 불러오기
     inputData();
     // sessionStorage에서 사용자 정보 불러오기
     getMemberInfo();
   }, []);
 
-  // 고객지원글 상세정보 데이터에 담기
+  // 주문 상세정보 데이터에 담기
   async function inputData() {
     try {
-      // 고객지원글 detail 불러오기
-      const response = await getCustomerServiceDetailInfo();
+      // 주문 detail 불러오기
+      const response = await getOrderDetailInfo();
       // 요청 성공
       console.log("요청 성공");
       setLoding(false);
@@ -73,6 +72,7 @@ const CustomerServiceDetailForm = () => {
     // sessionStorage에 key="LOGIN_MEMBER" 있는지 확인
     const key = "LOGIN_MEMBER";
     const memberData = JSON.parse(sessionStorage.getItem(key));
+    console.log(`memberData : ${memberData}`);
     // 데이터가 있으면
     if(memberData) {
       // memberInfo에 memberData 대입
@@ -80,15 +80,15 @@ const CustomerServiceDetailForm = () => {
     }
   }
 
-  // 고객지원글 상세보기 데이터 불러오기
-  async function getCustomerServiceDetailInfo() {
+  // 주문 상세보기 데이터 불러오기
+  async function getOrderDetailInfo() {
     // loding true로 바꾸기
     setLoding(true);
     // 서버에 item detail 요청하기
     // 누구든 볼수 없음 - 인증 필요
     // CORS 정책을 따라야 할 듯
     return await axios.get(
-      `http://localhost:8080/customerservices/${boardNum}`,
+      `http://localhost:8080/orders/${boardNum}`,
       {
         withCredentials: true
       }
@@ -99,24 +99,20 @@ const CustomerServiceDetailForm = () => {
   if(loding) return (<div>준비중...</div>);
 
   return (
-    <CustomerServiceDetailContext.Provider value={{data}}>
+    <OrderDetailContext.Provider value={{data}}>
       <Container>
         <Row>
-          {/* CustomerService detail box */}
-          <Col className="CustomerServiceDetailBox" sm="8">
-            {/* CustomerService detail */}
+          {/* Order detail box */}
+          <Col className="OrderDetailBox" sm="8">
+            {/* order detail box */}
             <Row>
-              <CustomerServiceDetailBoxForm />
-            </Row>
-            {/* reply(댓글) box */}
-            <Row>
-              <ReplyCustomerServiceBoxForm replyFormList={data.replyList} />
+              <OrderDetailBoxForm />
             </Row>
           </Col>
         </Row>
       </Container>
-    </CustomerServiceDetailContext.Provider>
+    </OrderDetailContext.Provider>
   )
 }
 
-export default CustomerServiceDetailForm;
+export default OrderDetailForm;

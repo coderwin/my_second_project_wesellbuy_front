@@ -51,6 +51,7 @@ const ItemSearchNavForm = () => {
               aria-label="Search"
               name="name"
               value={data.name}
+              onChange={handleDataChange}
             />
           </Form>
           {/* 상품 등록 아이디 search */}
@@ -62,6 +63,7 @@ const ItemSearchNavForm = () => {
               aria-label="Search"
               name="memberId"
               value={data.memberId}
+              onChange={handleDataChange}
             />
           </Form>
           {/* 등록 날짜 search */}
@@ -79,6 +81,7 @@ const ItemSearchNavForm = () => {
               aria-label="Search"
               name="createDate"
               value={data.createDate}
+              onChange={handleDataChange}
             />
           </Form>
           {/* 상품 종류 search */}

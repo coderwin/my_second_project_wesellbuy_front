@@ -49,6 +49,7 @@ const CustomerServiceSearchNavForm = () => {
               aria-label="Search"
               name="reportedId"
               value={data.reportedId}
+              onChange={handleDataChange}
             />
           </Form>
           <Form className="d-flex">
@@ -66,6 +67,7 @@ const CustomerServiceSearchNavForm = () => {
               aria-label="Search"
               name="createDate"
               value={data.createDate}
+              onChange={handleDataChange}
             />
             
             <Button type="button" onClick={handleSearchClick}>Search</Button>

@@ -4,14 +4,14 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 /**
- * Order of Order box component
+ * Order of Order box for seller component
  * writer : 이호진
- * init : 2023.03.11
+ * init : 2023.03.12
  * updated by writer :
  * update :
- * description : 주문목록의 주문 component
+ * description : 주문받은 상품 목록의 주문받은 상품 component
  *               props
- *                 > data : 주문 데이터 prop
+ *                 > data : 주문받은 상품 데이터 prop
  *                 > searchCond : 주문목록 찾기 위한 조건 데이터 prop
  *                 > numPosition : 현재 페이지에서 주문목록의 자리선정위한 번호 prop
  *                 > totalPages : 전체 페이지수 prop
@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
  *                -> 현재 : 취소전 그대로 유지될 것으로 예상
  *                -> 수정한다면 : 배송취소가 생겼으면 좋겠군
  */
-const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
+const OrderForSellerForm = ({data, numPosition, totalPages, searchCond}) => {
   
   /// 변수 모음
   const navigation = useNavigate();// navigation
@@ -32,15 +32,15 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청처리 상태
-  const [cancelResult, setCancelResult] = useState(false);// 취소버튼 클릭 후 처리 상태 
+  const [deliveryResult, setDeliveryResult] = useState(false);// 배송중 버튼 클릭 후 처리 상태 
 
   /// 메서드 모음
-  // 주문을 클릭했을 때
+  // 주문받은(판매된) 상품을 클릭했을 때
   function handleItemNameClick(e) {
     // id 불러오기
     const id = e.target.id;// 상품번호 불러오기
-    // 주문 상세보기로 이동
-    navigation(`/order/${id}`);
+    // 주문받은(판매된) 상품 상세보기로 이동
+    navigation(`/item/${id}`);
   }
   // 취소버튼을 클릭했을 때
   async function handleCancelClick(e) {
@@ -56,8 +56,8 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
       setLoding(false);
       console.log("요청 성공");
       alert(response.data.data);
-      // cancelResult 변경
-      setCancelResult(true);
+      // deliveryResult 변경
+      setDeliveryResult(true);
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
@@ -67,13 +67,13 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
       if(err.response.data.errMsg) {
         alert(err.response.data.errMsg);
       }
-      // // CancelResult 그대로 두기
+      // // deliveryResult 그대로 두기
     }
   }
   // 서버로 취소 요청
   async function cancel(num) {
     return await axios.delete(
-      `http://localhost:8080/order/${num}`,
+      `http://localhost:8080/orderS/${num}/delivery/seller`,
       {
         withCredentials: true
       }
@@ -83,56 +83,58 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
   /// view 모음
   let orderStatusView = null;// 주문상태 출력 변수
   let deliveryStatusView = null;// 배달상태 출력 변수
-  let cancelBtnBoxView = null;// 취소버튼 박스 출력 변수
+  let deliveryBtnBoxView = null;// 배송버튼 박스 출력 변수
+  let addressBoxView = "";// 배송지 박스 출력 변수
 
   // orderStatusView 결정
   // 처음 and 취소요청실패
-  if(cancelResult === false) {
-    for(let i = 0; i < orderStatusValues.length; i++) {
-      if(orderStatusValues[i] === data.orderStatus) {
-        orderStatusView = orderStatusNames[i];
-      }
+  for(let i = 0; i < orderStatusValues.length; i++) {
+    if(orderStatusValues[i] === data.orderStatus) {
+      orderStatusView = orderStatusNames[i];
     }
-  // 취소요청성공
-  } else {
-    // 서버에서 처리 필요 -> 아직 서버에서 처리 안 함
-    orderStatusView = orderStatusNames[1];// 취소
   }
 
   // deliveryStatusView 결정
   // 처음 and 취소요청실패
-  if(cancelResult === false) {
+  if(deliveryResult === false) {
     for(let i = 0; i < deliveryStatusValues.length; i++) {
       if(deliveryStatusValues[i] === data.deliveryStatus) {
         deliveryStatusView = deliveryStatusNames[i];
       }
     }
   } else {
-    deliveryStatusView = deliveryStatusNames[3];// 배송취소 
+    deliveryStatusView = deliveryStatusNames[1];// 배송중 
   }
 
-  // cancelBtnBoxView 결정
+  // deliveryBtnBoxView 결정
   // 처음 and 취소요청실패
-  if(cancel === false) {
-    cancelBtnBoxView = (
-      data.orderStatus === "CANCEL" ? 
-      "취소완료" :
-      (
-        data.deliveryStatus === "READY" ?
-        <Button id={data.num} onClick={handleCancelClick}>취소</Button> :
-        "취소불가" 
-      )
+  if(deliveryResult === false) {
+    deliveryBtnBoxView = (
+      data.orderStatus === "READY" ? 
+      <Button id={data.orderNum} onClick={handleCancelClick}>배달시작</Button> : 
+      ""
     );
   } else {
-    cancelBtnBoxView = "취소완료";
+    deliveryBtnBoxView = "";
+  }
+
+  // addressBoxView 결정
+  // 주소 있을 때
+  if(data.address) {
+    for(let key in data.address) {
+      addressBoxView += data.address[key];
+    }
+  // 주소 없을 때  
+  } else {
+    addressBoxView = "주소 없음";
   }
 
   if(loding) return (<div>요청 처리 중...</div>);// 클라이언트 요청 처리 view
 
   return (
     <tr>
-      {/* 나의 주문번호 순서 */}
-      <th id={data.num} 
+      {/* 나의 주문받은(판매된) 상품 순서 */}
+      <th id={data.itemNum} 
         onClick={handleItemNameClick} className="mousePointer"
       >
         {/* 첫페이지가 1번부터 */}
@@ -140,9 +142,33 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
         {/* 첫페이지가 마지막번호부터 */}
         {searchCond.size * (totalPages - searchCond.page) - numPosition + 1}
       </th>
-      {/* 주문날짜 */}
+      {/* 주문수량 */}
       <th>
-        {data.createDate}
+        {data.quantity}
+      </th>
+      {/* 주문 총가격 */}
+      <th>
+        {data.totalCount}
+      </th>
+      {/* 주문한 회원 아이디 */}
+      <th>
+        {data.memberId}
+      </th>
+      {/* 주문한 회원 이름 */}
+      <th>
+        {data.memberName}
+      </th>
+      {/* 주문한 회원 연락처 - selfPhone*/}
+      <th>
+        {data.memberPhone.selfPhone}
+      </th>
+      {/* 주문한 회원 연락처 homePhone*/}
+      <th>
+        {data.memberPhone.homePhone}
+      </th>
+      {/* 배송지 - 나라, 도시, 동, 상세설명, 우편번호 */}
+      <th>
+        {addressBoxView}
       </th>
       {/* 주문상태 */}
       <th>  
@@ -152,12 +178,12 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
       <th>
         {deliveryStatusView}
       </th>
-      {/* 주문취소 button */}
+      {/* 배달중 button */}
       <th>
-        {cancelBtnBoxView}
+        {deliveryBtnBoxView}
       </th>
     </tr>
   )
 }
 
-export default OrderForm
+export default OrderForSellerForm;

@@ -2,24 +2,24 @@ import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
-import OrderSearchNavForm from './list/OrderSearchNavForm';
-import OrderListBoxForm from './list/orderListBoxForm';
+import OrderSearchNavForSellerForm from './listForSeller/OrderSearchNavForSellerForm';
+import OrderListBoxForSellerForm from './listForSeller/OrderListBoxForSellerForm';
 
 /**
- * Order list component
+ * Order list for seller component
  * writer : 이호진
- * init : 2023.03.11
+ * init : 2023.03.12
  * updated by writer :
  * update :
- * description : 주문 목록 component
+ * description : 주문 목록 판매자용 component
  */
-export const OrderListContext = createContext(null); //OrderList Context
+export const OrderListForSellerContext = createContext(null);
 
-const OrderListForm = () => {
-  
+const OrderListForSellerForm = () => {
   /// 변수 모음
   // 검색 데이터 default 변수
   const defaultData = {
+    orderId: "", // 주문자 아이디
     orderStatus: "", // 주문 상태
     deliveryStatus: "", // 배달 상태
     createData: "",// 추천합니다글 생성 날짜(shape : 0000-00-00) 
@@ -63,7 +63,7 @@ const OrderListForm = () => {
   // 서버에서 나의 주문 불러오기
   async function getOrderList() {
     return await axios.get(
-      "http://localhost:8080/orders",
+      "http://localhost:8080/orders/seller",
       {
         params: data
       }
@@ -90,20 +90,20 @@ const OrderListForm = () => {
   if(loding) return(<div>준비중...</div>);
 
   return (
-    <OrderListContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas}}>
+    <OrderListForSellerContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas}}>
       <Container>
-        {/* 주문 찾기 Nav */}
+        {/* 주문받은 상품 찾기 Nav */}
         <Row>
           <Col md="12">
             {/* 위쪽 Nav - 검색 */}
-            <OrderSearchNavForm />
+            <OrderSearchNavForSellerForm />
           </Col>
         </Row>
-        {/* 주문 목록 box */}
+        {/* 주문받은 상품 목록 box */}
         <Row id="top">
           <Col md="10">
-            {/* body - 주문 목록  */}
-            <OrderListBoxForm />
+            {/* body - 주문받은 상품 목록  */}
+            <OrderListBoxForSellerForm />
           </Col>
         </Row>
         {/* footer - 페이지 버튼 */}
@@ -119,8 +119,8 @@ const OrderListForm = () => {
           </Col>
         </Row>
       </Container>
-    </OrderListContext.Provider> 
+    </OrderListForSellerContext.Provider> 
   )
 }
 
-export default OrderListForm;
+export default OrderListForSellerForm

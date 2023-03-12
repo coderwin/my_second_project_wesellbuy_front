@@ -1,4 +1,5 @@
 import React from 'react'
+import OrderDetailForm from '../../components/order/OrderDetailForm'
 
 /**
  * Order detail page
@@ -10,7 +11,7 @@ import React from 'react'
  */
 const OrderDetail = () => {
   return (
-    <div>OrderDetail</div>
+    <OrderDetailForm />
   )
 }
 
