@@ -1,22 +1,22 @@
 import React, { useContext} from 'react'
 import { Table } from 'react-bootstrap';
 import "../../../css/form.css";
-import { OrderListForSellerContext } from '../OrderListForSellerForm';
-import OrderForSellerForm from './OrderForSellerForm';
+import {OrderListContext} from '../OrderListForm';
+import OrderForDeliverForm from './OrderForDeliverForm';
 
 /**
- * Order list box for seller component
+ * Order list box for deliver component
  * writer : 이호진
  * init : 2023.03.12
  * updated by writer :
  * update :
- * description : 주문받은 상품 목록 box for seller component
+ * description : 주문 목록 box 배달원용 component
  */
-const OrderListBoxForSellerForm = () => {
+const OrderListBoxForDeliverForm = () => {
   
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {listDatas, data: searchCond} = useContext(OrderListForSellerContext);
+  const {listDatas, data: searchCond} = useContext(OrderListContext);
 
   /// 상태 모음
 
@@ -30,7 +30,7 @@ const OrderListBoxForSellerForm = () => {
     // 데이터 만들기
     view = listDatas.map((data, i) => {
       return (
-        <OrderForSellerForm key={i} data={data} numPosition={i} totalPages={listDatas.totalPages} searchCond={searchCond} />
+        <OrderForDeliverForm key={i} data={data} numPosition={i} totalPages={listDatas.totalPages} searchCond={searchCond} />
       );
     });
   // 없으면 데이터가 존재하지 않는다고 알려주기
@@ -47,17 +47,14 @@ const OrderListBoxForSellerForm = () => {
   return (
     <Table>
       <thead>
-        <th>판매순서</th>
-        <th>주문수량</th>
-        <th>주문총가격</th>
-        <th>회원아이디</th>
-        <th>회원이름</th>
-        <th>휴대전화</th>
-        <th>집전화</th>
-        <th>배송지</th>
-        <th>주문상태</th>
-        <th>배달상태</th>
-        <th></th>{/* 배달 버튼  */}
+        <tr>
+          <th>주문순서</th>
+          <th>회원아이디</th>
+          <th>주문날짜</th>
+          <th>주문상태</th>
+          <th>배달상태</th>
+          <th></th>{/* 배달 버튼 */}
+        </tr>
       </thead>
       <tbody>
         {view}
@@ -66,4 +63,4 @@ const OrderListBoxForSellerForm = () => {
   )
 }
 
-export default OrderListBoxForSellerForm;
+export default OrderListBoxForDeliverForm;

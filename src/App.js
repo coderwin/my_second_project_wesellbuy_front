@@ -39,6 +39,7 @@ import OrderSave from './pages/order/OrderSave';
 import OrderList from './pages/order/OrderList';
 import OrderDetail from './pages/order/OrderDetail';
 import OrderListForSeller from './pages/order/OrderListForSeller';
+import OrderListForDeliver from './pages/order/OrderListForDeliver';
 
 // context 만들기
 export const CustomContext = createContext(null);
@@ -106,7 +107,7 @@ function App() {
 
           {/* delivery list for deliver */}
           {/* 서버를 따로 만들어야 하지 않을까? */}
-          <Route path="/deliver" />
+          <Route path="/order/list/deliver" element={<OrderListForDeliver />} />
 
           {/* admin list for admin */}
           {/* 서버를 따로 만들어야 하지 않을까? */}
