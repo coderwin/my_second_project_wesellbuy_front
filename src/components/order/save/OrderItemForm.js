@@ -46,7 +46,7 @@ const OrderItemForm = ({data, num, handleDeleteBtnClick,handleSelectionChange}) 
   }, [quantity]);
   // 선택 box 클릭했을 때 selection 데이터 변경 
   // + readyOrder 데이터 변경하기
-  function handleInitSelectionChange(e) {
+  function handleInitSelectionChangeV2(e) {
     // 선택 상태 바꾸기
     setSelection(e.target.value);
     // selection이 바뀌었는지 확인

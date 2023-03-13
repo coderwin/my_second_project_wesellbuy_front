@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import OrderSearchNavForm from './list/OrderSearchNavForm';
-import OrderListBoxForm from './list/orderListBoxForm';
+import OrderListBoxForm from './list/OrderListBoxForm';
 
 /**
  * Order list component

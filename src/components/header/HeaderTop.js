@@ -94,7 +94,7 @@ const HeaderTop = () => {
         resultBox = (
             <Nav className="justify-content-end" activeKey="/home">
                 <Nav.Item>
-                    <div>{sessionForm.id}님 반갑습니다</div>
+                    <Nav.Link>{sessionForm.id}님 반갑습니다</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link onClick={handleMydetailClick}>내정보</Nav.Link>

@@ -175,12 +175,12 @@ const CustomerServiceSaveForm = () => {
           as={Row}
           className="mb-3"
           >
-          <Button type="submit">등록</Button>
-          <Button type="button" onClick={handleCancelClick}>취소</Button>
+            <Button type="submit">등록</Button>
+            <Button type="button" onClick={handleCancelClick}>취소</Button>
           </Form.Group>
       </Form>
     </>
   )
 }
 
-export default CustomerServiceSaveForm
+export default CustomerServiceSaveForm;

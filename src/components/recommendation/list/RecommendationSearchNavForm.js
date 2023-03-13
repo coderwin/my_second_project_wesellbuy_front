@@ -34,7 +34,7 @@ const RecommendationSearchNavForm = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+        <Navbar.Brand href="#">Search</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav>
@@ -79,7 +79,7 @@ const RecommendationSearchNavForm = () => {
             {/* 등록 날짜 search */}
             {/* 작동할 지 모르겟군 -> 확인해보자 */}
             <Form.Control
-              type="text"
+              type="date"
               datepicker-popup=""
               ng-model="dt"
               is-open="opened"
@@ -104,12 +104,13 @@ const RecommendationSearchNavForm = () => {
                   as={Col}
                   sm="5" 
                   name="size" 
+                  value={data.size}
                   onChange={handleDataChange}
                 >
                   {
                     sizeValues.map((value, i) => {
                       return (value === data.size ? 
-                      <option key={i} value={value} selected>{value}</option> 
+                      <option key={i} value={value}>{value}</option> 
                       : <option key={i} value={value}>{value}</option>);
                     })
                   }

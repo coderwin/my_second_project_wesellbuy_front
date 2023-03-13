@@ -23,8 +23,10 @@ const ItemRankForm = () => {
   // 상품 순위 찾기 클릭했을 때
   // 상품의 위치를 찾아준다.
   function handleSearchClick(e) {
+    // 이벤트 막기
+    e.preventDefault();
     
-    const value = e.target.value; // 클라이언트가 찾는 순위
+    const value = e.target.rankName.value; // 클라이언트가 찾는 순위
     // 숫자만 출력하기
     const rankNum = getOnlyNumbmers(value);
     // a 태그 생성
@@ -39,7 +41,7 @@ const ItemRankForm = () => {
   function getOnlyNumbmers(value) {
     // pattern 만든다
     // 모든 숫자를 제외한 문자만을 찾기 
-    const pattern = /^[0-9]/g;
+    const pattern = /[^0-9]/g;
     // 숫자만 추출하기
     // pattern에 걸린 것은 ""로 처리하기
     const result = value.replace(pattern, "");
@@ -71,7 +73,7 @@ const ItemRankForm = () => {
           </Col>
         </Row>
         {/* 맨위로 이동하기 */}
-        <Row class="footerFixed mousePointer">
+        <Row className="footerFixed mousePointer">
           <Col>
             <a href="#top">맨위로</a>
           </Col>

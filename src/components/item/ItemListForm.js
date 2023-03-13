@@ -38,7 +38,7 @@ const ItemListForm = () => {
   const [loding, setLoding] = useState(false);// 요청처리 상태
   const [data, setData] = useState(defaultData);// 검색 데이터 상태
   const [cardDatas, setCardDatas] = useState([]);// 데이터 상태(Card를 위한)
-  const [rankCardDatas, setRankCardDatas] = useState([]);// 데이터 상태(Card를 위한)
+  const [rankCardDatas, setRankCardDatas] = useState(null);// 데이터 상태(Card를 위한)
   const [likesList, setLikesList] = useState([]);// 회원의 상품좋아요 상태
   const [memberInfo, setMemberInfo] = useState(null);// 회원정보 상태
   /// 메서드 모음

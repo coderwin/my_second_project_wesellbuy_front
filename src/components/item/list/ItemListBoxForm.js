@@ -37,6 +37,8 @@ const ItemListBoxForm = () => {
         /> 
         );
     });
+  } else {
+    view = "상품이 없습니다.";
   }
 
   return (

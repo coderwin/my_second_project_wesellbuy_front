@@ -25,19 +25,19 @@ const ItemRankSearchNavForm = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+        <Navbar.Brand href="#">Search_Rank</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           {/* 상품 순위 search */}
-          <Form className="d-flex">
+          <Form className="d-flex" onSubmit={handleSearchClick}>
             <Form.Control
               type="search"
               placeholder="원하는 순위를 입력하세요"
               className="me-2"
               aria-label="Search"
-              name="name"
+              name="rankName"
             />
-            <Button type="button" onClick={handleSearchClick}>Search</Button>
+            <Button type="submit">Search</Button>
           </Form>  
         </Navbar.Collapse>
       </Container>

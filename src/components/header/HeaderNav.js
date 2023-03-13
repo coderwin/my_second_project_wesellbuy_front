@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
+import '../../css/googlefont.css';
 
 const HeaderNav = () => {
 
@@ -16,7 +17,7 @@ const HeaderNav = () => {
   }
   // 고객지원
   const handleCustomerServiceClick = () => {
-    navigation("/cs");
+    navigation("/cs/new");
   }
   // 상품등록
   const handleItemSaveClick = () => {
@@ -27,7 +28,7 @@ const HeaderNav = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-      <Navbar.Brand onClick={handleHomeClick} >React-Bootstrap</Navbar.Brand>
+      <Navbar.Brand className="googlefont mitr" onClick={handleHomeClick} >WeSellBuy</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -45,4 +46,4 @@ const HeaderNav = () => {
   )
 }
 
-export default HeaderNav
+export default HeaderNav;

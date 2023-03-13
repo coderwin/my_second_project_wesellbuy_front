@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState} from 'react'
 import axios from 'axios';
-import { Button, Col, Form, Image, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Image, Row } from 'react-bootstrap';
 import noImage from '../../images/common/no_image.png';
 import { useNavigate } from 'react-router-dom';
 import { CustomContext } from '../../App';
@@ -175,124 +175,135 @@ const MemberDetailForm = () => {
   if(error) return (<div>요청 작업 중 에러 발생</div>);
     
   return (
-    <Form>
-          <Row className="mb-3">
-            <Form.Group
-              as={Col}
-              md="4"
-            >
-              <Form.Label>ID</Form.Label>
-              <Form.Control
-                type="text"
-                value={data.id}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group
-              as={Col}
-              md="4"
-              controlId="validationFormik102"
-              className="position-relative"
-            >
-              <Form.Label>NAME</Form.Label>
-              <Form.Control
-                type="text"
-                value={data.name}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group as={Col} md="4" >
-              <Form.Label>EMAIL</Form.Label>
+    <Container>
+      <Row>
+        {/* left side Nav */}
+        <Col sm="2">
+          
+        </Col>
+        {/* memberInfo box */}
+        <Col sm="10">
+          <Form>
+            <Row className="mb-3">
+              <Form.Group
+                as={Col}
+                md="4"
+              >
+                <Form.Label>ID</Form.Label>
                 <Form.Control
                   type="text"
-                  value={data.email}
+                  value={data.id}
                   readOnly
                 />
-            </Form.Group>
-            <Form.Group as={Col} md="4" >
-              <Form.Label>EMAIL</Form.Label>
+              </Form.Group>
+              <Form.Group
+                as={Col}
+                md="4"
+                controlId="validationFormik102"
+                className="position-relative"
+              >
+                <Form.Label>NAME</Form.Label>
                 <Form.Control
                   type="text"
-                  value={data.email}
+                  value={data.name}
                   readOnly
                 />
-            </Form.Group>
-          </Row>
-          {/* 전화번호 box */}
-          <Row>
-            <Form.Group as={Col} md="6" >
-              <Form.Label>selfphone</Form.Label>
-              <Form.Control
-                type="text"
-                value={data.phones.selfPhone}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group as={Col} md="6" >
-              <Form.Label>homePhone</Form.Label>
-              <Form.Control
-                type="text"
-                value={data.phones.homePhone}
-                readOnly
-              />
-            </Form.Group>
-          </Row>
-          {/* 주소 box */}
-          <Row className="mb-3">
-            <Form.Group as={Col} md="2">
-              <Form.Label>Country</Form.Label>
-              <Form.Control
-                type="text"
-                value={changeCountryName()}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group as={Col} md="2">
-              <Form.Label>City</Form.Label>
-              <Form.Control
-                type="text"
-                value={data.address.city}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group as={Col} md="2">
-              <Form.Label>Street</Form.Label>
-              <Form.Control
-                type="text"
-                value={data.address.street}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group as={Col} md="2">
-              <Form.Label>Detail</Form.Label>
-              <Form.Control
-                type="text"
-                value={data.address.detail}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group as={Col} md="2">
-              <Form.Label>Zipcode</Form.Label>
-              <Form.Control
-                type="text"
-                value={data.address.zipcode}
-                readOnly
-              />
-            </Form.Group>
-          </Row>
-          {/* 이미지 box */}
-          <Row>
-            {data.selfPictureForm ? <Image roundedCircle src={`http://localhost:8080/members/images/${data.selfPictureForm.storedFileName}`} /> 
-            : <Image roundedCircle src={noImage} />}
-          </Row>
-          {/* 버튼 box */}
-          <Row>
-            <Form.Group>
-              <Button type="button" onClick={handleUpdateClick}>수정</Button>
-              <Button type="button" onClick={handleWithdrawalClick}>탈퇴</Button>
-            </Form.Group>
-          </Row>     
-        </Form>
+              </Form.Group>
+              <Form.Group as={Col} md="4" >
+                <Form.Label>EMAIL</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={data.email}
+                    readOnly
+                  />
+              </Form.Group>
+              <Form.Group as={Col} md="4" >
+                <Form.Label>EMAIL</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={data.email}
+                    readOnly
+                  />
+              </Form.Group>
+            </Row>
+            {/* 전화번호 box */}
+            <Row>
+              <Form.Group as={Col} md="6" >
+                <Form.Label>selfphone</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={data.phones.selfPhone}
+                  readOnly
+                />
+              </Form.Group>
+              <Form.Group as={Col} md="6" >
+                <Form.Label>homePhone</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={data.phones.homePhone}
+                  readOnly
+                />
+              </Form.Group>
+            </Row>
+            {/* 주소 box */}
+            <Row className="mb-3">
+              <Form.Group as={Col} md="2">
+                <Form.Label>Country</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={changeCountryName()}
+                  readOnly
+                />
+              </Form.Group>
+              <Form.Group as={Col} md="2">
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={data.address.city}
+                  readOnly
+                />
+              </Form.Group>
+              <Form.Group as={Col} md="2">
+                <Form.Label>Street</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={data.address.street}
+                  readOnly
+                />
+              </Form.Group>
+              <Form.Group as={Col} md="2">
+                <Form.Label>Detail</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={data.address.detail}
+                  readOnly
+                />
+              </Form.Group>
+              <Form.Group as={Col} md="2">
+                <Form.Label>Zipcode</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={data.address.zipcode}
+                  readOnly
+                />
+              </Form.Group>
+            </Row>
+            {/* 이미지 box */}
+            <Row>
+              {data.selfPictureForm ? <Image roundedCircle src={`http://localhost:8080/members/images/${data.selfPictureForm.storedFileName}`} /> 
+              : <Image roundedCircle src={noImage} />}
+            </Row>
+            {/* 버튼 box */}
+            <Row>
+              <Form.Group>
+                <Button type="button" onClick={handleUpdateClick}>수정</Button>
+                <Button type="button" onClick={handleWithdrawalClick}>탈퇴</Button>
+              </Form.Group>
+            </Row>     
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

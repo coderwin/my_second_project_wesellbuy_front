@@ -30,16 +30,14 @@ import NotFound from './pages/error/NotFound';
 import IdSearchAnswer from './pages/member/help/IdSearchAnswer';
 import PwdSearchAnswer from './pages/member/help/PwdSearchAnswer';
 import MemberUpdate from './pages/member/MemberUpdte';
-import Order from './pages/order/Order';
 import CustomerServiceDetail from './pages/customerservice/CustomerServiceDetail';
-import ItemSaveForm from './components/item/ItemSaveForm';
 import ItemSave from './pages/item/ItemSave';
-import CustomerServiceSave from './pages/customerservice/CustomerServiceSave';
 import OrderSave from './pages/order/OrderSave';
 import OrderList from './pages/order/OrderList';
 import OrderDetail from './pages/order/OrderDetail';
 import OrderListForSeller from './pages/order/OrderListForSeller';
 import OrderListForDeliver from './pages/order/OrderListForDeliver';
+import CustomerServiceSave from './pages/customerservice/CustomerServiceSave';
 
 // context 만들기
 export const CustomContext = createContext(null);
@@ -77,6 +75,7 @@ function App() {
           <Route path="/item/:num" element={<ItemDetail />}></Route>
           <Route path="/item/:num/update" element={<ItemUpdate />}></Route>
           <Route path="/item/rank" element={<ItemRank />}></Route>
+          
           {/* login */}
           <Route path="/login" element={<Login />} />
           {/* help */}
@@ -89,10 +88,12 @@ function App() {
           {/* member detail info */}
           <Route path="/mydetail" element={<MemberDetail />} />
           <Route path="/mydetail/update" element={<MemberUpdate />} />
+
           {/* customerservice list */}
-          <Route path="/cs/new" element={<CustomerServiceSave />}/>
+          <Route path="/cs/new" element={<CustomerServiceSave />} />
           <Route path="/cs/list" element={<CustomerServiceList />} />
-          <Route path="/cs/:num" element={<CustomerServiceDetail />}></Route>
+          <Route path="/cs/:num" element={<CustomerServiceDetail />} />
+
           {/* recommendation list */}
           <Route path="/recommendation/new" element={<RecommendationSave />} />
           <Route path="/recommendation/list" element={<RecommendationList />}  />

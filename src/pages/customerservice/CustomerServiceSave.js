@@ -12,7 +12,9 @@ import CustomerServiceSaveForm from '../../components/customerservice/CustomerSe
 const CustomerServiceSave = () => {
 
   return (
-    <CustomerServiceSaveForm />
+    <>
+      <CustomerServiceSaveForm />
+    </>
   );
 }
 

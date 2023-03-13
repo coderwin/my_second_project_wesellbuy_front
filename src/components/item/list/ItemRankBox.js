@@ -30,13 +30,16 @@ const ItemRankBox = () => {
     for(let i = 0; i < cardsOnARow; i++) {
       view += (
         <CardWithHeaderForm 
-          key={rankCardDatas[i].num} 
+          // key={rankCardDatas[i].num} // 확인하기
+          key={i} 
           data={rankCardDatas[i]} 
           likesList={likesList} 
           memberInfo={memberInfo} 
         /> 
       );
     }
+  } else {
+    view = "상품이 없습니다.";
   }
 
   return (

@@ -22,7 +22,7 @@ const ItemRankBoxForm = () => {
 
   /// 상태 모음
   
-  const [datas, setDatas] = useState([]);// 상품순위 목록 데이터 상태 
+  const [datas, setDatas] = useState(null);// 상품순위 목록 데이터 상태 
 
   /// 메서드 모음
   // 처음 시작
@@ -89,7 +89,7 @@ const ItemRankBoxForm = () => {
   } else {
     view = (
     <tr>
-      <th>
+      <th colSpan={6}>
         상품이 없습니다.
       </th>
     </tr>);

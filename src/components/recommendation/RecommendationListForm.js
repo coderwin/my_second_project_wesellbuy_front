@@ -101,7 +101,7 @@ const RecommendationListForm = () => {
           </Row>
           <Row>
             <Col md="10">
-              {/* body - 상품 목록  */}
+              {/* body - 추천합니다 목록  */}
               <RecommendationListBoxForm />
             </Col>
           </Row>
