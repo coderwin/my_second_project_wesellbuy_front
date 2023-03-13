@@ -4,6 +4,7 @@ import { Button, Col, Container, Form, Image, Row } from 'react-bootstrap';
 import noImage from '../../images/common/no_image.png';
 import { useNavigate } from 'react-router-dom';
 import { CustomContext } from '../../App';
+import MemberDetailLeftNavForm from './detail/MemberDetailLeftNavForm';
 
 /**
  * Member detail component
@@ -178,11 +179,11 @@ const MemberDetailForm = () => {
     <Container>
       <Row>
         {/* left side Nav */}
-        <Col sm="2">
-          
+        <Col sm="3">
+          <MemberDetailLeftNavForm />
         </Col>
         {/* memberInfo box */}
-        <Col sm="10">
+        <Col sm="9">
           <Form>
             <Row className="mb-3">
               <Form.Group

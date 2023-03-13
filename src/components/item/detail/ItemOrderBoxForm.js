@@ -24,6 +24,7 @@ const ItemOrderBoxForm = () => {
   /// 변수 모음
   // 외부 데이터 불러오기
   const {data} = useContext(ItemDetailContext);
+ 
   // defaultOrderData
   const defaultOrderData = {
     id: "",// 주문번호
@@ -50,7 +51,7 @@ const ItemOrderBoxForm = () => {
       price: data.price,
       itemNum: data.num
     });
-  }, []);
+  }, [data]);
   // 장바구니에 주문정보 담기 => window가 알게 하기
   // useEffect(() => {
   //   // JSON string으로 변환하기

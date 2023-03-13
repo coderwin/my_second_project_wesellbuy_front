@@ -16,7 +16,7 @@ const OrderListBoxForDeliverForm = () => {
   
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {listDatas, data: searchCond} = useContext(OrderListContext);
+  const {listDatas, data: searchCond, totalPages} = useContext(OrderListContext);
 
   /// 상태 모음
 
@@ -30,7 +30,7 @@ const OrderListBoxForDeliverForm = () => {
     // 데이터 만들기
     view = listDatas.map((data, i) => {
       return (
-        <OrderForDeliverForm key={i} data={data} numPosition={i} totalPages={listDatas.totalPages} searchCond={searchCond} />
+        <OrderForDeliverForm key={i} data={data} numPosition={i} totalPages={totalPages} searchCond={searchCond} />
       );
     });
   // 없으면 데이터가 존재하지 않는다고 알려주기

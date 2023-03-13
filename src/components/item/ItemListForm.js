@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Button, Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import ItemRankBox from './list/ItemRankBox';
 import ItemSearchNavForm from './list/ItemSearchNavForm';
@@ -8,14 +8,17 @@ import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../css/form.css';
+import { CustomContext } from '../../App';
 
 /**
  * Item list component
  * writer : 이호진
  * init : 2023.03.09
- * updated by writer :
- * update :
+ * updated by writer : 이호진
+ * update : 2023.03.13
  * description : 상품 목록 component
+ * 
+ * update : useCreate 추가 : data바뀔 때, 서버로 데이터 요청하기
  */
 export const ItemListContext = createContext(null); // itemList Context
 
@@ -41,6 +44,7 @@ const ItemListForm = () => {
   const [rankCardDatas, setRankCardDatas] = useState(null);// 데이터 상태(Card를 위한)
   const [likesList, setLikesList] = useState([]);// 회원의 상품좋아요 상태
   const [memberInfo, setMemberInfo] = useState(null);// 회원정보 상태
+  const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
   /// 메서드 모음
   // 처음 시작
   useEffect(() => {
@@ -54,7 +58,14 @@ const ItemListForm = () => {
     if(memberInfo) {
       inputLikesList();
     }
+    setLoding(false);
   }, []);
+
+  useEffect(() => {
+    // 상품목록 cardDatas에 담기
+    inputCardDatas();
+  }, [data]);
+  
   // 찾기(Search) 버튼 클릭 했을 때
   // cardDatas 담아주기
   async function handleSearchClick() {
@@ -63,20 +74,17 @@ const ItemListForm = () => {
   }
   // rankCardDatas에 상품목록 담기
   async function inputRankCardDatas() {
-    // lodign true
+    // 요청 시작
     setLoding(true);
     try {
       // 서버에서 상품 목록 불러오기
-      const {data} = await getItemRankList()()
-      // loding false
+      const {data} = await getItemRankList();
       setLoding(false);
       // 요청 성공
       console.log("요청 성공");
-      console.log(data);
       // cardDatas에 담기
-      setRankCardDatas(data);
+      setRankCardDatas(data.data);
     } catch(err) {
-      // loding false
       setLoding(false);
       // 요청 실패
       console.log("요청 실패");
@@ -91,22 +99,20 @@ const ItemListForm = () => {
   }
   // cardDatas에 상품목록 담기
   async function inputCardDatas() {
-    // lodign true
+    // 요청 시작
     setLoding(true);
     try {
       // 서버에서 상품 목록 불러오기
       const {data} = await getItemList()
-      // loding false
-      setLoding(false);
       // 요청 성공
-      console.log("요청 성공");
-      console.log(data);
-      // cardDatas에 담기
-      setCardDatas(data);
-    } catch(err) {
-      // loding false
       setLoding(false);
+      console.log("요청 성공");
+      // cardDatas에 담기
+      setCardDatas(data.data.content);
+      setTotalPages(data.data.totalPages);
+    } catch(err) {
       // 요청 실패
+      setLoding(false);
       console.log("요청 실패");
       console.log(err);
     }
@@ -123,14 +129,10 @@ const ItemListForm = () => {
   }
   // sessionStorage에 있는 회원정보 불러오기
   function inputMemberInfo() {
-    // loding true
-    setLoding(true);
     // sessionStorage에서 sessionStorage불러오기
     const newMemberInfo = getMemberInfo();
     // memberInfo에 담기
     setMemberInfo(newMemberInfo);
-    // loding false
-    setLoding(false);
   }
   // session에 있는 회원정보 불러오기
   function getMemberInfo() {
@@ -140,27 +142,25 @@ const ItemListForm = () => {
   }
   // 회원의 좋아요 목록 LikesList에 담기
   async function inputLikesList() {
+    // 요청 시작
+    setLoding(true);
     try {
       // 서버에 요청하기
       const response = await getLikesList();
-      // loding === false
-      setLoding(false);
       // 요청 성공
+      setLoding(false);
       console.log("요청 성공");
       // likesList에 담기
       setLikesList(response.data.data);
     } catch(err) {
-      // loding === false
-      setLoding(false);
       // 요청 실패
+      setLoding(false);
       console.log("요청 실패");
       console.log(err);
     }
   }
   // 서버에서 회원의 좋아요 목록 불러오기
   async function getLikesList() {
-    // loding true
-    setLoding(true);
     return await axios.get(
       "http://localhost:8080/items/likes",
       {
@@ -171,18 +171,33 @@ const ItemListForm = () => {
   // 검색 데이터 바뀌면 data 변경한다
   function handleDataChange(e) {
     console.log(`${e.target.name} : ${e.target.value}`);
-    setData({
+    setData((data) => {
+      return {
       ...data,
       [e.target.name]: e.target.value
+      }
+    });
+  }
+  // page 데이터 바뀌면 data 변경한다
+  function handlePageInDataChange(e) {
+    console.log(`${e.target.name} : ${e.target.id}`);
+    setData((data) => {
+      return {
+      ...data,
+      [e.target.name]: e.target.id
+      }
     });
   }
   // typeNav 클릭했을 때 data의 dtype 속성 바꾸기
   function handleTypeNavClick(e) {
     // 데이터 초기화 후
     // type의 value는 선택된 아이디로 한다
-    setData({
-      ...defaultData,
-      dtype: e.target.id
+    setData((data) => {
+      return {
+      ...data,
+      dtype: e.target.id,
+      page: 0
+      }
     });
   }
   // 전체순위보기 클릭했을 때
@@ -197,7 +212,7 @@ const ItemListForm = () => {
 
   return (
     <>
-      <ItemListContext.Provider value={{data, handleDataChange, handleTypeNavClick, handleSearchClick, cardDatas, rankCardDatas, likesList}} >
+      <ItemListContext.Provider value={{data, handleDataChange, handlePageInDataChange, handleTypeNavClick, handleSearchClick, cardDatas, rankCardDatas, likesList}} >
         <Container>
           <ListGroup>
             <ListGroupItem>
@@ -232,7 +247,7 @@ const ItemListForm = () => {
           <Row>
             <Col>
               {/* footer - 페이지 버튼 */}
-              <PageButtonForm data={data} handleDataChange={handleDataChange} totalPages={cardDatas.totalPages}  />
+              <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
             </Col>
           </Row>
         </Container>

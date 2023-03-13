@@ -19,6 +19,7 @@ const ReplyBoxForm = ({replyFormList}) => {
   /// 상태 모음
   /// 상태 모음
   const [replies, setReplies] = useState(replyFormList);// 댓글 모음 상태
+  console.log(replies);
 
   //// 메서드 모음
   /// ReplyForm 에서 사용

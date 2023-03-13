@@ -12,7 +12,7 @@ import ReplyForm from './ReplyForm'
  * description : 댓글 리스트 component
  *               > props
  *                 - replyFormList : 댓글 목록 데이터
- *                 - replies: 댓글 목록 담은 상태
+ *                 - replies: 댓글 목록 담은 상태 -> 왜 못 읽어 올까?
  *                 - setReplies: replies 상태 변경 함수
  */
 const ReplyListForm = ({replyFormList, replies, setReplies, updateReply, deleteReply}) => {
@@ -33,8 +33,8 @@ const ReplyListForm = ({replyFormList, replies, setReplies, updateReply, deleteR
     // 댓글 한개씩은 폼을 만들기
   let view = "";// view를 담는 변수
   // replyFormList가 undefined가 아닐 때
-  if(replyFormList) {
-    view = replies.map((reply) => {
+  if(replyFormList.length !== 0) {
+    view = replyFormList.map((reply) => {
       return <ReplyForm key={reply.num} OnDeleteRepliesChange={handleDeleteRepliesChange} reply={reply} updateReply={updateReply} deleteReply={deleteReply} />;
     });
   }

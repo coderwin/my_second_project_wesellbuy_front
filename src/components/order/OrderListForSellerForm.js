@@ -1,9 +1,10 @@
 import axios from 'axios';
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import OrderSearchNavForSellerForm from './listForSeller/OrderSearchNavForSellerForm';
 import OrderListBoxForSellerForm from './listForSeller/OrderListBoxForSellerForm';
+import { CustomContext } from '../../App';
 
 /**
  * Order list for seller component
@@ -32,12 +33,14 @@ const OrderListForSellerForm = () => {
   const [loding, setLoding] = useState(false);// 요청처리 상태
   const [data, setData] = useState(defaultData);// 검색 데이터 상태
   const [listDatas, setListDatas] = useState(null);// 데이터 상태(목록을 위한)
+  const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
+
   /// 메서드 모음
   // 처음 시작
   useEffect(() => {
     // 주문 목록에 담기
     inputListDatas();
-  }, []);
+  }, [data]);
   // datas에 주문 목록에 담기
   async function inputListDatas() {
     // loding = true
@@ -49,9 +52,10 @@ const OrderListForSellerForm = () => {
       setLoding(false);
       // 요청 성공
       console.log("요청 성공");
-      console.log(data);
+      console.log(data.data.content);
+      setTotalPages(data.data.totalPages);
       // Listdatas에 담기
-      setListDatas(data);
+      setListDatas(data.data.content);
     } catch(err) {
       // loding false
       setLoding(false);
@@ -77,6 +81,16 @@ const OrderListForSellerForm = () => {
       [e.target.name]: e.target.value
     });
   }
+  // page 데이터 바뀌면 data 변경한다
+  function handlePageInDataChange(e) {
+    console.log(`${e.target.name} : ${e.target.id}`);
+    setData((data) => {
+      return {
+      ...data,
+      [e.target.name]: e.target.id
+      }
+    });
+  }
   // 찾기(Search) 버튼 클릭 했을 때
     // listDatas에 담아주기
   async function handleSearchClick() {
@@ -90,7 +104,7 @@ const OrderListForSellerForm = () => {
   if(loding) return(<div>준비중...</div>);
 
   return (
-    <OrderListForSellerContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas}}>
+    <OrderListForSellerContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas, totalPages}}>
       <Container>
         {/* 주문받은 상품 찾기 Nav */}
         <Row>
@@ -109,11 +123,11 @@ const OrderListForSellerForm = () => {
         {/* footer - 페이지 버튼 */}
         <Row>
           <Col>
-            <PageButtonForm data={data} handleDataChange={handleDataChange} totalPages={listDatas.totalPages} />
+            <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
           </Col>
         </Row>
         {/* 맨위로 이동하기 */}
-        <Row class="footerFixed mousePointer">
+        <Row className="footerFixed mousePointer">
           <Col>
             <a href="#top">맨위로</a>
           </Col>

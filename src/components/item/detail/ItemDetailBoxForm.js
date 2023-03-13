@@ -4,6 +4,7 @@ import { Button, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import ImagesBox from '../../common/image/ImagesBox';
 import { ItemDetailContext } from '../ItemDetailForm';
+import '../../../css/form.css';
 
 /**
  * Item detail 내용 component
@@ -266,7 +267,7 @@ const ItemDetailBoxForm = () => {
           </ListGroupItem>
         }
         {/* 설명 */}
-        <ListGroupItem>
+        <ListGroupItem className="originContent">
           {data.content}
         </ListGroupItem>
       </ListGroup>

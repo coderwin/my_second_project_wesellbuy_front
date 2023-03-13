@@ -50,7 +50,7 @@ const MemberDetailLeftNavForm = () => {
       <Nav.Link onClick={handleMyDetailClick}>나의 정보</Nav.Link>
       <Nav.Link onClick={handleMyOrderClick}>나의 주문</Nav.Link>
       <Nav.Link onClick={handleMySoldItemsClick}>판매된 상품</Nav.Link>
-      <Nav.Link onClick={handleMyCustomerServiceListClick}>나의 고객지원 요청</Nav.Link>
+      <Nav.Link onClick={handleMyCustomerServiceListClick}>나의 고객지원</Nav.Link>
       <Nav.Link onClick={handleNewItemClick}>상품등록</Nav.Link>
       <Nav.Link onClick={handleNewRecommendationClick}>추천합니다 작성</Nav.Link>
     </Nav>

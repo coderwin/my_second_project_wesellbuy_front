@@ -32,22 +32,20 @@ const ItemRankBoxForm = () => {
   }, []);
   // datas에 상품순위 목록에 담기
   async function inputDatas() {
-    // lodign true
+    // 요청 시작
     setLoding(true);
     try {
       // 서버에서 상품 목록 불러오기
-      const {data} = await getItemRankList()()
-      // loding false
-      setLoding(false);
+      const {data} = await getItemRankList();
       // 요청 성공
       console.log("요청 성공");
-      console.log(data);
-      // datas에 담기
-      setDatas(data);
-    } catch(err) {
-      // loding false
+      // 요청 끝
       setLoding(false);
+      // datas에 담기
+      setDatas(data.data);
+    } catch(err) {
       // 요청 실패
+      setLoding(false);
       console.log("요청 실패");
       console.log(err);
     }
@@ -71,6 +69,7 @@ const ItemRankBoxForm = () => {
   // tbody에 들어갈 데이터 생성
   // 데이터가 있으면 생성한다
   if(datas) {
+    console.log(typeof(datas));
     // 데이터 만들기
     view = datas.map((data) => {
       return (

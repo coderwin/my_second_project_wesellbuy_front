@@ -51,6 +51,7 @@ const ItemDetailForm = () => {
   /// 메서드 모음
   // 페이지 처음 시작
   useEffect(() => {
+    setLoding(true);
     // 상품 상세보기 데이터 불러오기
     inputData();
     // sessionStorage에서 사용자 정보 불러오기
@@ -61,6 +62,7 @@ const ItemDetailForm = () => {
       // inputData()에서 아래 로직을 실행하지만 -> 더 생각해보기
     // setSrcArr(createSrcArr(data.pictureForms));
     // console.log(JSON.stringify(srcArr));
+    setLoding(false);
   }, []);
 
   // 상품 상세정보 데이터에 담기
@@ -71,7 +73,6 @@ const ItemDetailForm = () => {
       const response = await getItemDetailInfo();
       // 요청 성공
       console.log("요청 성공");
-      setLoding(false);
       // data 데이터 담기
       setData({
         ...data,
@@ -83,7 +84,6 @@ const ItemDetailForm = () => {
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
-      setLoding(false);
       console.log(err);
       // errMsg 보여주기
       alert(err.response.data.errMsg);
@@ -96,7 +96,6 @@ const ItemDetailForm = () => {
       try {
         const response = await getLikesList();
         // 요청 성공
-        setLoding(false);
         console.log("요청 성공");
         // sessionStorage에 담기
         const key = "itemLikesList";
@@ -104,7 +103,6 @@ const ItemDetailForm = () => {
 
       } catch(err) {
         // 요청 실패
-        setLoding(false);
         console.log("요청 실패");
         console.log(err);
       }

@@ -27,16 +27,16 @@ const CustomerServiceListBoxForm = () => {
   // 고객지원글을 클릭했을 때
   function handleItemNameClick(e) {
     // id 불러오기
-    const id = e.target.id;// 상품번호 불러오기
+    const id = e.target.id;// 고객지원글 번호
     // 고객지원글 상세보기로 이동
-    navigation(`/recommendation/${id}`);
+    navigation(`/cs/${id}`);
   }
 
   /// view 모음
   let view = null;// 태그를 담아준다.
   // tbody에 들어갈 데이터 생성
   // 데이터가 있으면 생성한다
-  if(listDatas) {
+  if(listDatas.length !== 0) {
     // 데이터 만들기
     view = listDatas.map((data) => {
       return (
@@ -51,7 +51,7 @@ const CustomerServiceListBoxForm = () => {
   } else {
     view = (
     <tr>
-      <th>
+      <th colSpan={2}>
         작성한 글이 없습니다.
       </th>
     </tr>);

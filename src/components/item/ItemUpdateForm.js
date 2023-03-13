@@ -347,7 +347,8 @@ const ItemUpdateForm = () => {
               <Form.Control
                 type="text"
                 name="type"
-                value={changeTypeValueToName}
+                value={changeTypeValueToName()}
+                readOnly
               />
             </Col>
           </Form.Group>

@@ -20,12 +20,11 @@ const CardForm = ({data, likesList, memberInfo})=> {
 
   /// 변수 모음
   // memberId(판매자도 칸을 만들지 생각해보기)
-  const {num: boardNum, title, price, memberId, pictureForm} = data;
+  const {num: boardNum, name, price, memberId, pictureForm} = data;
   const navigation = useNavigate();// navigation
-
   /// 상태 모음
   const [likesState, setLikesState] = useState(false);// 좋아요 상태
-  const [content, setContent] = useState("");// 내용 상태
+  // const [content, setContent] = useState("");// 내용 상태
   const [src, setSrc] = useState("");// 이미지 src
 
   /// 메서드 모음
@@ -33,18 +32,20 @@ const CardForm = ({data, likesList, memberInfo})=> {
   useEffect(() => {
     //좋아요 하트 표시 하기
     expressItemLikes();
-    // 상품 설명은 30 글자로만
-    inputContent();
+    // // 상품 설명은 30 글자로만
+    // inputContent();
     // 이미지 src 담기
-    setSrc(createSrc(pictureForm.storedFileName));
+    if(pictureForm) {
+      setSrc(createSrc(pictureForm.storedFileName));
+    }
   }, []);
-  // 상품 설명은 30 글자로만
-  function inputContent() {
-    // 상품의 설명은 30 글자만 한다.
-    const newContent = data.content.slice(0, 30) + "...";
-    // content에 담기
-    setContent(newContent);
-  }
+  // // 상품 설명은 30 글자로만
+  // function inputContent() {
+  //   // 상품의 설명은 30 글자만 한다.
+  //   const newContent = data.content.slice(0, 30) + "...";
+  //   // content에 담기
+  //   setContent(newContent);
+  // }
   // 좋아요 표시 하기
   function expressItemLikes() {
     // likesList가 있으면 실행한다.
@@ -76,7 +77,6 @@ const CardForm = ({data, likesList, memberInfo})=> {
           const response = await deleteLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
-          console.log(response.data.data);
           // likesState = false로 바꾸기
           setLikesState(false);
         } catch(err) {
@@ -91,7 +91,6 @@ const CardForm = ({data, likesList, memberInfo})=> {
           const response = await saveLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
-          console.log(response.data.data);
           // likesState = true로 바꾸기
           setLikesState(true);
         } catch(err) {
@@ -127,7 +126,7 @@ const CardForm = ({data, likesList, memberInfo})=> {
   }
   // 이미지 src 만들기
   function createSrc(storedFileName) {
-    return `http://localhost:8080/items/images/${storedFileName}`;
+    return `http://localhost:8080/items/images/${storedFileName}`;  
   }
   // 상세보기 클릭했을 때
   // 상품 상세보기로 간다
@@ -146,11 +145,8 @@ const CardForm = ({data, likesList, memberInfo})=> {
       <Card.Img variant="top" src={src} />
       <Card.Body>
         <Card.Title>
-          {title}
+          {name}
         </Card.Title>
-        <Card.Text>
-          {content}
-        </Card.Text>
         <Card.Text>
           {price}<span>원</span>
         </Card.Text>

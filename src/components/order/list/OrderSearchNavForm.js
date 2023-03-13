@@ -38,7 +38,7 @@ const OrderSearchNavForm = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+        <Navbar.Brand href="#">Search</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav>
@@ -48,14 +48,15 @@ const OrderSearchNavForm = () => {
             <Form.Select
                 as={Col}
                 sm="5" 
-                name="orderStatus" 
+                name="orderStatus"
+                value={data.orderStatus} 
                 onChange={handleDataChange}
               >
                 {
                   orderStatusValues.map((value, i) => {
                     return (value === data.orderStatus ? 
-                    <option key={i} value={value} selected>{orderStatusNames[i]}</option> 
-                    : <option key={i} value={value}>{value}</option>);
+                    <option key={i} value={value}>{orderStatusNames[i]}</option> 
+                    : <option key={i} value={value}>{orderStatusNames[i]}</option>);
                   })
                 }
             </Form.Select>
@@ -65,14 +66,15 @@ const OrderSearchNavForm = () => {
             <Form.Select
                 as={Col}
                 sm="5" 
-                name="deliveryStatus" 
+                name="deliveryStatus"
+                value={data.deliveryStatus}
                 onChange={handleDataChange}
               >
                 {
                   deliveryStatusValues.map((value, i) => {
                     return (value === data.deliveryStatus ? 
-                    <option key={i} value={value} selected>{deliveryStatusNames[i]}</option> 
-                    : <option key={i} value={value}>{value}</option>);
+                    <option key={i} value={value}>{deliveryStatusNames[i]}</option> 
+                    : <option key={i} value={value}>{deliveryStatusNames[i]}</option>);
                   })
                 }
             </Form.Select>
@@ -81,7 +83,7 @@ const OrderSearchNavForm = () => {
             {/* 등록 날짜 search */}
             {/* 작동할 지 모르겟군 -> 확인해보자 */}
             <Form.Control
-              type="text"
+              type="date"
               datepicker-popup=""
               ng-model="dt"
               is-open="opened"
@@ -92,6 +94,7 @@ const OrderSearchNavForm = () => {
               aria-label="Search"
               name="createDate"
               value={data.createDate}
+              onChange={handleDataChange}
             />
             
             <Button type="button" onClick={handleSearchClick}>Search</Button>
@@ -104,13 +107,14 @@ const OrderSearchNavForm = () => {
               <Form.Select
                   as={Col}
                   sm="5" 
-                  name="size" 
+                  name="size"
+                  value={data.size}
                   onChange={handleDataChange}
                 >
                   {
                     sizeValues.map((value, i) => {
                       return (value === data.size ? 
-                      <option key={i} value={value} selected>{value}</option> 
+                      <option key={i} value={value}>{value}</option> 
                       : <option key={i} value={value}>{value}</option>);
                     })
                   }

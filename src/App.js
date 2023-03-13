@@ -62,10 +62,14 @@ function App() {
   function handleSessionFormChangeData(value) {
     setSessionForm(value);
   }
+  /// input type:date 현재 날짜로 만들기
+  function getCurrentDate() {
+    return new Date().toISOString().slice(0, 10);
+  }
 
   return (
     <>
-      <CustomContext.Provider value={{sessionForm, handleSessionFormDataInput, handleSessionFormChangeData}}>
+      <CustomContext.Provider value={{sessionForm, handleSessionFormDataInput, handleSessionFormChangeData, getCurrentDate}}>
         <Header />
 
         <Routes>

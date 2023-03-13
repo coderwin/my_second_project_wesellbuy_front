@@ -26,7 +26,7 @@ const RecommendationListBoxForm = () => {
   // cardDatas에 데이터가 있으면 실행된다
     // 모두 출력말고 한줄에 원하는 개수의 Card만 뿌려줄 수 없을까?
       // css로 조절해야하나?
-  if(cardDatas) {
+  if(cardDatas.length !== 0) {
     // 모든 cardData 뿌려주기
     view = cardDatas.map((cardData, i) => {
       return (
@@ -35,6 +35,8 @@ const RecommendationListBoxForm = () => {
         /> 
         );
     });
+  } else {
+    view = "추천글이 없습니다.";
   }
 
   return (

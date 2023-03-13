@@ -20,3 +20,7 @@
   bottom: 0;
   left: 0;
 }
+/* div에서 text(content) 원본 그대로 */
+.originContent {
+  white-space: pre;
+}

@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
+import { CustomContext } from '../../App';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import RecommendationListBoxForm from './list/RecommendationListBoxForm';
 import RecommendationSearchNavForm from './list/RecommendationSearchNavForm';
@@ -31,12 +32,14 @@ const RecommendationListForm = () => {
   const [loding, setLoding] = useState(false);// 요청처리 상태
   const [data, setData] = useState(defaultData);// 검색 데이터 상태
   const [cardDatas, setCardDatas] = useState([]);// 데이터 상태(Card를 위한)
+  const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
+
   /// 메서드 모음
   // 처음 시작
   useEffect(() => {
     // 상품목록 cardDatas에 담기
     inputCardDatas();
-  }, []);
+  }, [data]);
   // 찾기(Search) 버튼 클릭 했을 때
     // cardDatas 담아주기
   async function handleSearchClick() {
@@ -50,13 +53,14 @@ const RecommendationListForm = () => {
     try {
       // 서버에서 추천합니다글 목록 불러오기
       const {data} = await getRecommendationList()
+      // 요청 성공
       // loding false
       setLoding(false);
-      // 요청 성공
       console.log("요청 성공");
       console.log(data);
       // cardDatas에 담기
-      setCardDatas(data);
+      setCardDatas(data.data.content);
+      setTotalPages(data.data.totalPages);
     } catch(err) {
       // loding false
       setLoding(false);
@@ -84,6 +88,16 @@ const RecommendationListForm = () => {
       [e.target.name]: e.target.value
     });
   }
+  // page 데이터 바뀌면 data 변경한다
+  function handlePageInDataChange(e) {
+    console.log(`${e.target.name} : ${e.target.id}`);
+    setData((data) => {
+      return {
+      ...data,
+      [e.target.name]: e.target.id
+      }
+    });
+  }
 
   /// view 모음
 
@@ -108,7 +122,7 @@ const RecommendationListForm = () => {
           <Row>
             <Col>
               {/* footer - 페이지 버튼 */}
-              <PageButtonForm data={data} handleDataChange={handleDataChange} totalPages={cardDatas.totalPages} />
+              <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
             </Col>
           </Row>
         </Container>

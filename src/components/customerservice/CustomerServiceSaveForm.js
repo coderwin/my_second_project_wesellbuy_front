@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useState } from 'react'
-import { Button, Col, Row } from 'react-bootstrap';
-import { Form, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react'
+import { Button, Col, Row, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { CustomContext } from '../../App';
 
 /**
  * CustomerService save component
@@ -25,6 +26,7 @@ const CustomerServiceSaveForm = () => {
   }
   // navigation
   const navigation = useNavigate();
+
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청 처리 상태
@@ -125,11 +127,11 @@ const CustomerServiceSaveForm = () => {
   return (
     <>
       <Form onSubmit={handleSaveSubmit}>
-          {/* 신고된 회원 아이디 */}
-          <Form.Group
-          as={Row}
-          className="mb-3"
-          >
+        {/* 신고된 회원 아이디 */}
+        <Form.Group
+        as={Row}
+        className="mb-3"
+        >
           <Form.Label column sm="2">
             신고회원아이디 <span className='important'>*</span>
           </Form.Label>
@@ -145,39 +147,39 @@ const CustomerServiceSaveForm = () => {
           <Col className="error">
               {errMsgs.reportedId}
           </Col>
-          </Form.Group>
-          {/* 신고 이유 */}
-          <Form.Group
+        </Form.Group>
+        {/* 신고 이유 */}
+        <Form.Group
           as={Row}
           className="mb-3"
-          >
+        >
           <Form.Label>
               CONTENT <span className='important'>*</span>
           </Form.Label>
           <Col sm="12">
               <Form.Control
-              as="textarea"
-              name="content"
-              rows={10}
-              value={data.content}
-              placeholder="신고 이유를 설명해주세요"
-              onChange={handleDataChange}
+                as="textarea"
+                name="content"
+                rows={10}
+                value={data.content}
+                placeholder="신고 이유를 설명해주세요"
+                onChange={handleDataChange}
               />
           </Col>
           {/* 에러 메시지 */}
           <Col className="error">
               {errMsgs.content}
           </Col>
-          </Form.Group>
+        </Form.Group>
 
-          {/* 버튼 box */}
-          <Form.Group
+        {/* 버튼 box */}
+        <Form.Group
           as={Row}
           className="mb-3"
-          >
-            <Button type="submit">등록</Button>
-            <Button type="button" onClick={handleCancelClick}>취소</Button>
-          </Form.Group>
+        >
+          <Button type="submit">등록</Button>
+          <Button type="button" onClick={handleCancelClick}>취소</Button>
+        </Form.Group>
       </Form>
     </>
   )
