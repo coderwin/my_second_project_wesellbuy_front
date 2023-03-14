@@ -23,48 +23,89 @@ const ItemDetailBoxForm = () => {
 
   /// 상태 모음
   const [likesState, setLikesState] = useState(false);// 좋아요 선택 상태
-  const [likesNum, setLikesNum] = useState(data.likes);// 좋아요수 상태
-//  const [heartShape, setHeartShape] = useState("♥️");// 하트 모양 => 사용 안 함
-  /// 처음 시작
-  useEffect(() => {
-    //좋아요 하트 표시 하기
-    expressItemLikes();
-  }, []);
+  const [likesCount, setLikesCount] = useState(data.likes);// 좋아요수 상태
+  const [itemLikesList, setItemLikesList] = useState(null);// 회원 좋아요 목록 상태
+
+  console.log(itemLikesList);
+  
   /// 메서드 모음
+  // sessionStorage에서 itemLikesList 불러오기
+  // function getItemLikesList() {
+  //   const key = "itemLikesList";
+  //   const itemLikesList = JSON.parse(sessionStorage.getItem(key));
+  //   // setItemLikesList에 담기
+  //   setItemLikesList(itemLikesList);
+  // }
+  // /// 처음 시작
+  // useEffect(() => {
+  //   // memberInifo 있을 때만 반응한다.
+  //   if(memberInfo) {
+  //     console.log(memberInfo);
+  //     // sessionStroage에서  itemLikesList 불러오기
+  //     getItemLikesList();
+  //   } 
+  // }, [memberInfo]);
+  
+
   // 좋아요 표시 하기
   function expressItemLikes() {
-    // sessionStorage에서 itemLikesList 불러오기
-    const itemLikesList = getItemLikesList();
     // itemLikesList가 있으면 실행한다.
+    console.log("itemLikesList : " + likesState);
     if(itemLikesList) {
-      // likes 태그 불러오기 => 상태(LikesState)로 처리
-//     const likes = document.querySelector(".likes");
+      console.log("expressItemLikes 하하");
       // 순회하여 해당 상품의 번호가 있으면 생깔있는 하트표시하고
       for(let i = 0; i < itemLikesList.length; i++) {
         // 상품번호와 회원의 좋아요리스트에 같은 번호 있으면 
         // 색깔 하트를 뿌려준다.
-        if(boardNum === itemLikesList[i]) {
-//          // 색깔 하트를 출력하기 => 상태(LikesState)로 처리
-//          // likes.innerHtml = "💓";
+        if(boardNum === Number(itemLikesList[i])) {
           // likesState = true로 바꾼다
           setLikesState(true);
+          console.log("itemLikesList : " + likesState);
+
           return;
         }
       }
-      // 상품번호와 회원의 좋아요리스트에 같은 번호 없으면
-      // 색깔없는 하트를 뿌려준다. => 상태(LikesState)로 처리
-//      likes.innerHTML = ":hearts:♥️";
+      console.log("itemLikesList : " + likesState);
       // likesState = false로 바꾼다
       setLikesState(false);
     }
   }
-  // sessionStorage에서 itemLikesList 불러오기
-  function getItemLikesList() {
-    const key = "itemLikesList";
-    return JSON.parse(sessionStorage.getItem(key));
+  // 하트 표시하기
+  useEffect(() => {
+    //좋아요 하트 표시 하기
+    expressItemLikes();
+  }, []);
+  
+  // 서버에서 좋아요 리스트 불러오기
+  async function getLikesList() {
+    return await axios.get(
+      `http://localhost:8080/items/likes`,
+      {
+        withCredentials: true
+      }
+    );
   }
+  // setItemLikesList에 담기
+  async function addItemLikesList() {
+    try {
+      const response = await getLikesList();
+      // 요청 성공
+      console.log("요청 성공");
+      setItemLikesList(response.data.data);
+    } catch(err) {
+      // 요청 실패
+      console.log("요청 실패");
+      console.log(err);
+    }
+  }
+  // render 될 때 시작
+  useEffect(() => {
+    addItemLikesList();
+  }, [likesState]);
+
+
   // 좋아요 하트를 클릭했을 때 삭제하기
-  async function deleteLikes(boardNum) {
+  async function deleteLikes(boardNum, likesNum) {
     // 서버에 좋아요 삭제 요청하기
     return await axios.delete(
       `http://localhost:8080/items/${boardNum}/likes`,
@@ -75,9 +116,10 @@ const ItemDetailBoxForm = () => {
   }
   // 좋아요 하트를 클릭했을 때 등록하기
   async function saveLikes(boardNum) {
-    // 서버에 좋아요 삭제 요청하기
+    // 서버에 좋아요 등록 요청하기
     return await axios.post(
       `http://localhost:8080/items/${boardNum}/likes`,
+      {},
       {
         withCredentials: true
       }
@@ -95,12 +137,11 @@ const ItemDetailBoxForm = () => {
           const response = await deleteLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
-          console.log(response.data.data);
           // likesState = false로 바꾸기
           setLikesState(false);
-          // 좋아요수 1 증가시키기
-          setLikesNum((likesNum) => {
-            return likesNum + 1;
+          // 좋아요수 1 감소시키기
+          setLikesCount((likesCount) => {
+            return likesCount - 1;
           });
         } catch(err) {
           // 요청 실패
@@ -114,12 +155,11 @@ const ItemDetailBoxForm = () => {
           const response = await saveLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
-          console.log(response.data.data);
           // likesState = true로 바꾸기
           setLikesState(true);
-          // 좋아요수 1 감소시키기
-          setLikesNum((likesNum) => {
-            return likesNum - 1; 
+          // 좋아요수 1 증가시키기
+          setLikesCount((likesCount) => {
+            return likesCount + 1; 
           });
         } catch(err) {
           // 요청 실패
@@ -132,11 +172,23 @@ const ItemDetailBoxForm = () => {
       alert("로그인 후 이용해주세요");
     }
   }
+
   // 수정 버튼 클릭했을 때
   function handleUpdateClick() {
     // 수정 form으로 이동한다.
     navigation(`/item/${boardNum}/update`);
   }
+  // 서버로 삭제요청 한다
+  async function deleteItem() {
+    
+    return await axios.delete(
+      `http://localhost:8080/items/${boardNum}`,
+      {
+        withCredentials: true
+      }
+    );
+  }
+
   // 삭제 버튼 클릭했을 때
   async function handleDeleteClick() {
     // 정말 삭제할 건지 물어보기
@@ -152,6 +204,8 @@ const ItemDetailBoxForm = () => {
         setLoding(false);
         console.log("요청 성공");
         alert(response.data.data);
+        // "/"로 돌아간다
+        navigation("/");
       } catch(err) {
         // 요청 실패
         setLoding(false);
@@ -160,17 +214,6 @@ const ItemDetailBoxForm = () => {
       }
     }
   }
-  // 서버로 삭제요청 한다
-  async function deleteItem() {
-    
-    return await axios.delete(
-      `http://localhost:8080/items/${boardNum}`,
-      {
-        withCredentials: true
-      }
-    );
-  }
-
 
   /// view 모음
   // 수정/삭제 버튼 만들기
@@ -222,7 +265,7 @@ const ItemDetailBoxForm = () => {
                 {likesState ? "💓" : "♥️"}
               </span>
             </Col>
-            <Col md="2">{likesNum}</Col>
+            <Col md="2">{likesCount}</Col>
           </Row>
         </ListGroupItem>
         {/* 조회수 */}

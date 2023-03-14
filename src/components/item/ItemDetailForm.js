@@ -49,30 +49,17 @@ const ItemDetailForm = () => {
   const [memberInfo, setMemberInfo] = useState(null);// 로그인 사용자 정보 상태
 
   /// 메서드 모음
-  // 페이지 처음 시작
-  useEffect(() => {
-    setLoding(true);
-    // 상품 상세보기 데이터 불러오기
-    inputData();
-    // sessionStorage에서 사용자 정보 불러오기
-    getMemberInfo();
-    // 상품 좋아요 목록 불러와서 sessionStorage에 담기
-    inputLikesListInSessionStorage();
-    // srcArr 만들기 => await 하지 않고 바로 실행 안 될까? -> 바로 실행된다
-      // inputData()에서 아래 로직을 실행하지만 -> 더 생각해보기
-    // setSrcArr(createSrcArr(data.pictureForms));
-    // console.log(JSON.stringify(srcArr));
-    setLoding(false);
-  }, []);
 
   // 상품 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
   async function inputData() {
+    setLoding(true);
     try {
       // 상품 detail 불러오기
       const response = await getItemDetailInfo();
       // 요청 성공
       console.log("요청 성공");
+      setLoding(false);
       // data 데이터 담기
       setData({
         ...data,
@@ -83,31 +70,14 @@ const ItemDetailForm = () => {
       console.log(JSON.stringify(srcArr));// 여기까지는 바로 실행된다.
     } catch(err) {
       // 요청 실패
+      setLoding(false);
       console.log("요청 실패");
       console.log(err);
       // errMsg 보여주기
       alert(err.response.data.errMsg);
     }
   }
-  // sessionStorage에 상품좋아요목록 담기
-  async function inputLikesListInSessionStorage() {
-    // memberInfo가 존재하면 실행한다.
-    if(memberInfo) {
-      try {
-        const response = await getLikesList();
-        // 요청 성공
-        console.log("요청 성공");
-        // sessionStorage에 담기
-        const key = "itemLikesList";
-        sessionStorage.setImte("itemLikesList", JSON.stringify(response.data.data));
 
-      } catch(err) {
-        // 요청 실패
-        console.log("요청 실패");
-        console.log(err);
-      }
-    }
-  }
   // sessionStorage에서 사용자 정보 불러오기
   function getMemberInfo() {
     // sessionStorage에 key="LOGIN_MEMBER" 있는지 확인
@@ -122,17 +92,7 @@ const ItemDetailForm = () => {
       setMemberInfo(memberData);
     }
   }
-  // 서버에서 회원의 좋아요 목록 불러오기
-  async function getLikesList() {
-    // loding true
-    setLoding(true);
-    return await axios.get(
-      "http://localhost:8080/items/likes",
-      {
-        withCredentials: true
-      }
-    );
-  }
+
   // 이미지 srcArr 만들기
   function createSrcArr(pictureForms) {
     // srcArr 배열 생성
@@ -155,11 +115,20 @@ const ItemDetailForm = () => {
     setLoding(true);
     // 서버에 item detail 요청하기
     // 누구든 볼수 있음 - 인증 불필요
-    // 그래도 CORS 정책을 따라야 할 듯
     return await axios.get(
       `http://localhost:8080/items/${itemNum}`
     );
   }
+
+  // 페이지 처음 시작
+  useEffect(() => {
+    // 상품 상세보기 데이터 불러오기
+    inputData();
+  }, []);
+  useEffect(() => {
+    // sessionStorage에서 사용자 정보 불러오기
+    getMemberInfo();
+  }, []);
 
   // loding true -> 작업 준비중 view
   if(loding) return (<div>준비중...</div>);

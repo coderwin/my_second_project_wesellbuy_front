@@ -87,12 +87,11 @@ const CardWithHeaderForm = ({data, likesList, memberInfo})=> {
         }
       // likesState === false
       } else {
-        // 서버에 좋아요 delete를 요청한다.
+        // 서버에 좋아요 save를 요청한다.
         try {
           const response = await saveLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
-          console.log(response.data.data);
           // likesState = true로 바꾸기
           setLikesState(true);
         } catch(err) {
@@ -118,9 +117,10 @@ const CardWithHeaderForm = ({data, likesList, memberInfo})=> {
   }
   // 좋아요 하트를 클릭했을 때 등록하기
   async function saveLikes(boardNum) {
-    // 서버에 좋아요 삭제 요청하기
+    // 서버에 좋아요 등록 요청하기
     return await axios.post(
       `http://localhost:8080/items/${boardNum}/likes`,
+      {},
       {
         withCredentials: true
       }

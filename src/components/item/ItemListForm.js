@@ -45,32 +45,20 @@ const ItemListForm = () => {
   const [likesList, setLikesList] = useState([]);// 회원의 상품좋아요 상태
   const [memberInfo, setMemberInfo] = useState(null);// 회원정보 상태
   const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
-  /// 메서드 모음
-  // 처음 시작
-  useEffect(() => {
-    // 서버에서 상품 랭크 불러오기
-    inputRankCardDatas();
-    // 상품목록 cardDatas에 담기
-    inputCardDatas();
-    // sessionStorage에 있는 회원정보 불러오기
-    inputMemberInfo();
-    // 상품 좋아요 likesList에 담기
-    if(memberInfo) {
-      inputLikesList();
-    }
-    setLoding(false);
-  }, []);
-
-  useEffect(() => {
-    // 상품목록 cardDatas에 담기
-    inputCardDatas();
-  }, [data]);
   
+  /// 메서드 모음
+
   // 찾기(Search) 버튼 클릭 했을 때
   // cardDatas 담아주기
   async function handleSearchClick() {
     // 상품목록 cardDatas에 담기
     await inputCardDatas();
+  }
+  // 서버에서 상품 랭크(순위) 불러오기
+  async function getItemRankList() {
+    return await axios.get(
+      "http://localhost:8080/items/rank/v1"
+    );
   }
   // rankCardDatas에 상품목록 담기
   async function inputRankCardDatas() {
@@ -91,10 +79,20 @@ const ItemListForm = () => {
       console.log(err);
     }
   }
-  // 서버에서 상품 랭크(순위) 불러오기
-  async function getItemRankList() {
+  // 처음 시작
+  useEffect(() => {
+    // 서버에서 상품 랭크 불러오기
+    inputRankCardDatas();
+  },[]);
+  
+  // 서버에서 상품 목록 불러오기
+    // data는 params
+  async function getItemList() {
     return await axios.get(
-      "http://localhost:8080/items/rank/v1"
+      "http://localhost:8080/items",
+      {
+        params: data
+      }
     );
   }
   // cardDatas에 상품목록 담기
@@ -117,15 +115,17 @@ const ItemListForm = () => {
       console.log(err);
     }
   }
-  // 서버에서 상품 목록 불러오기
-    // data는 params
-  async function getItemList() {
-    return await axios.get(
-      "http://localhost:8080/items",
-      {
-        params: data
-      }
-    );
+  // 처음 시작
+  useEffect(() => {
+    // 상품목록 cardDatas에 담기
+    inputCardDatas();
+  }, [data]);
+  
+  // session에 있는 회원정보 불러오기
+  function getMemberInfo() {
+    // sessionStorage에서 sessionStorage불러오기
+    const key = "LOGIN_MEMBER";
+    return JSON.parse(sessionStorage.getItem(key));
   }
   // sessionStorage에 있는 회원정보 불러오기
   function inputMemberInfo() {
@@ -134,11 +134,28 @@ const ItemListForm = () => {
     // memberInfo에 담기
     setMemberInfo(newMemberInfo);
   }
-  // session에 있는 회원정보 불러오기
-  function getMemberInfo() {
-    // sessionStorage에서 sessionStorage불러오기
-    const key = "LOGIN_MEMBER";
-    return JSON.parse(sessionStorage.getItem(key));
+  // 처음 시작
+  useEffect(() => {
+    // sessionStorage에 있는 회원정보 불러오기
+    inputMemberInfo();
+  }, []);
+  
+  // 서버에서 회원의 좋아요 목록 불러오기
+  async function getLikesList() {
+    return await axios.get(
+      "http://localhost:8080/items/likes",
+      {
+        withCredentials: true
+      }
+    );
+  }
+  // sessionStorage에 likesList 담기
+  function inputLikesListInSessioStorage(likesList) {
+    // string으로 만들기
+    const strLikesList = JSON.stringify(likesList);
+    // sessionStorage에 저장하기
+    const key = "itemLikesList";
+    sessionStorage.setItem(key, strLikesList);
   }
   // 회원의 좋아요 목록 LikesList에 담기
   async function inputLikesList() {
@@ -152,6 +169,9 @@ const ItemListForm = () => {
       console.log("요청 성공");
       // likesList에 담기
       setLikesList(response.data.data);
+      // sessionStorage에 담기
+      inputLikesListInSessioStorage(response.data.data);
+      console.log(response);
     } catch(err) {
       // 요청 실패
       setLoding(false);
@@ -159,15 +179,15 @@ const ItemListForm = () => {
       console.log(err);
     }
   }
-  // 서버에서 회원의 좋아요 목록 불러오기
-  async function getLikesList() {
-    return await axios.get(
-      "http://localhost:8080/items/likes",
-      {
-        withCredentials: true
-      }
-    );
-  }
+  // 처음 시작
+  useEffect(() => {
+    // 상품 좋아요 likesList에 담기
+    if(memberInfo) {
+      inputLikesList();
+    }
+  }, [memberInfo]);
+  
+  
   // 검색 데이터 바뀌면 data 변경한다
   function handleDataChange(e) {
     console.log(`${e.target.name} : ${e.target.value}`);
@@ -212,7 +232,7 @@ const ItemListForm = () => {
 
   return (
     <>
-      <ItemListContext.Provider value={{data, handleDataChange, handlePageInDataChange, handleTypeNavClick, handleSearchClick, cardDatas, rankCardDatas, likesList}} >
+      <ItemListContext.Provider value={{data, handleDataChange, handlePageInDataChange, handleTypeNavClick, memberInfo, handleSearchClick, cardDatas, rankCardDatas, likesList}} >
         <Container>
           <ListGroup>
             <ListGroupItem>

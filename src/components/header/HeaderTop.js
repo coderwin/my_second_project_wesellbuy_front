@@ -37,8 +37,11 @@ const HeaderTop = () => {
     // 상태 모음
     // 로딩/작업진행중 상태
     const [loding, setLoding] = useState(false); 
-    // 외부에서 필요한 변수, 함수, 상태 불러오기
-    const {sessionForm, handleSessionFormChangeData} = useContext(CustomContext);
+    const [memberInfo, setMemberInfo] = useState(null);
+    // 외부 변수, 상태, 메서드 불러오기
+    const {sessionForm} = useContext(CustomContext);
+
+    /// 메서드 모음
 
     // 로그아웃 하기
     const handleLogoutClick = async () => {
@@ -54,7 +57,8 @@ const HeaderTop = () => {
             // 홈으로
             navigation("/");
             // sessionForm 값 초기화하기
-            handleSessionFormChangeData(null);
+            setMemberInfo(null);
+            
         } catch(error) {
             console.log(error);
             const errMsg = "로그아웃 처리중 에러 발생";
@@ -62,23 +66,25 @@ const HeaderTop = () => {
         }
     }
 
-    
+    // 처음 시작
+    // 왜 로그인 유지되는지는 모르겠다
+    useEffect(() => {
+        const getMemberInfo = () => {
+            const key = "LOGIN_MEMBER";
+            const memberInfo = JSON.parse(sessionStorage.getItem(key));
+            // setMemberInfo에 담기
+            setMemberInfo(memberInfo);
+        }
+        getMemberInfo();
+    }, [sessionForm]);
 
-    // sessionFrom에 따라 로그인 part가 render 된다 -> 사용 안 함(App.js에서 처리 후부터)
-    // useEffect(() => {
-    //     // session에서 로그인한 사용자 데이터 불러오기
-    //     const sessionId = "LOGIN_MEMBER";
-    //     // 회원정보 가져오기
-    //     const memberInfo = JSON.parse(sessionStorage.getItem(sessionId));
-    //     // sessionForm에 넣어주기
-    //     setSessionForm(memberInfo);    
-    // }, []);
+    /// view 모음
 
     // 테그 담는 box
     let resultBox = null;
     // 로그인 상태에 따라 테그 바꾸기
     // 비로그인
-    if(!sessionForm) {
+    if(!memberInfo) {
         resultBox = (
             <Nav className="justify-content-end" activeKey="/home">
                 <Nav.Item>
@@ -94,7 +100,7 @@ const HeaderTop = () => {
         resultBox = (
             <Nav className="justify-content-end" activeKey="/home">
                 <Nav.Item>
-                    <Nav.Link>{sessionForm.id}님 반갑습니다</Nav.Link>
+                    <Nav.Link>{memberInfo.id}님 반갑습니다</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link onClick={handleMydetailClick}>내정보</Nav.Link>
@@ -114,7 +120,8 @@ const HeaderTop = () => {
     console.log("로그인 상태")
     
     // 작업 진행 상태 일 때
-    if(loding) return <div>요청 처리 중...</div>
+    if(loding) return <div>요청 처리 중...</div>;
+
     return (
         <>
             {resultBox}

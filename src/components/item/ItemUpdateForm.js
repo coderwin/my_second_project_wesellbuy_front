@@ -57,7 +57,9 @@ const ItemUpdateForm = () => {
   const [error, setError] = useState(null);// 에러 상태
   const [errMsgs, setErrMsgs] = useState(defaultErrMsgs); // 에러 메시지 상태
   const [files, setFiles] = useState(null);// 파일들 상태
-  const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열 
+  const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열
+  const [pictureNums, setPictureNums] = useState([]);// 이미지번호 모아두는 배열 상태
+
 
   /// 메서드 모음
   // 페이지 처음 시작
@@ -65,6 +67,8 @@ const ItemUpdateForm = () => {
     // 상품 상세보기 데이터 불러오기
     inputData();
   }, []);
+
+  console.log(data);
 
   // 상품 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
@@ -88,6 +92,10 @@ const ItemUpdateForm = () => {
         company: response.data.data.company,
         pictureForms: response.data.data.pictureForms
       });
+      // srcArr 만들기
+      createSrcArr(response.data.data.pictureForms);
+      // pictureNums 만들기
+      createPictureNums(response.data.data.pictureForms);
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
@@ -112,6 +120,7 @@ const ItemUpdateForm = () => {
       `http://localhost:8080/items/${boardNum}`
     );
   }
+  
   // input에 데이터 바뀌면 data 데이터 변경한다
   function handleDataChange(e) {
     setData({
@@ -277,13 +286,22 @@ const ItemUpdateForm = () => {
         // 요청 성공
         console.log("요청 성공");
         alert(response.data.data);
-        // pictureForms의 이미지를 지운다
-        setData({
-          ...data,
-          pictureForms: data.pictureForms.filter((picture) => {
-            return picture.num !== e.target.id;
-          })
+        // 새로운 pictureForms
+        const newPictureForms = data.pictureForms.filter((picture) => {
+          return picture.num !== Number(e.target.id);
         });
+        console.log(newPictureForms);
+        // pictureForms의 이미지를 지운다
+        setData((data) => {
+            return {
+            ...data,
+            pictureForms: newPictureForms
+            }
+        });
+        // srcArr 만들기
+        createSrcArr(newPictureForms);
+        // pictureNums 만들기
+        createPictureNums(newPictureForms);
       } catch(err) {
         console.log("요청 실패");
         alert(err.response.data.errMsg);
@@ -300,6 +318,39 @@ const ItemUpdateForm = () => {
         withCredentials: true
       }
     );
+  }
+  // 이미지 srcArr 만들기
+  function createSrcArr(pictureForms) {
+    // newSrcArr 생성
+    let newSrcArr = "";
+    // pictureForms를 순회하면서 src 만들기
+    if(pictureForms) {
+      newSrcArr = pictureForms.map((pictureForm) => {
+        return createSrc(pictureForm.storedFileName);
+      });
+    }
+    console.log(newSrcArr);
+    // srcArr상태에 담기
+    setSrcArr([
+      ...newSrcArr
+    ]);
+  }
+  // 이미지 pictureNums 만들기
+  function createPictureNums(pictureForms) {
+    // newPictureNums 생성
+    let newPictureNums = "";
+    // pictureForms 순회화면서 pictureNum 만들기
+    if(pictureForms) {
+      newPictureNums = pictureForms.map((pictureForm) => {
+        return pictureForm.num;
+      });
+    }
+    console.log(newPictureNums);
+    // pictureNums에 담기
+    setPictureNums([
+      ...pictureNums,
+      ...newPictureNums
+    ]);
   }
 
   /// view
@@ -458,7 +509,14 @@ const ItemUpdateForm = () => {
           </Form.Group>
         </Form>
         {/* 기존 이미지 모음 */}
-        <ImagesBoxSpread pictureForms={data.pictureForms} createSrc={createSrc} OnDeleteImageClick={handleDeleteImageClick} />
+        <ImagesBoxSpread 
+          data={data} 
+          pictureForms={data.pictureForms} 
+          createSrc={createSrc} 
+          OnDeleteImageClick={handleDeleteImageClick}
+          srcArr={srcArr}
+          pictureNums={pictureNums}
+          />
       </ItemUpdateContext.Provider>
     </>
   )

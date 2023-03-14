@@ -116,9 +116,10 @@ const CardForm = ({data, likesList, memberInfo})=> {
   }
   // 좋아요 하트를 클릭했을 때 등록하기
   async function saveLikes(boardNum) {
-    // 서버에 좋아요 삭제 요청하기
+    // 서버에 좋아요 등록 요청하기
     return await axios.post(
       `http://localhost:8080/items/${boardNum}/likes`,
+      {},
       {
         withCredentials: true
       }

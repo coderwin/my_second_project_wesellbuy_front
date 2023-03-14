@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import {Route, Routes} from 'react-router-dom';
 import Header from './pages/Header';
 import Footer from './pages/Footer';
@@ -66,6 +66,7 @@ function App() {
   function getCurrentDate() {
     return new Date().toISOString().slice(0, 10);
   }
+
 
   return (
     <>

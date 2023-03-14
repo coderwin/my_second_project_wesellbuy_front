@@ -51,14 +51,7 @@ const ItemOrderBoxForm = () => {
       price: data.price,
       itemNum: data.num
     });
-  }, [data]);
-  // 장바구니에 주문정보 담기 => window가 알게 하기
-  // useEffect(() => {
-  //   // JSON string으로 변환하기
-  //   const jsonShopingBasket = JSON.stringify(shopingBasket);
-  //   // LocalStorage에 저장하기
-  //   localStorage.setItem("shopingBasket", jsonShopingBasket);
-  // }, [shopingBasket]);
+  }, []);
 
   // input 태그 데이터 바뀔 때 orderData 속성값 바꾸기
   function handleOrderDataChange(e) {
@@ -68,43 +61,6 @@ const ItemOrderBoxForm = () => {
       [e.target.name]: e.target.value
     });
   }
-  // localStorage에 주문정보 저장하기
-  function handleInputShopingBasketSubmit(e) {
-    // onSubmig 이벤트 멈추기
-    e.preventDefault();
-    // 주문정보를 LocalStorage에 담기
-    saveLocalStorage();
-    // 장바구니 담기 완료 alert
-    alert("장바구니 담기 완료");
-  }
-  
-
-  // 주문정보를 LocalStorage에 담기 V2 => 다음에 해보자
-  // function saveLocalStorageV2() {
-  //   // data에 id(주문번호) 입력  
-  //   const newOrderData = {...orderData, id: shopingBasket.length};
-  //   // 배열에 orderData 넣기
-  //   setShopingBasket([
-  //     ...shopingBasket,
-  //     newOrderData
-  //   ]);
-  // }
-
-  // 주문정보를 LocalStorage에 담기
-  function saveLocalStorage() {
-    // JSON parse 해준다.
-    const shopingBasket = callShopingBasket();
-    // data에 id(주문번호) 입력  
-    const newOrderData = {...orderData, id: shopingBasket.length};
-    // 배열에 orderData 넣기 - 최신순
-    shopingBasket.unshift(newOrderData);
-    // JSON string으로 변환하기
-    const jsonShopingBasket = JSON.stringify(shopingBasket);
-    // LocalStorage에 저장하기
-    localStorage.setItem("shopingBasket", jsonShopingBasket);
-  }
-
-  // 장바구니(shopingBasket) 생성하기
 
   // LocalStorage에 shopingBasket 불러오기
   function callShopingBasket() {
@@ -124,6 +80,30 @@ const ItemOrderBoxForm = () => {
     console.log("create shopingBasket : " + shopingBasket.length);
 
     return shopingBasket;
+  }
+
+  // 주문정보를 LocalStorage에 담기
+  function saveLocalStorage() {
+    // JSON parse 해준다.
+    const shopingBasket = callShopingBasket();
+    // data에 id(주문번호) 입력  
+    const newOrderData = {...orderData, id: shopingBasket.length};
+    // 배열에 orderData 넣기 - 최신순
+    shopingBasket.unshift(newOrderData);
+    // JSON string으로 변환하기
+    const jsonShopingBasket = JSON.stringify(shopingBasket);
+    // LocalStorage에 저장하기
+    localStorage.setItem("shopingBasket", jsonShopingBasket);
+  }
+
+  // localStorage에 주문정보 저장하기
+  function handleInputShopingBasketSubmit(e) {
+    // onSubmig 이벤트 멈추기
+    e.preventDefault();
+    // 주문정보를 LocalStorage에 담기
+    saveLocalStorage();
+    // 장바구니 담기 완료 alert
+    alert("장바구니 담기 완료");
   }
 
   // 주문 클릭했을 때

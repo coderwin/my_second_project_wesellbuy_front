@@ -72,8 +72,10 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
         // 요청 성공
         console.log("삭제 성공");
         alert(response.data.data);
-        // replyForms 데이터 filter 해주기
-        OnDeleteRepliesChange(data.num);
+        // mode 변경하기
+        setMode("delete");
+        // // replyForms 데이터 filter 해주기 -> 사용 안 함
+        // OnDeleteRepliesChange(data.num);
       } catch(err) {
         // 요청 실패
         alert(err.response.data.errMsg);
@@ -182,6 +184,8 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
     view = readView;
   } else if(mode === "update") {
     view = updateView;
+  } else if(mode === "delete") {
+    view = "";
   }
 
   return (

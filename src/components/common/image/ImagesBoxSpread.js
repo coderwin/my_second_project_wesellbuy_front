@@ -13,53 +13,9 @@ import {Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
  *                 - createSrc : img 태그의 src 속성의 값을 만들어주는 메서드 prop
  *                 - OnDeleteImageClick: image 삭제 메서드 prop
  */
-const ImagesBoxSpread = ({pictureForms, createSrc, OnDeleteImageClick}) => {
-
-  /// 변수 모음
-  /// 상태 모음
-  const [srcArr, setSrcArr] = useState([]);// 이미지 src들 모아두는 배열 상태
-  const [pictureNums, setPictureNums] = useState([]);// 이미지번호 모아두는 배열 상태
+const ImagesBoxSpread = ({pictureForms, createSrc, OnDeleteImageClick, pictureNums, srcArr}) => {
 
   /// 메서드 모음
-  // 페이지 처음
-  useEffect(() => {
-    // srcArr 만들기
-    createSrcArr(pictureForms);
-    // pictureNums 만들기
-    createPictureNums(pictureForms);
-  }, []);
-  // 이미지 srcArr 만들기
-  function createSrcArr(pictureForms) {
-    // newSrcArr 생성
-    let newSrcArr = "";
-    // pictureForms를 순회하면서 src 만들기
-    if(pictureForms) {
-      newSrcArr = pictureForms.map((pictureForm) => {
-        return createSrc(pictureForm.storedFileName);
-      });
-    }
-    // srcArr상태에 담기
-    setSrcArr([
-      ...srcArr,
-      ...newSrcArr
-    ]);
-  }
-  // 이미지 pictureNums 만들기
-  function createPictureNums(pictureForms) {
-    // newPictureNums 생성
-    let newPictureNums = "";
-    // pictureForms 순회화면서 pictureNum 만들기
-    if(pictureForms) {
-      newPictureNums = pictureForms.map((pictureForm) => {
-        return pictureForm.num;
-      });
-    }
-    // pictureNums에 담기
-    setPictureNums([
-      ...pictureNums,
-      ...newPictureNums
-    ]);
-  }
 
   /// view 만들기
   let imageForms = null; // 모든 imageForm 
