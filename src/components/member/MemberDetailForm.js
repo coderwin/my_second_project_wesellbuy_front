@@ -59,13 +59,13 @@ const MemberDetailForm = () => {
   }
   // 회원정보 data에 담기
   async function inputData() {
+    setLoding(true);
     try {
       // 서버로부터 데이터 불러오기
       const result = await getMemberDetailInfo();
       // 데이터 다 가져왔으니 loding false로 처리
       setLoding(false);
       // data에 데이터 담기
-      console.log(`memberData : ${result.data.data}`);
       setData(result.data.data);
 
     } catch(error) {
@@ -162,10 +162,9 @@ const MemberDetailForm = () => {
     return countryName;
   }
 
+  /// 처음 시작
   // 내정보 들어올 때 처음으로 시작
   useEffect(() => {
-    // loding true
-    setLoding(true);
     // 회원정보 서버에서 불러오기 => async await 안 붙여도 될까?
     inputData();
   }, []);

@@ -27,7 +27,6 @@ const CustomerServiceSaveForm = () => {
   // navigation
   const navigation = useNavigate();
 
-
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청 처리 상태
   const [data, setData] = useState(defaultData);// 서버에 보내는 데이터 상태
@@ -37,7 +36,6 @@ const CustomerServiceSaveForm = () => {
   /// 메서드 모음
   // input에 데이터 바뀌면 data 데이터 변경한다
   function handleDataChange(e) {
-    console.log(`${e.target.name} : ${e.target.value}`);
     setData({
       ...data,
       [e.target.name]: e.target.value
@@ -62,7 +60,7 @@ const CustomerServiceSaveForm = () => {
       // boardNum 가져오기
       const {boardNum} = response.data;
       // ItemDetailForm으로 이동하기 - 나중에 작동시키기
-      // navigation(`/cs/${boardNum}`);
+      navigation(`/cs/list`);
     } catch(err) {
       // 요청 실패
       console.log("저장 실패");
@@ -114,12 +112,11 @@ const CustomerServiceSaveForm = () => {
   }
   // 취소 클릭
   function handleCancelClick() {
-    // "/cs/list"으로(고객지원글 목록) 이동한다
-    navigation("/cs/list");
+    // "/"으로(홈으로) 이동한다
+    navigation("/");
   }
 
   /// view
-
 
   // 서버로 데이터 요청 할 때 view
   if(loding) return (<div>요청 처리 중...</div>);

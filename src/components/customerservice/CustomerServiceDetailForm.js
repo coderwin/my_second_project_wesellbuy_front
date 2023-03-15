@@ -25,8 +25,6 @@ const CustomerServiceDetailForm = () => {
     createDate: "", // 작성 날짜
     replyList: "" // 댓글 모음
   }
-  // navigation
-  const navigation = useNavigate();
   // URI의 파라미터 얻어오기
     // num을 itemNum으로 교체
   const {num: boardNum} = useParams();
@@ -37,17 +35,11 @@ const CustomerServiceDetailForm = () => {
   const [data, setData] = useState(defaultData);// 데이터 상태
   const [memberInfo, setMemberInfo] = useState(null);// 로그인 사용자 정보 상태
 
+  
   /// 메서드 모음
-  // 페이지 처음 시작
-  useEffect(() => {
-    // 고객지원글 상세보기 데이터 불러오기
-    inputData();
-    // sessionStorage에서 사용자 정보 불러오기
-    getMemberInfo();
-  }, []);
-
   // 고객지원글 상세정보 데이터에 담기
   async function inputData() {
+    setLoding(true);
     try {
       // 고객지원글 detail 불러오기
       const response = await getCustomerServiceDetailInfo();
@@ -94,6 +86,14 @@ const CustomerServiceDetailForm = () => {
       }
     );
   }
+
+  // 페이지 처음 시작
+  useEffect(() => {
+    // 고객지원글 상세보기 데이터 불러오기
+    inputData();
+    // sessionStorage에서 사용자 정보 불러오기
+    getMemberInfo();
+  }, []);
 
   // loding true -> 작업 준비중 view
   if(loding) return (<div>준비중...</div>);

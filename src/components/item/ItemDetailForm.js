@@ -35,8 +35,6 @@ const ItemDetailForm = () => {
     publisher: "", // 출판사 // Book에 필요
     company: "",// 제조회사 이름 // Furniture, HomeAppliances에 필요
   }
-  // navigation
-  const navigation = useNavigate();
   // URI의 파라미터 얻어오기
     // num을 itemNum으로 교체
   const {num: itemNum} = useParams();

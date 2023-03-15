@@ -35,11 +35,6 @@ const RecommendationListForm = () => {
   const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
 
   /// 메서드 모음
-  // 처음 시작
-  useEffect(() => {
-    // 상품목록 cardDatas에 담기
-    inputCardDatas();
-  }, [data]);
   // 찾기(Search) 버튼 클릭 했을 때
     // cardDatas 담아주기
   async function handleSearchClick() {
@@ -57,7 +52,27 @@ const RecommendationListForm = () => {
       // loding false
       setLoding(false);
       console.log("요청 성공");
-      console.log(data);
+      // cardDatas에 담기
+      setCardDatas(data.data.content);
+      setTotalPages(data.data.totalPages);
+    } catch(err) {
+      // loding false
+      setLoding(false);
+      // 요청 실패
+      console.log("요청 실패");
+      console.log(err);
+    }
+  }
+  // 찾기에서 사용
+  // cardDatas에 추천합니다글목록 담기
+  async function inputCardDatasForSearch() {
+    try {
+      // 서버에서 추천합니다글 목록 불러오기
+      const {data} = await getRecommendationList()
+      // 요청 성공
+      // loding false
+      setLoding(false);
+      console.log("요청 성공");
       // cardDatas에 담기
       setCardDatas(data.data.content);
       setTotalPages(data.data.totalPages);
@@ -98,6 +113,16 @@ const RecommendationListForm = () => {
       }
     });
   }
+
+  /// 처음 시작
+  // 상품목록 cardDatas에 담기
+  useEffect(() => {
+    inputCardDatas();
+  }, []);
+  // 찾기에 사용
+  useEffect(() => {
+    inputCardDatasForSearch();
+  }, [data]);
 
   /// view 모음
 

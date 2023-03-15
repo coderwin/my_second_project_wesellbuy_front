@@ -1,6 +1,5 @@
-import React, { useCallback, useState } from 'react'
-import { Button, Col, ListGroupItem } from 'react-bootstrap'
-import { Form } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react'
+import { Button, Col, ListGroupItem, Form, Row } from 'react-bootstrap'
 
 /**
  * Order Item for save component
@@ -18,7 +17,7 @@ import { Form } from 'react-router-dom';
  *                       - selection : true or false
  *                       - itemData : 하나의 상품 데이터(정보)
  */
-const OrderItemForm = ({data, num, handleDeleteBtnClick,handleSelectionChange}) => {
+const OrderItemForm = ({data, num, datasLength, handleDeleteBtnClick, handleSelectionChange}) => {
 
   /// 변수 모음
   const defaultItemData = {
@@ -28,7 +27,7 @@ const OrderItemForm = ({data, num, handleDeleteBtnClick,handleSelectionChange}) 
     price: "",// 상품가격
     itemNum: "",// 상품번호
   }
-  const {id, name, quantity, price, itemNum} = data;
+  // const {id, name, quantity, price, itemNum} = data;
   /// 상태 모음
   const [itemData, setItemData] = useState({
     ...defaultItemData,
@@ -38,51 +37,56 @@ const OrderItemForm = ({data, num, handleDeleteBtnClick,handleSelectionChange}) 
   const [selection, setSelection] = useState(false);// 주문상품에 넣을지 말지 선택
   /// 메서드 모음
   // 총가격 모음
-  const getTotalPrice = useCallback(() => {
-    const newTotalPrice = 0;// 총가격
-    newTotalPrice = price * quantity;
-    // totalPrice에 담기
-    setTotalPrice(newTotalPrice);
-  }, [quantity]);
+  const getTotalPrice = useCallback((data) => {
+    if(data) {
+      let newTotalPrice = 0;// 총가격
+      newTotalPrice = data.price * data.quantity;
+      // totalPrice에 담기
+      setTotalPrice(newTotalPrice);
+    }
+  }, []);
   // 선택 box 클릭했을 때 selection 데이터 변경 
   // + readyOrder 데이터 변경하기
   function handleInitSelectionChangeV2(e) {
-    // 선택 상태 바꾸기
-    setSelection(e.target.value);
-    // selection이 바뀌었는지 확인
-    console.log("selection : " + selection);
-    // readyOrder 데이터 변경하기 -> 결과 보고 선택하기
-    // handleSelectionChange(e.target.value, itemData);
-    handleSelectionChange(selection, itemData);
+    // 체크 되었을 때 itemData 주문에 넣기
+    // 체크 안 되면 빼기
+    handleSelectionChange(e.target.checked, itemData);
   }
+
+  /// 처음 시작
+  useEffect(() => {
+    // 상품 가격 구하기
+    getTotalPrice(data);
+  }, []);
 
   return (
     <>
       {data && (
         <ListGroupItem>
-          <Col sm="2">
-            <Form.Control
-              type="checkbox"
-              name="selection"
-              value={selection}
-              onChange={handleInitSelectionChangeV2}
-            />
-          </Col>
-          <Col sm="2">{num}</Col>
-          <Col sm="2">{name}</Col>
-          <Col sm="2">
-            {quantity}
-          </Col>
-          <Col sm="2">
-            {price}
-          </Col>
-          <Col sm="2">
-            {totalPrice}
-          </Col>
-          
-          <Col sm="2">
-            <Button id={id} onClick={handleDeleteBtnClick}>삭제</Button>
-          </Col>
+          <Row> 
+            <Col sm="1">
+              <input
+                type="checkbox"
+                name="selection"
+                onClick={handleInitSelectionChangeV2}
+              />
+            </Col>
+            <Col sm="1">{datasLength - num}</Col>
+            <Col sm="2">{itemData.name}</Col>
+            <Col sm="2">
+              {itemData.quantity}
+            </Col>
+            <Col sm="2">
+              {itemData.price}
+            </Col>
+            <Col sm="2">
+              {totalPrice}
+            </Col>
+            
+            <Col sm="2">
+              <Button id={itemData.id} onClick={handleDeleteBtnClick}>삭제</Button>
+            </Col>
+          </Row>
         </ListGroupItem>)
       }
     </>

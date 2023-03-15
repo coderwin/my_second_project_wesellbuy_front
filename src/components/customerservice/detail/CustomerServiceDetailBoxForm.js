@@ -1,9 +1,7 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
-import { Button, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
-import ImagesBox from '../../common/image/ImagesBox';
+import React, { useContext} from 'react';
+import { Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { CustomerServiceDetailContext } from '../CustomerServiceDetailForm';
+import '../../../css/googlefont.css';
 
 /**
  * CustomerService detail 내용 component
@@ -30,26 +28,26 @@ const CustomerServiceDetailBoxForm = () => {
         {/* 신고된 회원 아이디 */}
         <ListGroupItem >
           <Row>
-            <Col md="2">신고된 회원 아이디</Col>
-            <Col md="2">{data.reportedId}</Col>
+            <Col md="3">신고된 회원 아이디</Col>
+            <Col md="8">{data.reportedId}</Col>
           </Row>
         </ListGroupItem>
         {/* 작성자 */}
         <ListGroupItem >
           <Row>
-            <Col md="2">작성자</Col>
-            <Col md="2">{data.memberId}</Col>
+            <Col md="3">작성자</Col>
+            <Col md="8">{data.memberId}</Col>
           </Row>
         </ListGroupItem>
         {/* 작성 날짜 */}
         <ListGroupItem>
           <Row>
-            <Col md="2">작성날짜</Col>
-            <Col md="2">{data.createDate}</Col>
+            <Col md="3">작성날짜</Col>
+            <Col md="8">{data.createDate}</Col>
           </Row>
         </ListGroupItem>
         {/* 신고 이유 */}
-        <ListGroupItem>
+        <ListGroupItem className="originContent">
           {data.content}
         </ListGroupItem>
       </ListGroup>

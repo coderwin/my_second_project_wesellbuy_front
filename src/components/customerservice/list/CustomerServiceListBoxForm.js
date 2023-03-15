@@ -13,7 +13,7 @@ import { CustomerServiceListContext } from '../CustomerServiceListForm';
  * update :
  * description : 고객지원글 목록 box component
  */
-const CustomerServiceListBoxForm = () => {
+const   CustomerServiceListBoxForm = () => {
   
   /// 변수 모음
   // 외부의 변수 불러오기

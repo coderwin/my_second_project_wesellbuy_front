@@ -28,8 +28,6 @@ const RecommendationDetailForm = () => {
     recommendationPictureFormList: "", // 게시글 이미지 모음
     replyFormList: "" // 게시글 댓글 모음
   }
-  // navigation
-  const navigation = useNavigate();
   // URI의 파라미터 얻어오기
     // num을 itemNum으로 교체
   const {num: boardNum} = useParams();
@@ -42,17 +40,6 @@ const RecommendationDetailForm = () => {
   const [memberInfo, setMemberInfo] = useState(null);// 로그인 사용자 정보 상태
 
   /// 메서드 모음
-  // 페이지 처음 시작
-  useEffect(() => {
-    // 추천합니다글 상세보기 데이터 불러오기
-    inputData();
-    // sessionStorage에서 사용자 정보 불러오기
-    getMemberInfo();
-    // srcArr 만들기 => await 하지 않고 바로 실행 안 될까? -> 바로 실행된다
-      // inputData()에서 아래 로직을 실행하지만 -> 더 생각해보기
-    // setSrcArr(createSrcArr(data.recommendationPictureFormList));
-    // console.log(JSON.stringify(srcArr));
-  }, []);
 
   // 추천합니다글 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
@@ -70,7 +57,6 @@ const RecommendationDetailForm = () => {
       });
       // 이미지 srcArr 만들기 -> 사용 -> 더 생각해보기
       setSrcArr(createSrcArr(response.data.data.recommendationPictureFormList));
-      console.log(JSON.stringify(srcArr));// 여기까지는 바로 실행된다.
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
@@ -115,12 +101,21 @@ const RecommendationDetailForm = () => {
     // loding true로 바꾸기
     setLoding(true);
     // 서버에 item detail 요청하기
-    // 누구든 볼수 있음 - 인증 불필요
     // 그래도 CORS 정책을 따라야 할 듯
     return await axios.get(
       `http://localhost:8080/recommendations/${boardNum}`
     );
   }
+
+  /// 처음 시작
+  useEffect(() => {
+    // 추천합니다글 상세보기 데이터 불러오기
+    inputData();
+  }, []);
+  useEffect(() => {
+    // sessionStorage에서 사용자 정보 불러오기
+    getMemberInfo();
+  }, []);
 
   // loding true -> 작업 준비중 view
   if(loding) return (<div>준비중...</div>);

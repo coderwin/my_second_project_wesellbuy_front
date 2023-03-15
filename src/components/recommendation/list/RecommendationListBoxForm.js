@@ -30,7 +30,8 @@ const RecommendationListBoxForm = () => {
     // 모든 cardData 뿌려주기
     view = cardDatas.map((cardData, i) => {
       return (
-        <CardNotLikesForm  
+        <CardNotLikesForm
+          key={i}
           data={cardData}
         /> 
         );

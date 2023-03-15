@@ -1,9 +1,10 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { Button, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import ImagesBox from '../../common/image/ImagesBox';
 import { RecommendationDetailContext } from '../RecommendationDetailForm';
+import '../../../css/form.css';
 
 /**
  * Recommendation detail 내용 component
@@ -29,6 +30,16 @@ const RecommendationDetailBoxForm = () => {
     // 수정 form으로 이동한다.
     navigation(`/recommendation/${boardNum}/update`);
   }
+  // 서버로 삭제요청 한다
+  async function deleteRecommendation() {
+    
+    return await axios.delete(
+      `http://localhost:8080/recommendations/${boardNum}`,
+      {
+        withCredentials: true
+      }
+    );
+  }
   // 삭제 버튼 클릭했을 때
   async function handleDeleteClick() {
     // 정말 삭제할 건지 물어보기
@@ -52,21 +63,12 @@ const RecommendationDetailBoxForm = () => {
       }
     }
   }
-  // 서버로 삭제요청 한다
-  async function deleteRecommendation() {
-    
-    return await axios.delete(
-      `http://localhost:8080/recommendations/${boardNum}`,
-      {
-        withCredentials: true
-      }
-    );
-  }
-
+  
 
   /// view 모음
   // 수정/삭제 버튼 만들기
   let updateAndeDeleteButtonesBox = "";// 수정/삭제 버튼 담는 변수
+
   if(memberInfo) {
     if(data.memberId === memberInfo.id) {
       updateAndeDeleteButtonesBox = (
@@ -89,8 +91,6 @@ const RecommendationDetailBoxForm = () => {
       <ListGroup as="ul">
         {/* 수정/삭제 button */}
         {updateAndeDeleteButtonesBox}
-        {/* 상품명 */}
-        <ListGroupItem>{data.name}</ListGroupItem>
         {/* 이미지 모음 */}
         {
           data.recommendationPictureFormList.length !== 0 && (<ListGroupItem>
@@ -133,7 +133,7 @@ const RecommendationDetailBoxForm = () => {
           </Row>
         </ListGroupItem>
         {/* 추천 이유 */}
-        <ListGroupItem>
+        <ListGroupItem className="originContent">
           {data.content}
         </ListGroupItem>
       </ListGroup>

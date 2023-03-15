@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { createContext, useState } from 'react'
+import React, { useState } from 'react'
 import ReplyListForm from './ReplyListForm';
 import ReplyWritingForm from './ReplyWritingForm';
 
@@ -58,8 +58,15 @@ const ReplyBoxForm = ({replyFormList}) => {
 
   return (
     <>
-      <ReplyListForm replyFormList={replyFormList} replies={replies} setReplies={setReplies} updateReply={updateReply} deleteReply={deleteReply} />
-      <ReplyWritingForm saveReply={saveReply} />  
+      <ReplyListForm 
+        replyFormList={replyFormList} 
+        replies={replies} 
+        setReplies={setReplies} 
+        updateReply={updateReply} 
+        deleteReply={deleteReply} />
+      <ReplyWritingForm 
+        saveReply={saveReply}
+      />  
     </>
   )
 }

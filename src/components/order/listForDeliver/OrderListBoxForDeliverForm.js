@@ -1,7 +1,7 @@
 import React, { useContext} from 'react'
 import { Table } from 'react-bootstrap';
 import "../../../css/form.css";
-import {OrderListContext} from '../OrderListForm';
+import { OrderListForDeliverContext } from '../OrderListForDeliverForm';
 import OrderForDeliverForm from './OrderForDeliverForm';
 
 /**
@@ -16,7 +16,7 @@ const OrderListBoxForDeliverForm = () => {
   
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {listDatas, data: searchCond, totalPages} = useContext(OrderListContext);
+  const {listDatas, data: searchCond, totalPages} = useContext(OrderListForDeliverContext);
 
   /// 상태 모음
 
@@ -30,7 +30,14 @@ const OrderListBoxForDeliverForm = () => {
     // 데이터 만들기
     view = listDatas.map((data, i) => {
       return (
-        <OrderForDeliverForm key={i} data={data} numPosition={i} totalPages={totalPages} searchCond={searchCond} />
+        <OrderForDeliverForm 
+          key={i} 
+          data={data} 
+          numPosition={i}
+          datasLength={listDatas.length} 
+          totalPages={totalPages} 
+          searchCond={searchCond} 
+        />
       );
     });
   // 없으면 데이터가 존재하지 않는다고 알려주기

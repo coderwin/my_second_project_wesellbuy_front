@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BookUpdateForm from './update/BookUpdateForm';
 import FurnitureUpdateForm from './update/FurnitureUpdateForm';
 import HomeApplianceUpdateForm from './update/HomeApplianceUpdateForm';
-import { Button, Col, Form, Row, Image } from 'react-bootstrap';
+import { Button, Col, Form, Row} from 'react-bootstrap';
 import ImagesBoxSpread from '../common/image/ImagesBoxSpread';
 
 /**
@@ -62,12 +62,6 @@ const ItemUpdateForm = () => {
 
 
   /// 메서드 모음
-  // 페이지 처음 시작
-  useEffect(() => {
-    // 상품 상세보기 데이터 불러오기
-    inputData();
-  }, []);
-
   console.log(data);
 
   // 상품 상세정보 데이터에 담기
@@ -115,7 +109,6 @@ const ItemUpdateForm = () => {
     setLoding(true);
     // 서버에 item detail 요청하기
     // 누구든 볼수 있음 - 인증 불필요
-    // 그래도 CORS 정책을 따라야 할 듯
     return await axios.get(
       `http://localhost:8080/items/${boardNum}`
     );
@@ -212,8 +205,6 @@ const ItemUpdateForm = () => {
   }
   // 파일 데이터들 상태에 넣기
   function handleFilesChange(e) {
-    console.log(e.target.files);
-    console.log(e.target.files[0]);
     // file이 있으면 실행된다.
     if(e.target.files) {
       // 파일을 담기
@@ -290,7 +281,6 @@ const ItemUpdateForm = () => {
         const newPictureForms = data.pictureForms.filter((picture) => {
           return picture.num !== Number(e.target.id);
         });
-        console.log(newPictureForms);
         // pictureForms의 이미지를 지운다
         setData((data) => {
             return {
@@ -352,6 +342,12 @@ const ItemUpdateForm = () => {
       ...newPictureNums
     ]);
   }
+
+  /// 처음 시작
+  useEffect(() => {
+    // 상품 상세보기 데이터 불러오기
+    inputData();
+  }, []);
 
   /// view
 
@@ -499,6 +495,16 @@ const ItemUpdateForm = () => {
             <Col sm="10" className="imageBox" />
           </Form.Group>
 
+          {/* 기존 이미지 모음 */}
+          <ImagesBoxSpread 
+            data={data} 
+            pictureForms={data.pictureForms} 
+            createSrc={createSrc} 
+            OnDeleteImageClick={handleDeleteImageClick}
+            srcArr={srcArr}
+            pictureNums={pictureNums}
+          />
+
           {/* 버튼 box */}
           <Form.Group
             as={Row}
@@ -508,15 +514,7 @@ const ItemUpdateForm = () => {
             <Button type="button" onClick={handleCancelClick}>취소</Button>
           </Form.Group>
         </Form>
-        {/* 기존 이미지 모음 */}
-        <ImagesBoxSpread 
-          data={data} 
-          pictureForms={data.pictureForms} 
-          createSrc={createSrc} 
-          OnDeleteImageClick={handleDeleteImageClick}
-          srcArr={srcArr}
-          pictureNums={pictureNums}
-          />
+        
       </ItemUpdateContext.Provider>
     </>
   )

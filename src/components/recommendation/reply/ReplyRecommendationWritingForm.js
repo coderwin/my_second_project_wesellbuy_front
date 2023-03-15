@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom';
@@ -27,24 +26,6 @@ const ReplyRecommendationWritingForm = ({saveReply}) => {
   const [login, setLogin] = useState(false);// 로그인 상태
   const [memberInfo, setMemberInfo] = useState(null);// 로그인 사용자 정보 상태
 
-  /// view 결정
-  // 처음 view
-  useEffect(() => {
-    // sessionStorage에 key="LOGIN_MEMBER" 있는지 확인
-    const key = "LOGIN_MEMBER";
-    const memberData = JSON.parse(sessionStorage.getItem(key));
-    // 데이터가 없으면
-    if(memberData === null || memberData === undefined) {
-      // login 상태는 false
-      setLogin(false);
-    } else {
-      // login 상태 true
-      setLogin(true);
-      // memberInfo에 memberData 대입
-      setMemberInfo(memberData);
-    }
-  }, []);
-
   /// 메서드 모음
   // data의 속성 데이터 변경
   function handleDataChange(e) {
@@ -68,7 +49,7 @@ const ReplyRecommendationWritingForm = ({saveReply}) => {
       // reload to 현재페이지
       // 로그인한 상황에서 header 부분에 로그인으로 바뀔 수 있다.
         // 그래서 0에서 /recommendation/:num으로 바꿈
-      navigation(`/recommendation/${boardNum}`);
+      navigation(0);
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
@@ -97,6 +78,23 @@ const ReplyRecommendationWritingForm = ({saveReply}) => {
     alert("로그인 후 이용해 주세요");
     return;
   }
+
+  // 처음 시작
+  useEffect(() => {
+    // sessionStorage에 key="LOGIN_MEMBER" 있는지 확인
+    const key = "LOGIN_MEMBER";
+    const memberData = JSON.parse(sessionStorage.getItem(key));
+    // 데이터가 없으면
+    if(memberData === null || memberData === undefined) {
+      // login 상태는 false
+      setLogin(false);
+    } else {
+      // login 상태 true
+      setLogin(true);
+      // memberInfo에 memberData 대입
+      setMemberInfo(memberData);
+    }
+  }, []);
 
   /// view 모음
   // 로그인 사용자 일 때 -> login=ture

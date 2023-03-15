@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
  *                -> 현재 : 취소전 그대로 유지될 것으로 예상
  *                -> 수정한다면 : 배송취소가 생겼으면 좋겠군
  */
-const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
+const OrderForm = ({data, numPosition, datasLength, totalPages, searchCond}) => {
   
   /// 변수 모음
   const navigation = useNavigate();// navigation
@@ -45,8 +45,6 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
   // 취소버튼을 클릭했을 때
   async function handleCancelClick(e) {
     try {
-      // loding = true
-      setLoding(true);
       // 주문번호
       const orderNum = e.target.id
       // 서버로 취소 요청
@@ -113,7 +111,7 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
 
   // cancelBtnBoxView 결정
   // 처음 and 취소요청실패
-  if(cancel === false) {
+  if(cancelResult === false) {
     cancelBtnBoxView = (
       data.orderStatus === "CANCEL" ? 
       "취소완료" :
@@ -127,7 +125,7 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
     cancelBtnBoxView = "취소완료";
   }
 
-  if(loding) return (<div>요청 처리 중...</div>);// 클라이언트 요청 처리 view
+  if(loding) return (<tr><th colSpan={10}>요청 처리 중...</th></tr>);// 클라이언트 요청 처리 view
 
   return (
     <tr>
@@ -135,10 +133,9 @@ const OrderForm = ({data, numPosition, totalPages, searchCond}) => {
       <th id={data.num} 
         onClick={handleItemNameClick} className="mousePointer"
       >
-        {/* 첫페이지가 1번부터 */}
-        {/* {searchCond.size * (searchCond.page + 1) - searchCond.size + 1} */}
-        {/* 첫페이지가 마지막번호부터 */}
-        {searchCond.size * (totalPages - searchCond.page) - numPosition + 1}
+        {/* 첫페이지가 1번부터 => 순서가 안 맞군*/}
+        {searchCond.size * (totalPages - searchCond.page - 1) + datasLength - numPosition}
+        {/* 첫페이지가 마지막번호부터 -> 어떻게 하지? */}
       </th>
       {/* 주문날짜 */}
       <th>

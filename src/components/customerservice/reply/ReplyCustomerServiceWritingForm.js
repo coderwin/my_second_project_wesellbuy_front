@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
  * update :
  * description : 댓글 등록/작성 component
  */
-const ReplyCustomerServiceWritingForm = ({saveReply}) => {
+const ReplyCustomerServiceWritingForm = ({saveReply, addReplies}) => {
 
   /// 변수 모음
   const defaultData = {
@@ -27,23 +26,7 @@ const ReplyCustomerServiceWritingForm = ({saveReply}) => {
   const [login, setLogin] = useState(false);// 로그인 상태
   const [memberInfo, setMemberInfo] = useState(null);// 로그인 사용자 정보 상태
 
-  /// view 결정
-  // 처음 view
-  useEffect(() => {
-    // sessionStorage에 key="LOGIN_MEMBER" 있는지 확인
-    const key = "LOGIN_MEMBER";
-    const memberData = JSON.parse(sessionStorage.getItem(key));
-    // 데이터가 없으면
-    if(memberData === null || memberData === undefined) {
-      // login 상태는 false
-      setLogin(false);
-    } else {
-      // login 상태 true
-      setLogin(true);
-      // memberInfo에 memberData 대입
-      setMemberInfo(memberData);
-    }
-  }, []);
+  
 
   /// 메서드 모음
   // data의 속성 데이터 변경
@@ -68,12 +51,27 @@ const ReplyCustomerServiceWritingForm = ({saveReply}) => {
       // reload to 현재페이지
       // 로그인한 상황에서 header 부분에 로그인으로 바뀔 수 있다.
         // 그래서 0에서 /cs/:num으로 바꿈
-      navigation(`/cs/${boardNum}`);
+      navigation(0);
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
       console.log(err);
     }
+  }
+  // 외부 replies에 reply 담아주기 => 현재 사용 안 함
+  function addReplyInReplies(data) {
+    // reply 생성
+    const reply = {
+      ...data,
+      createDate: getCurrentDate(),
+      memberId: memberInfo.id
+    }
+    // replies에 작성글 입력하기
+    addReplies(reply);
+  }
+  // 현재 날짜로 생성 => 현재 사용 안 함
+  function getCurrentDate() {
+    return new Date().toISOString().slice(0, 10);
   }
   // replyFormList에서 reply 등록하기 => 사용 안 함(보류중)
     // 서버 저장시 view로 reply 번호 보내주는 것도 생각하기
@@ -91,12 +89,28 @@ const ReplyCustomerServiceWritingForm = ({saveReply}) => {
     //   ...replies
     // ]);
   }
-
   // 비로그인 사용자가 댓글 등록 버튼 클릭했을 때
   function handleSaveByNoLoginClick() {
     alert("로그인 후 이용해 주세요");
     return;
   }
+
+  // 처음 시작
+  useEffect(() => {
+    // sessionStorage에 key="LOGIN_MEMBER" 있는지 확인
+    const key = "LOGIN_MEMBER";
+    const memberData = JSON.parse(sessionStorage.getItem(key));
+    // 데이터가 없으면
+    if(memberData === null || memberData === undefined) {
+      // login 상태는 false
+      setLogin(false);
+    } else {
+      // login 상태 true
+      setLogin(true);
+      // memberInfo에 memberData 대입
+      setMemberInfo(memberData);
+    }
+  }, []);
 
   /// view 모음
   // 로그인 사용자 일 때 -> login=ture

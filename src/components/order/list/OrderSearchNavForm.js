@@ -23,10 +23,10 @@ const OrderSearchNavForm = () => {
     formatYear: 'yy'
   }
   const sizeValues = [10, 15, 20, 30]; // 페이지 sizeValues 배열 변수
-  const orderStatusValues = ["O", "C"];// 주문상태 values 모음
-  const orderStatusNames = ["주문", "취소"];// 주문상태 names 모음
-  const deliveryStatusValues = ["R", "T", "C", "O"];// 배달상태 values 모음
-  const deliveryStatusNames = ["준비중", "배송중", "배송완료", "배송취소"];// 배달상태 names 모음
+  const orderStatusValues = ["", "O", "C"];// 주문상태 values 모음
+  const orderStatusNames = ["선택", "주문", "취소"];// 주문상태 names 모음
+  const deliveryStatusValues = ["", "R", "T", "C", "O"];// 배달상태 values 모음
+  const deliveryStatusNames = ["선택","준비중", "배송중", "배송완료", "배송취소"];// 배달상태 names 모음
   /// 상태 모음
 
   /// 메서드 모음

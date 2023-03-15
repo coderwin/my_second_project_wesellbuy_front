@@ -70,11 +70,7 @@ const ItemDetailBoxForm = () => {
       setLikesState(false);
     }
   }
-  // 하트 표시하기
-  useEffect(() => {
-    //좋아요 하트 표시 하기
-    expressItemLikes();
-  }, []);
+  
   
   // 서버에서 좋아요 리스트 불러오기
   async function getLikesList() {
@@ -98,10 +94,7 @@ const ItemDetailBoxForm = () => {
       console.log(err);
     }
   }
-  // render 될 때 시작
-  useEffect(() => {
-    addItemLikesList();
-  }, [likesState]);
+  
 
 
   // 좋아요 하트를 클릭했을 때 삭제하기
@@ -188,7 +181,6 @@ const ItemDetailBoxForm = () => {
       }
     );
   }
-
   // 삭제 버튼 클릭했을 때
   async function handleDeleteClick() {
     // 정말 삭제할 건지 물어보기
@@ -215,9 +207,21 @@ const ItemDetailBoxForm = () => {
     }
   }
 
+  /// 처음 시작
+  // 하트 표시하기
+  useEffect(() => {
+    //좋아요 하트 표시 하기
+    expressItemLikes();
+  }, []);
+  // setItemLikesList에 담기
+  useEffect(() => {
+    addItemLikesList();
+  }, [likesState]);
+
   /// view 모음
   // 수정/삭제 버튼 만들기
   let updateAndeDeleteButtonesBox = "";// 수정/삭제 버튼 담는 변수
+  
   if(memberInfo) {
     if(data.memberId === memberInfo.id) {
       updateAndeDeleteButtonesBox = (
@@ -280,6 +284,13 @@ const ItemDetailBoxForm = () => {
           <Row>
             <Col md="2">가격</Col>
             <Col md="2">{data.price} <span>원</span></Col>
+          </Row>
+        </ListGroupItem>
+        {/* 제고수량 */}
+        <ListGroupItem>
+          <Row>
+            <Col md="2">수량</Col>
+            <Col md="2">{data.stock} <span>개</span></Col>
           </Row>
         </ListGroupItem>
         {/* 저자 - type:B에서만 */}

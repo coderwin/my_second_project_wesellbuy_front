@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { createContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReplyCustomerServiceWritingForm from './ReplyCustomerServiceWritingForm';
 import ReplyListForm from '../../common/reply/ReplyListForm';
 
@@ -54,11 +54,34 @@ const ReplyCustomerServiceBoxForm = ({replyFormList}) => {
       }
     );
   }
+  // replies에 데이터 입력 => 보류
+  // set으로 받아도 default데이터가 replyFormList라서 그런 것 같다
+  function addReplies(reply) {
+    
+    // const newReplies = replies.unshipt(reply);
+    // 새로운 reply 만들기
+    setReplies((replies) => {
+      return [
+        reply,
+        ...replies
+      ];
+    });
+  }
+
+  
 
   return (
     <>
-      <ReplyListForm replyFormList={replyFormList} replies={replies} setReplies={setReplies} updateReply={updateReply} deleteReply={deleteReply} />
-      <ReplyCustomerServiceWritingForm saveReply={saveReply} />   
+      <ReplyListForm 
+        replyFormList={replyFormList} 
+        replies={replies} 
+        setReplies={setReplies} 
+        updateReply={updateReply} 
+        deleteReply={deleteReply} />
+      <ReplyCustomerServiceWritingForm 
+        saveReply={saveReply}
+        addReplies={addReplies}
+      />   
     </>
   )
 }

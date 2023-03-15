@@ -391,9 +391,9 @@ const MemberUpdateForm = () => {
         </Form.Label>
         <Row>
           {/* country */}
-          <Form.Select name="country" onChange={handleDataChange}>
+          <Form.Select name="country" value={data.country} onChange={handleDataChange}>
             {
-              countryValues.map((value, i) => value === data.country ? <option value={value} selected>{countryNames[i]}</option> : <option value={value}>{countryNames[i]}</option>)
+              countryValues.map((value, i) => value === data.country ? <option value={value}>{countryNames[i]}</option> : <option value={value}>{countryNames[i]}</option>)
             }
           </Form.Select>
           {/* 에러 메시지 */}

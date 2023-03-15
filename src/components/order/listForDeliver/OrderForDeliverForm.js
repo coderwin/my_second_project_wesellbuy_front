@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
  *                -> 현재 : 취소전 그대로 유지될 것으로 예상
  *                -> 수정한다면 : 배송취소가 생겼으면 좋겠군
  */
-const OrderForDeliverForm = ({data, numPosition, totalPages, searchCond}) => {
+const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, searchCond}) => {
   
   /// 변수 모음
   const navigation = useNavigate();// navigation
@@ -73,8 +73,9 @@ const OrderForDeliverForm = ({data, numPosition, totalPages, searchCond}) => {
   }
   // 서버로 취소 요청
   async function changeDeliveryStatus(num) {
-    return await axios.delete(
+    return await axios.patch(
       `http://localhost:8080/orders/${num}/delivery/deliver`,
+      {},
       {
         withCredentials: true
       }
@@ -103,7 +104,7 @@ const OrderForDeliverForm = ({data, numPosition, totalPages, searchCond}) => {
       }
     }
   } else {
-    deliveryStatusView = deliveryStatusNames[2];// 배송완료 
+    deliveryStatusView = deliveryStatusNames[2];// 배송완료   
   }
 
   // deliveryBtnBoxView 결정
@@ -111,14 +112,14 @@ const OrderForDeliverForm = ({data, numPosition, totalPages, searchCond}) => {
   if(deliveryResult === false) {
     deliveryBtnBoxView = (
       data.deliveryStatus === "TRANSIT" ? 
-      <Button id={data.orderNum} onClick={handleFinishDeliveryClick}>배달완료</Button> : 
+      <Button id={data.num} onClick={handleFinishDeliveryClick}>배달완료</Button> : 
       ""
     );
   } else {
     deliveryBtnBoxView = "";
   }
 
-  if(loding) return (<div>요청 처리 중...</div>);// 클라이언트 요청 처리 view
+  if(loding) return (<tr><th colSpan={6}>요청 처리 중...</th></tr>);// 클라이언트 요청 처리 view
 
   return (
     <tr>
@@ -129,7 +130,7 @@ const OrderForDeliverForm = ({data, numPosition, totalPages, searchCond}) => {
         {/* 첫페이지가 1번부터 */}
         {/* {searchCond.size * (searchCond.page + 1) - searchCond.size + 1} */}
         {/* 첫페이지가 마지막번호부터 */}
-        {searchCond.size * (totalPages - searchCond.page) - numPosition + 1}
+        {searchCond.size * (totalPages - searchCond.page - 1) + datasLength - numPosition}
       </th>
       {/* 주문 회원아이디 */}
       <th>

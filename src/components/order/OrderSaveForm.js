@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button, Col, Container, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Button, Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import OrderItemForm from './save/OrderItemForm';
 
@@ -12,6 +12,7 @@ import OrderItemForm from './save/OrderItemForm';
  * update :
  * description : 주문하기(주문 저장) component
  */
+
 const OrderSaveForm = () => {
 
   /// 변수 모음
@@ -20,6 +21,7 @@ const OrderSaveForm = () => {
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청처리 상태
+  const [payLoding, setPayLoding] = useState(false);// 요청처리 상태
   const [datas, setDatas] = useState(null);// 장바구니에 있는 상품 목록 상태
   const [readyOrder, setReadyOrder] = useState([]);// 주문하기 전 예비주문 상태
   const [order, setOrder] = useState([]);// 주문하기 클릭했을 때 최종주문상품 상태
@@ -28,17 +30,6 @@ const OrderSaveForm = () => {
 
 
   /// 메서드 모음
-  // 처음 시작
-  useEffect(() => {
-    // loding
-    setLoding(true);
-    // localStorage에 있는 장바구니 불러오기
-    getShopingBasket();
-    // 회원정보 불러오기
-    getMemberInfo();
-    // 작업 끝남
-    setLoding(false);
-  })
   // localStorage에 있는 장바구니 불러오기
   function getShopingBasket() {
     // LocalStorage에 shopingBasket 있는지 확인하기
@@ -47,8 +38,8 @@ const OrderSaveForm = () => {
     const shopingBasket = JSON.parse(strShopingBasket);
     // datas에 담기
     setDatas(shopingBasket);
-    // readyOrder에 담기
-    setReadyOrder(shopingBasket);
+    // readyOrder에 담기 => 안 담는다.
+    // setReadyOrder(shopingBasket);
   }
   // sessionStorage에서 회원정보 불러오기
   function getMemberInfo() {
@@ -57,20 +48,6 @@ const OrderSaveForm = () => {
     // memberInfo에 담기
     setMemberInfo(memberData);
   }
-  // allTotalPrice 구하기
-  useEffect(() => {
-    let newAllTotalPrice = [];
-    // datas가 있을 때만 실행된다
-    if(datas) {
-      newAllTotalPrice = datas.map((data) => {
-        return data.quantity * data.price;
-      });
-    }
-    // 모든 배열값 더하기
-    const sum = newAllTotalPrice.reduce((a, b) => a + b);
-    // allTotalPrice에 담기
-    setAllTotalPrice(sum);
-  }, [datas]);
   // 주문하기 클릭했을 때
   async function handlePayClick() {
     const paidMoney = window.prompt("지불금액을 입력하세요", "숫자만 가능합니다.");
@@ -88,41 +65,50 @@ const OrderSaveForm = () => {
       // paidMoney를 Number로 만들기
       const paidMoneyNum = Number(paidMoney);
       // order 생성하기
-      createOrder();
+      const newOrder = createOrder();
       // order가 처음과 바꼈는지 확인하기
       console.log(`order: ${order}`);
       // 서버로 주문등록하기
       if(memberInfo) {
-        try {
-          const response = await save(paidMoneyNum);
-          // 요청 성공
-          console.log("요청 성공");
-          console.log(response);
-          alert(response.data.data);
-          // 내 주문보기로 이동하기
-          navigation("/order/list");
-        } catch(err) {
-          // 요청 실패
-          console.log("요청 실패");
-          // field 데이터가 잘못 입력된 에러
-          if(err.response.data.errors) {
-            // 순회하며 알려주기
-            for(let key in err.response.data.errors) {
-              // field의 에러메시지 객체 담기
-              const newErrMsg = err.response.data.errors[key];
-              // errMsg 뿌려주기
-              alert(newErrMsg.errMsg);
+        if(newOrder) {
+          // loding = true
+          setPayLoding(true);
+          console.log(order);
+          try {
+            const response = await save(paidMoneyNum);
+            // 요청 성공
+            // loding = false
+            setPayLoding(false);
+            console.log("요청 성공");
+            console.log(response);
+            alert(response.data.data);
+            // 내 주문보기로 이동하기
+            navigation("/order/list");
+          } catch(err) {
+            // 요청 실패
+            // loding = false
+            setPayLoding(false);
+            console.log("요청 실패");
+            // field 데이터가 잘못 입력된 에러
+            if(err.response.data.errors) {
+              // 순회하며 알려주기
+              for(let key in err.response.data.errors) {
+                // field의 에러메시지 객체 담기
+                const newErrMsg = err.response.data.errors[key];
+                // errMsg 뿌려주기
+                alert(newErrMsg.errMsg);
+              }
+              return;
+            }
+
+            // 계산 중 에러
+            if(err.response.data.errMsg) {
+              console.log(err.response.data.errMsg);
+              // 클라이언트에게 에러 이유 알려주기
+              alert(err.response.data.errMsg);
             }
             return;
           }
-
-          // 계산 중 에러
-          if(err.response.data.errMsg) {
-            console.log(err.response.data.errMsg);
-            // 클라이언트에게 에러 이유 알려주기
-            alert(err.response.data.errMsg);
-          }
-          return;
         }
       }
     }
@@ -130,19 +116,24 @@ const OrderSaveForm = () => {
   // 주문결제버튼 눌렀을 때 order 생성하기
   // 서버에 필요한 데이터로 만든다.
   const createOrder = useCallback(() => {
-    setOrder(readyOrder.map((item) => {
-      return {
-        quantity: item.quantity,
-        itemNum: item.itemNum
-      };
-    }));
-  }, [datas]);
+    let newOrder = null;
+    console.log(readyOrder);
+    if(readyOrder) {
+      newOrder = readyOrder.map((item) => {
+        return {
+          quantity: item.quantity,
+          itemNum: item.itemNum
+        };
+      });
+    }
+    return newOrder;
+  }, []);
   // 서버로 주문등록하기
   async function save(paidMoney) {
     return await axios.post(
-      "/orders",
+      "http://localhost:8080/orders",
       {
-        data: order,
+        data: readyOrder,
         paidMoney: paidMoney
       },
       {
@@ -155,6 +146,8 @@ const OrderSaveForm = () => {
     // 버튼의 id 확인하기
     console.log(`delete id: ${e.target.id}`);
     // datas에서 itemData의 id가 같은 걸 삭제한다(filter)
+    const newDatas = datas.filter((data) => data.id !== Number(e.target.id));
+    console.log(newDatas);
     setDatas(
       datas.filter((data) => data.id !== e.target.id
     ));
@@ -162,6 +155,18 @@ const OrderSaveForm = () => {
     setReadyOrder(
       readyOrder.filter((item) => item.id !== e.target.id
     ));
+    // shopingBaskik에서 빼주자
+    changeShopingBaskit(newDatas);
+    // 새로 고침?
+    navigation(0);
+  }
+  // change shopingBaskit in localStorage
+  function changeShopingBaskit(newDatas) {
+    // string으로 만들기
+    const datas = JSON.stringify(newDatas);
+    // localStorage에 담기
+    const key = "shopingBasket";
+    localStorage.setItem(key, datas);
   }
   // 주문상품 선택을 클릭했을 때
   // readyOrder의 데이터도 바꿔준다.
@@ -169,20 +174,21 @@ const OrderSaveForm = () => {
   //        > selection : true or false
   //        > itemData : 한 개의 상품 데이터
   function handleSelectionChange(selection, itemData) {
+    
     // true
     if(selection) {
       // readyOrder에 itemData 담기
-      for(let i = 0; i < readyOrder.length; i++) {
-        // readyOrder에 있으면 안 담는다.
-        if(readyOrder[i].id === itemData.id) {
-          return;
+      for(let i = 0; i < datas.length; i++) {
+        // id가 같으면 readyOrder에 담기
+        if(datas[i].id === itemData.id) {
+          setReadyOrder((readyOrder) => {
+            return [
+              ...readyOrder,
+              itemData
+            ];
+          });
         }
       }
-      // readyOrder에 없으면 담는다.
-      setReadyOrder([
-        ...readyOrder,
-        itemData
-      ]);
     // false
     } else {
       // readyOrder에서 itemData를 뺀다
@@ -193,6 +199,36 @@ const OrderSaveForm = () => {
       );
     }
   }
+
+  /// 처음 시작
+  
+  useEffect(() => {
+    // loding
+    setLoding(true);
+    getShopingBasket();
+    // 작업 끝남
+    setLoding(false);
+  }, []);
+  // 회원정보 불러오기
+  useEffect(() => {
+    getMemberInfo();
+  }, []);
+  // allTotalPrice 구하기
+  useEffect(() => {
+    let newAllTotalPrice = [];
+    
+    if(readyOrder.length !== 0) {
+      newAllTotalPrice = readyOrder.map((data) => {
+        return data.quantity * data.price;
+      });
+      // 모든 배열값 더하기
+      const sum = newAllTotalPrice.reduce((a, b) => a + b);
+      // allTotalPrice에 담기
+      setAllTotalPrice(sum);
+    } else {
+      setAllTotalPrice(0);
+    }
+  }, [readyOrder]);
 
   /// view 모음
   let itemList = null;// 장바구니에 담긴 상품 목록
@@ -205,6 +241,7 @@ const OrderSaveForm = () => {
             key={i} 
             data={data} 
             num={i} 
+            datasLength={datas.length}
             handleDeleteBtnClick={handleDeleteBtnClick}
             setReadyOrder={setReadyOrder}
             readyOrder={readyOrder}
@@ -214,26 +251,30 @@ const OrderSaveForm = () => {
     });
   }
 
-  if(loding) return (<div>요청 처리 중...</div>);// 요청 처리 view
+  if(loding) return (<div>준비중...</div>);// 요청 처리 view
+
+  if(payLoding) return (<div>결제중...</div>);// 결제 처리 view
 
   return (
     <Container>
       <ListGroup>
         {/* order header -> 제목 */}
         <ListGroupItem>
-          <Col sm="1">선택</Col>
-          <Col sm="1">주문번호</Col>
-          <Col sm="2">상품명</Col>
-          <Col sm="2">주문수량</Col>
-          <Col sm="2">상품가격</Col>
-          <Col sm="2">총가격</Col>
-          <Col sm="2"></Col>{/* 삭제 버튼  */}
+          <Row>
+            <Col sm="1">선택</Col>
+            <Col sm="1">주문번호</Col>
+            <Col sm="2">상품명</Col>
+            <Col sm="2">주문수량</Col>
+            <Col sm="2">상품가격</Col>
+            <Col sm="2">총가격</Col>
+            <Col sm="2"></Col>{/* 삭제 버튼  */}
+          </Row>
         </ListGroupItem>
         {/* order body -> 주문 상품들 뿌려주기 */}
         {
           itemList !== null ? 
           itemList : 
-          <ListGroupItem ListGroupItem>
+          <ListGroupItem>
             <Col>주문상품이 없습니다.</Col>
           </ListGroupItem>
         }
@@ -241,11 +282,13 @@ const OrderSaveForm = () => {
       {/* 선택한 상품들 결제금액 */}
       <ListGroup>
         <ListGroupItem>
-          <Col sm="2">결제금액</Col>
-          <Col sm="10">
-            <span>{allTotalPrice}</span>
-            <span>원</span>
-          </Col>
+          <Row>
+            <Col sm="2">결제금액</Col>
+            <Col sm="10">
+              <span>{allTotalPrice}</span>
+              <span>원</span>
+            </Col>
+          </Row>
         </ListGroupItem>
         <ListGroupItem>
           <Button stype="button" onClick={handlePayClick}>결제하기</Button>

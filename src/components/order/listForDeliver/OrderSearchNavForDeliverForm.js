@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Button, Col, Container, Form, Nav, Navbar, Row } from 'react-bootstrap';
-import { OrderListContext } from '../OrderListForm';
+import { OrderListForDeliverContext } from '../OrderListForDeliverForm';
 
 /**
  * Order list search for deliver component
@@ -14,7 +14,7 @@ const OrderSearchNavForDeliverForm = () => {
 
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {data, handleDataChange, handleSearchClick} = useContext(OrderListContext);
+  const {data, handleDataChange, handleSearchClick} = useContext(OrderListForDeliverContext);
   // input 달력(Datapicker) 환경설정 변수
   const dateOptions = {
     alloInvalid: true,
@@ -23,17 +23,16 @@ const OrderSearchNavForDeliverForm = () => {
     formatYear: 'yy'
   }
   const sizeValues = [10, 15, 20, 30]; // 페이지 sizeValues 배열 변수
-  const orderStatusValues = ["O", "C"];// 주문상태 values 모음
-  const orderStatusNames = ["주문", "취소"];// 주문상태 names 모음
-  const deliveryStatusValues = ["R", "T", "C", "O"];// 배달상태 values 모음
-  const deliveryStatusNames = ["준비중", "배송중", "배송완료", "배송취소"];// 배달상태 names 모음
+  const orderStatusValues = ["", "O", "C"];// 주문상태 values 모음
+  const orderStatusNames = ["선택", "주문", "취소"];// 주문상태 names 모음
+  const deliveryStatusValues = ["", "R", "T", "C", "O"];// 배달상태 values 모음
+  const deliveryStatusNames = ["선택", "준비중", "배송중", "배송완료", "배송취소"];// 배달상태 names 모음
   /// 상태 모음
 
   /// 메서드 모음
   
 
   /// view 모음
-
 
   return (
     <Navbar bg="light" expand="lg">
@@ -68,7 +67,7 @@ const OrderSearchNavForDeliverForm = () => {
                   orderStatusValues.map((value, i) => {
                     return (value === data.orderStatus ? 
                     <option key={i} value={value}>{orderStatusNames[i]}</option> 
-                    : <option key={i} value={orderStatusNames[i]}>{value}</option>);
+                    : <option key={i} value={value}>{orderStatusNames[i]}</option>);
                   })
                 }
             </Form.Select>
@@ -86,7 +85,7 @@ const OrderSearchNavForDeliverForm = () => {
                   deliveryStatusValues.map((value, i) => {
                     return (value === data.deliveryStatus ? 
                     <option key={i} value={value}>{deliveryStatusNames[i]}</option> 
-                    : <option key={i} value={value}>{value}</option>);
+                    : <option key={i} value={value}>{deliveryStatusNames[i]}</option>);
                   })
                 }
             </Form.Select>

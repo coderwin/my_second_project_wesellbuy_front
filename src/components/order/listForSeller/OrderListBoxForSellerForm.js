@@ -30,14 +30,21 @@ const OrderListBoxForSellerForm = () => {
     // 데이터 만들기
     view = listDatas.map((data, i) => {
       return (
-        <OrderForSellerForm key={i} data={data} numPosition={i} totalPages={totalPages} searchCond={searchCond} />
+        <OrderForSellerForm 
+          key={i} 
+          data={data} 
+          numPosition={i}
+          datasLength={listDatas.length} 
+          totalPages={totalPages} 
+          searchCond={searchCond} 
+        />
       );
     });
   // 없으면 데이터가 존재하지 않는다고 알려주기
   } else {
     view = (
       <tr>
-        <th colSpan={11}>
+        <th>
           주문서가 없습니다.
         </th>
       </tr>

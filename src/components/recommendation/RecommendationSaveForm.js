@@ -74,12 +74,13 @@ const RecommendationSaveForm = () => {
       // boardNum 가져오기
       const {boardNum} = response.data;
       // ItemDetailForm으로 이동하기 - 나중에 작동시키기
-      // navigation(`/recommendation/${boardNum}`);
+      navigation(`/recommendation/${boardNum}`);
     } catch(err) {
       // 요청 실패
       console.log("상품 저장 실패");
       // loding false로 
       setLoding(false);
+      console.log(err);
       // 다른 에러일 경우
       if(err.response.data.errMsg) {
         alert(err.response.data.errMsg);

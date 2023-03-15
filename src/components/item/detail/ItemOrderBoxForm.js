@@ -13,7 +13,7 @@ import { ItemDetailContext } from '../ItemDetailForm';
  */
 // totalPrice를 구한다.
 function getTotalPrice(orderData) {
-  console.log("총 가격 구하는 중...");
+  // console.log("총 가격 구하는 중...");
   // 총 가격 구하기
   const totalPrice = orderData.quantity * orderData.price;
   return totalPrice;
@@ -55,7 +55,6 @@ const ItemOrderBoxForm = () => {
 
   // input 태그 데이터 바뀔 때 orderData 속성값 바꾸기
   function handleOrderDataChange(e) {
-    console.log(`${e.target.name}: ${e.target.value}`);
     setOrderData({
       ...orderData,
       [e.target.name]: e.target.value
@@ -108,10 +107,8 @@ const ItemOrderBoxForm = () => {
 
   // 주문 클릭했을 때
   function handleOrderClick() {
-    // 주문정보를 LocalStorage에 담기
-    saveLocalStorage();
     // 주문하기로 이동하기
-    navigation("/order");
+    navigation("/order/new");
   }
 
   // 총 주문가격 계산하기
@@ -155,6 +152,7 @@ const ItemOrderBoxForm = () => {
                   name="quantity"
                   value={orderData.quantity}
                   min="1"
+                  max={data.stock}
                   placeholder='1'
                   onChange={handleOrderDataChange}
                 />      

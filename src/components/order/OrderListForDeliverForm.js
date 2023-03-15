@@ -1,7 +1,6 @@
 import axios from 'axios';
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
-import { CustomContext } from '../../App';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import OrderListBoxForDeliverForm from './listForDeliver/OrderListBoxForDeliverForm';
 import OrderSearchNavForDeliverForm from './listForDeliver/OrderSearchNavForDeliverForm';
@@ -34,16 +33,33 @@ const OrderListForDeliverForm = () => {
   const [listDatas, setListDatas] = useState(null);// 데이터 상태(목록을 위한)
   const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
 
-  /// 메서드 모음
-  // 처음 시작
-  useEffect(() => {
-    // 주문 목록에 담기
-    inputListDatas();
-  }, [data]);
+  /// 메서드 모음 
   // datas에 주문 목록에 담기
   async function inputListDatas() {
     // loding = true
     setLoding(true);
+    try {
+      // 서버에서 주문 목록 불러오기
+      const {data} = await getOrderList();
+      console.log(data);
+      // loding false
+      setLoding(false);
+      // 요청 성공
+      console.log("요청 성공");
+      console.log(data);
+      // Listdatas에 담기
+      setListDatas(data.data.content);
+      setTotalPages(data.data.totalPages);
+    } catch(err) {
+      // loding false
+      setLoding(false);
+      // 요청 실패
+      console.log("요청 실패");
+      console.log(err);
+    }
+  }
+  // datas에 주문 목록에 담기 for search
+  async function inputListDatasForSearch() {
     try {
       // 서버에서 주문 목록 불러오기
       const {data} = await getOrderList();
@@ -68,7 +84,8 @@ const OrderListForDeliverForm = () => {
     return await axios.get(
       "http://localhost:8080/orders/deliver",
       {
-        params: data
+        params: data,
+        withCredentials: true
       }
     );
   }
@@ -96,6 +113,16 @@ const OrderListForDeliverForm = () => {
     // 주문목록을 listDatas에 담기
     await inputListDatas();
   }
+
+  /// 처음 시작
+  useEffect(() => {
+    // 주문 목록에 담기
+    inputListDatas();
+  }, []);
+  // 검색할 때
+  useEffect(() => {
+    inputListDatasForSearch();
+  }, [data]);
 
   /// view 모음
 
@@ -126,7 +153,7 @@ const OrderListForDeliverForm = () => {
           </Col>
         </Row>
         {/* 맨위로 이동하기 */}
-        <Row class="footerFixed mousePointer">
+        <Row className="footerFixed mousePointer">
           <Col>
             <a href="#top">맨위로</a>
           </Col>

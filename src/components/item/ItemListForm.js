@@ -79,11 +79,6 @@ const ItemListForm = () => {
       console.log(err);
     }
   }
-  // 처음 시작
-  useEffect(() => {
-    // 서버에서 상품 랭크 불러오기
-    inputRankCardDatas();
-  },[]);
   
   // 서버에서 상품 목록 불러오기
     // data는 params
@@ -114,13 +109,26 @@ const ItemListForm = () => {
       console.log("요청 실패");
       console.log(err);
     }
-  }
-  // 처음 시작
-  useEffect(() => {
-    // 상품목록 cardDatas에 담기
-    inputCardDatas();
-  }, [data]);
-  
+  } 
+  // 찾기에 사용
+  // cardDatas에 상품목록 담기
+  async function inputCardDatasForSearch() {
+    try {
+      // 서버에서 상품 목록 불러오기
+      const {data} = await getItemList()
+      // 요청 성공
+      setLoding(false);
+      console.log("요청 성공");
+      // cardDatas에 담기
+      setCardDatas(data.data.content);
+      setTotalPages(data.data.totalPages);
+    } catch(err) {
+      // 요청 실패
+      setLoding(false);
+      console.log("요청 실패");
+      console.log(err);
+    }
+  } 
   // session에 있는 회원정보 불러오기
   function getMemberInfo() {
     // sessionStorage에서 sessionStorage불러오기
@@ -134,12 +142,6 @@ const ItemListForm = () => {
     // memberInfo에 담기
     setMemberInfo(newMemberInfo);
   }
-  // 처음 시작
-  useEffect(() => {
-    // sessionStorage에 있는 회원정보 불러오기
-    inputMemberInfo();
-  }, []);
-  
   // 서버에서 회원의 좋아요 목록 불러오기
   async function getLikesList() {
     return await axios.get(
@@ -179,14 +181,6 @@ const ItemListForm = () => {
       console.log(err);
     }
   }
-  // 처음 시작
-  useEffect(() => {
-    // 상품 좋아요 likesList에 담기
-    if(memberInfo) {
-      inputLikesList();
-    }
-  }, [memberInfo]);
-  
   
   // 검색 데이터 바뀌면 data 변경한다
   function handleDataChange(e) {
@@ -226,6 +220,30 @@ const ItemListForm = () => {
     navigation("/item/rank");
   }
 
+  /// 처음 시작
+  // sessionStorage에 있는 회원정보 불러오기
+  useEffect(() => { 
+    inputMemberInfo();
+  }, []);
+  // 상품 좋아요 likesList에 담기
+  useEffect(() => {
+    if(memberInfo) {
+      inputLikesList();
+    }
+  }, [memberInfo]);
+  // 서버에서 상품 랭크 불러오기
+  useEffect(() => {
+    inputRankCardDatas();
+  },[]);
+  // 상품목록 cardDatas에 담기
+  useEffect(() => { 
+    inputCardDatas();
+  }, []);
+  // 찾기에 사용
+  useEffect(() => {
+    inputCardDatasForSearch();
+  }, [data]);
+  
   /// view 모음
 
   if(loding) return (<div>준비중...</div>); 

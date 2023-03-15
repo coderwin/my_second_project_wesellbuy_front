@@ -30,20 +30,6 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
   const [memberInfo, setMemberInfo] = useState(null);// 로그인 회원정보
 
   /// 메서드 모음
-  // 처음 시작 -> 데이터 뿌려주기
-  useEffect(() => {
-    // data에 ReplyDetailForm 대입
-    console.log(`reply : ${reply}`);
-    setData({
-      ...data,
-      ...reply
-    });
-    // sessionStorage에 회원정보 있으면 memberInfo에 memberData 대입하기
-    const memberData = getMemberInfo();
-    if(memberData) {
-      setMemberInfo(memberData);
-    }
-  }, []);
   // sessionStorage에 있는 회원정보 불러오기
   function getMemberInfo() {
     const key = "LOGIN_MEMBER";
@@ -86,8 +72,6 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
   // 수정완료 클릭 시, 서버로 수정 데이터 보내기
   async function handleUpdateFinishClick() {
     try {
-      console.log(JSON.stringify(data));
-      console.log(JSON.stringify(reply));
       // 서버로 수정 데이터 보내기
       const response = await updateReply(boardNum, data.num, data.content);
       // 요청 성공
@@ -113,6 +97,20 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
       ...reply
     });
   }
+
+  /// 처음 시작 -> 데이터 뿌려주기
+  useEffect(() => {
+    // data에 ReplyDetailForm 대입
+    setData({
+      ...data,
+      ...reply
+    });
+    // sessionStorage에 회원정보 있으면 memberInfo에 memberData 대입하기
+    const memberData = getMemberInfo();
+    if(memberData) {
+      setMemberInfo(memberData);
+    }
+  }, []);
 
   /// view 모음
   // read 모드

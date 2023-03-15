@@ -22,7 +22,6 @@ const ImagesBoxSpread = ({pictureForms, createSrc, OnDeleteImageClick, pictureNu
   // ImageForm들을 생성
   if(srcArr) {
     imageForms = srcArr.map((src, num) => {
-      console.log(src);
       return (<Col key={num}>
         <img
           className="d-block w-100"

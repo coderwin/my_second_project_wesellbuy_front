@@ -1,10 +1,9 @@
 import axios from 'axios';
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import OrderSearchNavForm from './list/OrderSearchNavForm';
 import OrderListBoxForm from './list/OrderListBoxForm';
-import { CustomContext } from '../../App';
 
 /**
  * Order list component
@@ -36,15 +35,32 @@ const OrderListForm = () => {
   const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
 
   /// 메서드 모음
-  // 처음 시작
-  useEffect(() => {
-    // 주문 목록에 담기
-    inputListDatas();
-  }, [data]);
+  
   // datas에 주문 목록에 담기
   async function inputListDatas() {
     // loding = true
     setLoding(true);
+    try {
+      // 서버에서 주문 목록 불러오기
+      const {data} = await getOrderList();
+      // loding false
+      setLoding(false);
+      // 요청 성공
+      console.log("요청 성공");
+      console.log(data);
+      // Listdatas에 담기
+      setListDatas(data.data.content);
+      setTotalPages(data.data.totalPages);
+    } catch(err) {
+      // loding false
+      setLoding(false);
+      // 요청 실패
+      console.log("요청 실패");
+      console.log(err);
+    }
+  }
+  // datas에 주문 목록에 담기 for search
+  async function inputListDatasForSearch() {
     try {
       // 서버에서 주문 목록 불러오기
       const {data} = await getOrderList();
@@ -69,7 +85,8 @@ const OrderListForm = () => {
     return await axios.get(
       "http://localhost:8080/orders",
       {
-        params: data
+        params: data,
+        withCredentials: true
       }
     );
   }
@@ -98,6 +115,16 @@ const OrderListForm = () => {
     // 주문목록을 listDatas에 담기
     await inputListDatas();
   }
+
+  /// 처음 시작
+  useEffect(() => {
+    // 주문 목록에 담기
+    inputListDatas();
+  }, []);
+  // 검색할 때
+  useEffect(() => {
+    inputListDatasForSearch();
+  }, [data]);
 
   /// view 모음
 

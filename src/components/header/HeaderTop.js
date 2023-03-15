@@ -21,7 +21,7 @@ const HeaderTop = () => {
     }
     // 장바구니 가기
     const handleOrderClick = () => {
-        navigation("/order");
+        navigation("/order/new");
     }
     // 서버에 로그아웃 요청하기
     async function logout() {
@@ -66,7 +66,7 @@ const HeaderTop = () => {
         }
     }
 
-    // 처음 시작
+    /// 처음 시작
     // 왜 로그인 유지되는지는 모르겠다
     useEffect(() => {
         const getMemberInfo = () => {

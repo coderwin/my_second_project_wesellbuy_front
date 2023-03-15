@@ -41,14 +41,10 @@ const RecommendationUpdateForm = () => {
   const [errMsgs, setErrMsgs] = useState(defaultErrMsgs); // 에러 메시지 상태
   const [files, setFiles] = useState(null);// 파일들 상태
   const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열 
+  const [pictureNums, setPictureNums] = useState([]);// 이미지번호 모아두는 배열 상태
+
 
   /// 메서드 모음
-  // 페이지 처음 시작
-  useEffect(() => {
-    // 추천합니다글 상세보기 데이터 불러오기
-    inputData();
-  }, []);
-
   // 추천합니다글 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
   async function inputData() {
@@ -66,6 +62,10 @@ const RecommendationUpdateForm = () => {
         content: response.data.data.content,
         recommendationPictureFormList: response.data.data.recommendationPictureFormList
       });
+      // srcArr 만들기
+      createSrcArr(response.data.data.recommendationPictureFormList);
+      // pictureNums 만들기
+      createPictureNums(response.data.data.recommendationPictureFormList);
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
@@ -85,7 +85,6 @@ const RecommendationUpdateForm = () => {
     setLoding(true);
     // 서버에 recommendation detail 요청하기
     // 누구든 볼수 있음 - 인증 불필요
-    // 그래도 CORS 정책을 따라야 할 듯
     return await axios.get(
       `http://localhost:8080/recommendations/${boardNum}`
     );
@@ -179,8 +178,6 @@ const RecommendationUpdateForm = () => {
   }
   // 파일 데이터들 상태에 넣기
   function handleFilesChange(e) {
-    console.log(e.target.files);
-    console.log(e.target.files[0]);
     // file이 있으면 실행된다.
     if(e.target.files) {
       // 파일을 담기
@@ -239,13 +236,23 @@ const RecommendationUpdateForm = () => {
         // 요청 성공
         console.log("요청 성공");
         alert(response.data.data);
+        // 새로운 pictureForms
+        const newPictureForms = data.recommendationPictureFormList.filter(
+          (picture) => {
+            return picture.num !== Number(e.target.id) 
+          }
+        );
         // recommendationPictureFormList의 이미지를 지운다
-        setData({
-          ...data,
-          recommendationPictureFormList: data.recommendationPictureFormList.filter((picture) => {
-            return picture.num !== e.target.id;
-          })
+        setData((data) => {
+          return {
+            ...data,
+            recommendationPictureFormList: newPictureForms
+          }
         });
+        // srcArr 만들기
+        createSrcArr(newPictureForms);
+        // pictureNums 만들기
+        createPictureNums(newPictureForms);
       } catch(err) {
         console.log("요청 실패");
         alert(err.response.data.errMsg);
@@ -263,6 +270,43 @@ const RecommendationUpdateForm = () => {
       }
     );
   }
+  // 이미지 srcArr 만들기
+  function createSrcArr(pictureForms) {
+    // newSrcArr 생성
+    let newSrcArr = "";
+    // pictureForms를 순회하면서 src 만들기
+    if(pictureForms) {
+      newSrcArr = pictureForms.map((pictureForm) => {
+        return createSrc(pictureForm.storedFileName);
+      });
+    }
+    // srcArr상태에 담기
+    setSrcArr([
+      ...newSrcArr
+    ]);
+  }
+  // 이미지 pictureNums 만들기
+  function createPictureNums(pictureForms) {
+    // newPictureNums 생성
+    let newPictureNums = "";
+    // pictureForms 순회화면서 pictureNum 만들기
+    if(pictureForms) {
+      newPictureNums = pictureForms.map((pictureForm) => {
+        return pictureForm.num;
+      });
+    }
+    // pictureNums에 담기
+    setPictureNums([
+      ...pictureNums,
+      ...newPictureNums
+    ]);
+  }
+
+  /// 처음 시작
+  useEffect(() => {
+    // 추천합니다글 상세보기 데이터 불러오기
+    inputData();
+  }, []);
 
   /// view
 
@@ -360,6 +404,16 @@ const RecommendationUpdateForm = () => {
             <Col sm="10" className="imageBox" />
           </Form.Group>
 
+          {/* 기존 이미지 모음 */}
+          <ImagesBoxSpread 
+            data={data}
+            pictureForms={data.recommendationPictureFormList} 
+            createSrc={createSrc} 
+            OnDeleteImageClick={handleDeleteImageClick}
+            srcArr={srcArr}
+            pictureNums={pictureNums}
+          />
+
           {/* 버튼 box */}
           <Form.Group
             as={Row}
@@ -369,8 +423,7 @@ const RecommendationUpdateForm = () => {
             <Button type="button" onClick={handleCancelClick}>취소</Button>
           </Form.Group>
         </Form>
-        {/* 기존 이미지 모음 */}
-        <ImagesBoxSpread pictureForms={data.recommendationPictureFormList} createSrc={createSrc} OnDeleteImageClick={handleDeleteImageClick} />
+        
       </RecommendationUpdateContext.Provider>
     </>
   )

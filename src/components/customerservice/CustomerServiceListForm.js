@@ -1,7 +1,6 @@
 import axios from 'axios';
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
-import { CustomContext } from '../../App';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import CustomerServiceListBoxForm from './list/CustomerServiceListBoxForm';
 import CustomerServiceSearchNavForm from './list/CustomerServiceSearchNavForm';
@@ -33,11 +32,6 @@ const CustomerServiceListForm = () => {
   const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
 
   /// 메서드 모음
-  // 처음 시작
-  useEffect(() => {
-    // 고객지원글 목록에 담기
-    inputListDatas();
-  }, [data]);
   // datas에 고객지원글 목록에 담기
   async function inputListDatas() {
     // lodign true
@@ -50,6 +44,27 @@ const CustomerServiceListForm = () => {
       // 요청 성공
       console.log("요청 성공");
       console.log(data);
+      // Listdatas에 담기
+      setListDatas(data.data.content);
+      setTotalPages(data.data.totalPages);
+    } catch(err) {
+      // loding false
+      setLoding(false);
+      // 요청 실패
+      console.log("요청 실패");
+      console.log(err);
+    }
+  }
+  // 찾기에서 사용
+  // datas에 고객지원글 목록에 담기
+  async function inputListDatasForSearch() {
+    try {
+      // 서버에서 고객지원글 목록 불러오기
+      const {data} = await getCustomerServiceList();
+      // loding false
+      setLoding(false);
+      // 요청 성공
+      console.log("요청 성공");
       // Listdatas에 담기
       setListDatas(data.data.content);
       setTotalPages(data.data.totalPages);
@@ -85,7 +100,7 @@ const CustomerServiceListForm = () => {
     setData((data) => {
       return {
       ...data,
-      [e.target.name]: e.target.id
+      [e.target.name]: e.target.id,
       }
     });
   }
@@ -95,6 +110,17 @@ const CustomerServiceListForm = () => {
     // 고객지원글 목록을 listDatas에 담기
     await inputListDatas();
   }
+
+  /// 처음 시작
+  useEffect(() => {
+    // 고객지원글 목록에 담기
+    inputListDatas();
+  }, []);
+  // 찾기에 사용
+  useEffect(() => {
+    // 고객지원글 목록에 담기
+    inputListDatasForSearch();
+  }, [data]);
 
   /// view 모음
 
