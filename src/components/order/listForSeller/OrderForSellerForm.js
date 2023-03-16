@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Loding from '../../Loding';
 
 /**
  * Order of Order box for seller component
@@ -130,7 +131,7 @@ const OrderForSellerForm = ({data, numPosition, datasLength, totalPages, searchC
     addressBoxView = "주소 없음";
   }
 
-  if(loding) return (<tr><th colSpan={11}>요청 처리 중...</th></tr>);// 클라이언트 요청 처리 view
+  if(loding) return (<Loding />);// 클라이언트 요청 처리 view
 
   return (
     <tr>

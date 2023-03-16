@@ -18,8 +18,8 @@ const IdSearchAnswerForm = ({name, ids}) => {
   
   const result = ids.map((id, num) => {
     return (
-      <Row>
-        <Col>
+      <Row className="d-flex justify-content-center">
+        <Col sm={4}>
           {id}
         </Col>
       </Row>
@@ -27,15 +27,17 @@ const IdSearchAnswerForm = ({name, ids}) => {
   });
   return (
     <Container>
-      <Row>
-        <Col>{name}님의 아이디는</Col>
+      <Row className="d-flex justify-content-center">
+        <Col sm={4}>
+          {name}님의 아이디는
+        </Col>
       </Row>
       {result}
-      <Row>
-        <Col>
+      <Row className="d-flex justify-content-center">
+        <Col sm={2}>
           <Button onClick={handleSearchIdClick}>비밀번호찾기</Button>
         </Col>
-        <Col>
+        <Col sm={2}>
           <Button onClick={handleLoginClick}>로그인</Button>
         </Col>  
       </Row>

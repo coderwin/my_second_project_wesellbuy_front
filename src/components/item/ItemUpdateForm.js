@@ -6,6 +6,7 @@ import FurnitureUpdateForm from './update/FurnitureUpdateForm';
 import HomeApplianceUpdateForm from './update/HomeApplianceUpdateForm';
 import { Button, Col, Form, Row} from 'react-bootstrap';
 import ImagesBoxSpread from '../common/image/ImagesBoxSpread';
+import Loding from '../Loding';
 
 /**
  * Item update component
@@ -352,7 +353,7 @@ const ItemUpdateForm = () => {
   /// view
 
   // 서버로 데이터 요청 할 때 view
-  if(loding) return (<div>요청 처리 중...</div>);
+  if(loding) return (<Loding />);
 
   return (
     <>

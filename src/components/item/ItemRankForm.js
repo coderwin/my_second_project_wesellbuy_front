@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react'
 import { Col, Container, ListGroup, Row } from 'react-bootstrap'
+import Loding from '../Loding';
 import ItemRankBoxForm from './rank/ItemRankBoxForm';
 import ItemRankSearchNavForm from './rank/ItemRankSearchNavForm'
 
@@ -53,7 +54,7 @@ const ItemRankForm = () => {
   /// view 모음
 
   // 요청 처리 view
-  if(loding) return(<div>준비중...</div>);
+  if(loding) return(<Loding />);
 
   return (
     <ItemRankContext.Provider value={{handleSearchClick, setLoding}}>

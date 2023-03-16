@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { findAllByTestId } from '@testing-library/react';
 import { CustomContext } from '../../../App';
+import Loding from '../../Loding';
 
 export const LoginForm = () => {
 
@@ -154,35 +155,62 @@ export const LoginForm = () => {
   }
 
   // loding == ture이면 로딩중
-  if(loding) return (<div>로딩중...</div>); 
+  if(loding) return (<Loding />); 
 
   return (
-    <Form onSubmit={handleLoginSubmit}>
-        <Form.Group className="mb-3" >
-            <Form.Label>ID</Form.Label>
-            <Form.Control type="text" name="id" onChange={handleInputDataChange} value={data.id} />
-        </Form.Group>
-
-        <Form.Group className="mb-3" >
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" name="pwd" onChange={handleInputDataChange} value={data.pwd} />
-        </Form.Group>
-        <Form.Group className="mb-3" >
-            <Form.Check 
-              type="checkbox" 
-              label="Check me out" 
-              name="rememberId" 
-              onChange={handleRememberIdChange}
-              checked={data.rememberId}
-              />
-        </Form.Group>
-        <Form.Group className="mb-3 error">
-            {error.errMsg}
-        </Form.Group>
-        <Button variant="primary" type="submit">
-        login
-        </Button>
-    </Form>
+    <Container>
+      <Row>
+        <Form onSubmit={handleLoginSubmit}>
+          {/* ID */}
+          <Row className="d-flex justify-content-center">
+            <Col sm={3}>
+              <Form.Group className="mb-3">          
+                <Form.Label>ID</Form.Label>
+                <Form.Control type="text" name="id" onChange={handleInputDataChange} value={data.id} />  
+              </Form.Group>
+            </Col>
+          </Row>
+          {/* passoword  */}
+          <Row className="d-flex justify-content-center">
+            <Col sm={3}>
+              <Form.Group className="mb-3" >
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control type="password" name="pwd" onChange={handleInputDataChange} value={data.pwd} />
+              </Form.Group>
+            </Col>
+          </Row>
+          {/* check */}
+          <Row className="d-flex justify-content-center">
+            <Col sm={3}>
+              <Form.Group className="mb-3" >
+                  <Form.Check 
+                    type="checkbox" 
+                    label="Check me out" 
+                    name="rememberId" 
+                    onChange={handleRememberIdChange}
+                    checked={data.rememberId}
+                    />
+              </Form.Group>
+            </Col>
+          </Row>
+          {/* Error Message */}
+          <Row className="d-flex justify-content-center">
+            <Col sm={3}>
+              <Form.Group className="mb-3 error">
+                  {error.errMsg}
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row className="d-flex justify-content-center">
+            <Col sm={3} className="d-grid gap-2">
+              <Button variant="primary" type="submit" size="lg">
+                login
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </Row>
+    </Container>
   )
 }
 

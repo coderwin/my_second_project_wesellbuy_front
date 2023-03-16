@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import ImagesBoxSpread from '../common/image/ImagesBoxSpread';
+import Loding from '../Loding';
 
 /**
  * Recommendation update component
@@ -311,7 +312,7 @@ const RecommendationUpdateForm = () => {
   /// view
 
   // 서버로 데이터 요청 할 때 view
-  if(loding) return (<div>요청 처리 중...</div>);
+  if(loding) return (<Loding />);
 
   return (
     <>

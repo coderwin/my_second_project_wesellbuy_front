@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Row, Image } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import "../../css/form.css";
+import Loding from '../Loding';
 
 const MemberUpdateForm = () => {
   
@@ -230,261 +231,302 @@ const MemberUpdateForm = () => {
   }
 
   // loding true일 때
-  if(loding) return <div>요청 처리 중...</div>;
+  if(loding) return (<Loding />);
 
   return (
     <Form onSubmit={handleUpdateSubmit}>
       {/* name */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">
-          NAME <span className='important'>*</span>
-        </Form.Label>
-        <Col sm="10">
-          <Form.Control
-            type="text"
-            name="name"
-            value={data.name}
-            readOnly
-          />
+      <Row className="d-flex justify-content-center">
+        <Col sm={8}>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label column sm="3">
+              NAME <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="5">
+              <Form.Control
+                type="text"
+                name="name"
+                value={data.name}
+                readOnly
+              />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+              {errorMsgs.name}
+            </Col>
+          </Form.Group>
         </Col>
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errorMsgs.name}
-        </Col>
-      </Form.Group>
+      </Row>
+
       {/* id */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">
-          ID <span className='important'>*</span>
-        </Form.Label>
-        <Col sm="10">
-          <Form.Control
-            type="text"
-            name="id"
-            value={data.id}
-            readOnly
-          />
+      <Row className="d-flex justify-content-center">
+        <Col sm={8}>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label column sm="3">
+              ID <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="5">
+              <Form.Control
+                type="text"
+                name="id"
+                value={data.id}
+                readOnly
+              />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+              {errorMsgs.id}
+            </Col>
+          </Form.Group>
         </Col>
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errorMsgs.id}
-        </Col>
-      </Form.Group>
+       </Row>
+
       {/* pwd */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">
-          Password <span className='important'>*</span>
-        </Form.Label>
-        <Col sm="10">
-          <Form.Control
-            type="password"
-            name="pwd"
-            value={data.pwd}
-            onChange={handleDataChange}
-          />
+      <Row className="d-flex justify-content-center">
+        <Col sm={8}>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label column sm="3">
+              Password <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="5">
+              <Form.Control
+                type="password"
+                name="pwd"
+                value={data.pwd}
+                onChange={handleDataChange}
+              />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+              {errorMsgs.pwd}
+            </Col>
+          </Form.Group>
         </Col>
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errorMsgs.pwd}
-        </Col>
-      </Form.Group>
+      </Row>
+
       {/* pwdconfirm */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">
-          PasswordConfirm <span className='important'>*</span>
-        </Form.Label>
-        <Col sm="10">
-          <Form.Control
-            type="password"
-            name="pwdConfirm"
-            value={data.pwdConfirm}
-            onChange={handleDataChange}
-          />
+      <Row className="d-flex justify-content-center">
+        <Col sm={8}>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label column sm="3">
+              PasswordConfirm <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="5">
+              <Form.Control
+                type="password"
+                name="pwdConfirm"
+                value={data.pwdConfirm}
+                onChange={handleDataChange}
+              />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+              {errorMsgs.pwdConfirm}
+            </Col>
+          </Form.Group>
         </Col>
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errorMsgs.pwdConfirm}
-        </Col>
-      </Form.Group>
+      </Row>
+
       {/* email */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">
-          Email <span className='important'>*</span>
-        </Form.Label>
-        <Col sm="10">
-          <Form.Control
-            type="text"
-            name="email"
-            value={data.email}
-            onChange={handleDataChange}
-          />
+      <Row className="d-flex justify-content-center">
+        <Col sm={8}>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label column sm="3">
+              Email <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="5">
+              <Form.Control
+                type="text"
+                name="email"
+                value={data.email}
+                onChange={handleDataChange}
+              />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+              {errorMsgs.email}
+            </Col>
+          </Form.Group>
         </Col>
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errorMsgs.email}
-        </Col>
-      </Form.Group>
+       </Row>
+
       {/* selfphone */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">
-          SelfPhone <span className='important'>*</span>
-        </Form.Label>
-        <Col sm="10">
-          <Form.Control
-            type="text"
-            name="selfPhone"
-            value={data.selfPhone}
-            onChange={handleDataChange}
-          />
+      <Row className="d-flex justify-content-center">
+        <Col sm={8}>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label column sm="3">
+              SelfPhone <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="5">
+              <Form.Control
+                type="text"
+                name="selfPhone"
+                value={data.selfPhone}
+                onChange={handleDataChange}
+              />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+              {errorMsgs.selfPhone}
+            </Col>
+          </Form.Group>
         </Col>
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errorMsgs.selfPhone}
-        </Col>
-      </Form.Group>
+      </Row>
+
       {/* homephone */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">
-          Homephone <span className='important'>*</span>
-        </Form.Label>
-        <Col sm="10">
-          <Form.Control
-            type="text"
-            name="homePhone"
-            value={data.homePhone}
-            onChange={handleDataChange}
-          />
+      <Row className="d-flex justify-content-center">
+        <Col sm={8}>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label column sm="3">
+              Homephone <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="5">
+              <Form.Control
+                type="text"
+                name="homePhone"
+                value={data.homePhone}
+                onChange={handleDataChange}
+              />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+              {errorMsgs.homePhone}
+            </Col>
+          </Form.Group>
         </Col>
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errorMsgs.homePhone}
-        </Col>
-      </Form.Group>
+      </Row>
+
       {/* address */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">
-          Address <span className='important'>*</span>
-        </Form.Label>
-        <Row>
-          {/* country */}
-          <Form.Select name="country" value={data.country} onChange={handleDataChange}>
-            {
-              countryValues.map((value, i) => value === data.country ? <option value={value}>{countryNames[i]}</option> : <option value={value}>{countryNames[i]}</option>)
-            }
-          </Form.Select>
-          {/* 에러 메시지 */}
-          <Col className="error">
-            {errorMsgs.country}
-          </Col>
-        </Row>
-        {/* city */}
-        <Row>
-          <Form.Control 
-            type="text"
-            placeholder="도시명"
-            name="city"
-            value={data.city}
-            onChange={handleDataChange}
-          />
-          {/* 에러 메시지 */}
-          <Col className="error">
-            {errorMsgs.city}
-          </Col>
-        </Row>
-        {/* street */}
-        <Row>
-          <Form.Control 
-            type="text"
-            placeholder="동/거리명"
-            name="street"
-            value={data.street}
-            onChange={handleDataChange}
-          />
-          {/* 에러 메시지 */}
-          <Col className="error">
-            {errorMsgs.street}
-          </Col>
-        </Row>
-        {/* detail */}
-        <Row>
-          <Form.Control 
-            type="text"
-            placeholder="상세정보"
-            name="detail"
-            value={data.detail}
-            onChange={handleDataChange}
-          />
-          {/* 에러 메시지 */}
-          <Col className="error">
-            {errorMsgs.detail}
-          </Col>
-        </Row>
-        {/* zipcode */}
-        <Row>
-        <Form.Control 
-            type="text"
-            placeholder="우편번호"
-            name="zipcode"
-            value={data.zipcode}
-            onChange={handleDataChange}
-          />
-          {/* 에러 메시지 */}
-          <Col className="error">
-            {errorMsgs.zipcode}
-          </Col>
-        </Row>
-      </Form.Group>  
-      {/* file */}
-      <Form.Group
-        as={Row}
-        className="mb-3"
-      >
-        <Form.Label column sm="2">프로필</Form.Label>
-        <Col sm="4">
-          <Form.Control 
-            type="file"
-            name="file"
-            onChange={handleInputFileChange}
-          />
+      <Row className="d-flex justify-content-center">
+        <Col sm={8}>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label>
+              Address <span className='important'>*</span>
+            </Form.Label>
+            <Row>
+              {/* country */}
+              <Form.Select name="country" value={data.country} onChange={handleDataChange}>
+                {
+                  countryValues.map((value, i) => value === data.country ? <option value={value}>{countryNames[i]}</option> : <option value={value}>{countryNames[i]}</option>)
+                }
+              </Form.Select>
+              {/* 에러 메시지 */}
+              <Col className="error">
+                {errorMsgs.country}
+              </Col>
+            </Row>
+            {/* city */}
+            <Row>
+              <Form.Control 
+                type="text"
+                placeholder="도시명"
+                name="city"
+                value={data.city}
+                onChange={handleDataChange}
+              />
+              {/* 에러 메시지 */}
+              <Col className="error">
+                {errorMsgs.city}
+              </Col>
+            </Row>
+            {/* street */}
+            <Row>
+              <Form.Control 
+                type="text"
+                placeholder="동/거리명"
+                name="street"
+                value={data.street}
+                onChange={handleDataChange}
+              />
+              {/* 에러 메시지 */}
+              <Col className="error">
+                {errorMsgs.street}
+              </Col>
+            </Row>
+            {/* detail */}
+            <Row>
+              <Form.Control 
+                type="text"
+                placeholder="상세정보"
+                name="detail"
+                value={data.detail}
+                onChange={handleDataChange}
+              />
+              {/* 에러 메시지 */}
+              <Col className="error">
+                {errorMsgs.detail}
+              </Col>
+            </Row>
+            {/* zipcode */}
+            <Row>
+            <Form.Control 
+                type="text"
+                placeholder="우편번호"
+                name="zipcode"
+                value={data.zipcode}
+                onChange={handleDataChange}
+              />
+              {/* 에러 메시지 */}
+              <Col className="error">
+                {errorMsgs.zipcode}
+              </Col>
+            </Row>
+          </Form.Group>  
+          {/* file */}
+          <Form.Group
+            as={Row}
+            className="mb-3"
+          >
+            <Form.Label column sm="2">프로필</Form.Label>
+            <Col sm="4">
+              <Form.Control 
+                type="file"
+                name="file"
+                onChange={handleInputFileChange}
+              />
+            </Col>
+            {/* 이미지 미리보기 box */}
+            <Col sm="6" className="imageBox" />
+            {/* 에러 메시지 */}
+            <Col className="error">
+              {errorMsgs.file}
+            </Col>
+          </Form.Group>
         </Col>
-        {/* 이미지 미리보기 box */}
-        <Col sm="6" className="imageBox" />
-        {/* 에러 메시지 */}
-        <Col className="error">
-          {errorMsgs.file}
-        </Col>
-      </Form.Group>
+      </Row>
       
       {/* 버튼 box */}
-      <Row>
-        <Form.Group>
-          <Button type="submit">수정</Button>
-          <Button type="button" onClick={handleCancelClick}>취소</Button>
-        </Form.Group>
+      <Row className="d-flex justify-content-center d-grid gap-2">
+        <Col sm={2} >
+          <Form.Group>
+            <Button type="submit" variant="outline-primary" size="lg">수정</Button>
+            <Button type="button" variant="outline-primary" size="lg" onClick={handleCancelClick}>취소</Button>
+          </Form.Group>
+        </Col>
       </Row>     
     </Form>
   )

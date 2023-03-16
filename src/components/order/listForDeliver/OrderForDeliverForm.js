@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Loding from '../../Loding';
 
 /**
  * Order of Order box component
@@ -119,7 +120,7 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
     deliveryBtnBoxView = "";
   }
 
-  if(loding) return (<tr><th colSpan={6}>요청 처리 중...</th></tr>);// 클라이언트 요청 처리 view
+  if(loding) return (<Loding />);// 클라이언트 요청 처리 view
 
   return (
     <tr>

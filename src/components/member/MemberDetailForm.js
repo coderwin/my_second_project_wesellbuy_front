@@ -5,6 +5,7 @@ import noImage from '../../images/common/no_image.png';
 import { useNavigate } from 'react-router-dom';
 import { CustomContext } from '../../App';
 import MemberDetailLeftNavForm from './detail/MemberDetailLeftNavForm';
+import Loding from '../Loding';
 
 /**
  * Member detail component
@@ -170,7 +171,7 @@ const MemberDetailForm = () => {
   }, []);
 
   // loding true일 때
-  if(loding) return (<div>요청 처리 중...</div>);
+  if(loding) return (<Loding />);
   // 서버 요청 처리 중 에러 발생 때
   if(error) return (<div>요청 작업 중 에러 발생</div>);
     

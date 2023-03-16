@@ -4,6 +4,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import OrderSearchNavForSellerForm from './listForSeller/OrderSearchNavForSellerForm';
 import OrderListBoxForSellerForm from './listForSeller/OrderListBoxForSellerForm';
+import Loding from '../Loding';
 
 /**
  * Order list for seller component
@@ -129,7 +130,7 @@ const OrderListForSellerForm = () => {
   /// view 모음
 
   // 요청 처리 view
-  if(loding) return(<div>준비중...</div>);
+  if(loding) return(<Loding />);
 
   return (
     <OrderListForSellerContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas, totalPages}}>

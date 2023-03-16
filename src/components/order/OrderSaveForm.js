@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Loding from '../Loding';
 import OrderItemForm from './save/OrderItemForm';
 
 /**
@@ -251,9 +252,9 @@ const OrderSaveForm = () => {
     });
   }
 
-  if(loding) return (<div>준비중...</div>);// 요청 처리 view
+  if(loding) return (<Loding />);// 요청 처리 view
 
-  if(payLoding) return (<div>결제중...</div>);// 결제 처리 view
+  if(payLoding) return (<Loding />);// 결제 처리 view
 
   return (
     <Container>

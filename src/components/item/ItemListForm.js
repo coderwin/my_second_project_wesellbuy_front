@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../css/form.css';
 import { CustomContext } from '../../App';
+import ItemHomeHeaderImageBox from './list/ItemHomeHeaderImageBox';
+import Loding from '../Loding';
 
 /**
  * Item list component
@@ -300,7 +302,7 @@ const ItemListForm = () => {
   
   /// view 모음
 
-  if(loding) return (<div>준비중...</div>); 
+  if(loding) return (<Loding />); 
 
   return (
     <>
@@ -319,6 +321,10 @@ const ItemListForm = () => {
         countOutInItemLikesList}} >
         <Container>
           <ListGroup>
+            {/* 이미지 박스 */}
+            <ListGroupItem>
+              <ItemHomeHeaderImageBox />
+            </ListGroupItem>
             <ListGroupItem>
               <Row>
                 <Col>

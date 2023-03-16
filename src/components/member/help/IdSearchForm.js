@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import EmailForm from './EmailForm'
 import SelfphoneForm from './SelfphoneForm'
 import "../../../css/form.css";
@@ -100,11 +100,19 @@ const IdSearchForm = () => {
         <>
             <SearchIdContext.Provider value={{loding, setLoding, error, handleDataChange, handleSearchIdSubmit, data}}>
                 <Container>
-                    <Row>
-                        <Col className="mousePointer"  onClick={handleEmailBtnClick}>이메일로찾기</Col>
-                        <Col className="mousePointer" onClick={handleSelfphoneBtnClick}>휴대전화로찾기</Col> 
+                    <Row className="d-flex justify-content-center">
+                        <Col sm={2} className="mousePointer" onClick={handleEmailBtnClick}>
+                            <Button variant="outline-primary" size="sm">
+                                이메일로찾기
+                            </Button>
+                        </Col>
+                        <Col sm={2} className="mousePointer" onClick={handleSelfphoneBtnClick}>
+                            <Button variant="outline-primary" size="sm">
+                                휴대전화로찾기
+                            </Button>
+                        </Col> 
                     </Row>
-                    <Row>
+                    <Row className="d-flex justify-content-center">
                         <Col>
                             {selfphoneBox}
                             {emailBox}

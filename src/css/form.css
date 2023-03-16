@@ -24,3 +24,14 @@
 .originContent {
   white-space: pre;
 }
+
+/* footer */
+/* img */
+.footer img {
+  top: 0;
+  left: 0;
+  height: 10px;
+  width: 20px;
+  min-width: 50%;
+  min-height: 100px;
+}

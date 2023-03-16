@@ -6,6 +6,7 @@ import BookForm from './save/BookForm';
 import FurnitureForm from './save/FurnitureForm';
 import HomeApplianceForm from './save/HomeApplianceForm';
 import { Button, Col, Form, Row, Image } from 'react-bootstrap';
+import Loding from '../Loding';
 
 /**
  * Item save component
@@ -219,161 +220,206 @@ const ItemSaveForm = () => {
 
 
   // 서버로 데이터 요청 할 때 view
-  if(loding) return (<div>요청 처리 중...</div>);
+  if(loding) return (<Loding />);
 
   return (
     <>
       <ItemSaveContext.Provider value={{data, errMsgs, handleDataChange}}>
         <Form onSubmit={handleSaveSubmit}>
-          {/* 상품명 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">
-              NAME <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="text"
-                name="name"
-                value={data.name}
-                onChange={handleDataChange}
-              />
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              {/* 상품명 */}
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label column sm="2">
+                  NAME <span className='important'>*</span>
+                </Form.Label>
+                <Col sm="5">
+                  <Form.Control
+                    type="text"
+                    name="name"
+                    value={data.name}
+                    onChange={handleDataChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col className="error">
+                  {errMsgs.name}
+                </Col>
+              </Form.Group>
             </Col>
-            {/* 에러 메시지 */}
-            <Col className="error">
-              {errMsgs.name}
+          </Row>
+
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              {/* 상품종류 */}
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label 
+                  column 
+                  sm="2"
+                >
+                  종류
+                </Form.Label>
+                <Col sm="5">
+                  <Form.Select
+                    as={Col}
+                    sm="5" 
+                    name="type" 
+                    onChange={handleSelectDataChange}
+                  >
+                    {
+                      typeValues.map((value, i) => {
+                        return (<option key={i} value={value}>{typeNames[i]}</option>);
+                      })
+                    }
+                  </Form.Select>
+                </Col>
+              </Form.Group>
             </Col>
-          </Form.Group>
-          {/* 상품종류 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label 
-              column 
-              sm="2"
-            >
-              종류
-            </Form.Label>
-            <Form.Select
-              as={Col}
-              sm="5" 
-              name="type" 
-              onChange={handleSelectDataChange}
-            >
-              {
-                typeValues.map((value, i) => {
-                  return (<option key={i} value={value}>{typeNames[i]}</option>);
-                })
-              }
-            </Form.Select>
-          </Form.Group>
+          </Row>
+
           {/* 제고수량 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">
-              STOCK <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="2">
-              <Form.Control
-                type="number"
-                name="stock"
-                min="1"
-                value={data.stock}
-                onChange={handleDataChange}
-              />
-              <span>개</span>
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label column sm="2">
+                  STOCK(개) <span className='important'>*</span>
+                </Form.Label>
+                <Col sm="2">
+                  <Form.Control
+                    type="number"
+                    name="stock"
+                    min="1"
+                    value={data.stock}
+                    onChange={handleDataChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col className="error">
+                  {errMsgs.stock}
+                </Col>
+              </Form.Group>
             </Col>
-            {/* 에러 메시지 */}
-            <Col className="error">
-              {errMsgs.stock}
-            </Col>
-          </Form.Group>
+          </Row>
+
           {/* 가격 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">
-              PRICE <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="2">
-              <Form.Control
-                type="number"
-                name="price"
-                min="0"
-                value={data.price}
-                placeholder="0"
-                onChange={handleDataChange}
-              />
-              <span>원</span>
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label column sm="2">
+                  PRICE(원) <span className='important'>*</span>
+                </Form.Label>
+                <Col sm="2">
+                  <Form.Control
+                    type="number"
+                    name="price"
+                    min="0"
+                    value={data.price}
+                    placeholder="0"
+                    onChange={handleDataChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col className="error">
+                  {errMsgs.price}
+                </Col>
+              </Form.Group>
             </Col>
-            {/* 에러 메시지 */}
-            <Col className="error">
-              {errMsgs.price}
-            </Col>
-          </Form.Group>
+          </Row>
+
           {/* 설명 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label>
-              CONTENT <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="12">
-              <Form.Control
-                as="textarea"
-                name="content"
-                rows={10}
-                value={data.content}
-                placeholder="상품을 설명해주세요"
-                onChange={handleDataChange}
-              />
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label>
+                  CONTENT <span className='important'>*</span>
+                </Form.Label>
+                <Col sm="12">
+                  <Form.Control
+                    as="textarea"
+                    name="content"
+                    rows={10}
+                    value={data.content}
+                    placeholder="상품을 설명해주세요"
+                    onChange={handleDataChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col className="error">
+                  {errMsgs.content}
+                </Col>
+              </Form.Group>
             </Col>
-            {/* 에러 메시지 */}
-            <Col className="error">
-              {errMsgs.content}
+          </Row>
+
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              {/* type에 따른 input 태그들 */}
+              {data.type === "B" && <BookForm />}
+              {data.type === "F" && <FurnitureForm />}
+              {data.type === "HA" && <HomeApplianceForm />}
             </Col>
-          </Form.Group>
-          {/* type에 따른 input 태그들 */}
-          {data.type === "B" && <BookForm />}
-          {data.type === "F" && <FurnitureForm />}
-          {data.type === "HA" && <HomeApplianceForm />}
+          </Row>
+
           {/* 이미지 모음 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">이미지</Form.Label>
-            <Col sm="6">
-              <Form.Control 
-                type="file"
-                name="files"
-                multiple
-                onChange={handleFilesChange}
-              />
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label column sm="2">이미지</Form.Label>
+                <Col sm="6">
+                  <Form.Control 
+                    type="file"
+                    name="files"
+                    multiple
+                    onChange={handleFilesChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col sm="10" className="error">
+                  {errMsgs.files}
+                </Col>
+                {/* 이미지 미리보기 box */}
+                <Col sm="10" className="imageBox" />
+              </Form.Group>
+
             </Col>
-            {/* 에러 메시지 */}
-            <Col sm="10" className="error">
-              {errMsgs.files}
-            </Col>
-            {/* 이미지 미리보기 box */}
-            <Col sm="10" className="imageBox" />
-          </Form.Group>
+          </Row>
 
           {/* 버튼 box */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Button type="submit">등록</Button>
-            <Button type="button" onClick={handleCancelClick}>취소</Button>
-          </Form.Group>
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Row className="d-flex justify-content-center">
+                  <Col sm={2}>
+                    <Button Button type="submit">등록</Button>
+                  </Col>
+                  <Col sm={2}>
+                    <Button type="button" onClick={handleCancelClick}>취소</Button>
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Col>
+          </Row>
         </Form>
       </ItemSaveContext.Provider>   
     </>

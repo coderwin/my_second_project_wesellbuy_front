@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { Button, Col, Row, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Loding from '../Loding';
 
 /**
  * Recommendation save component
@@ -178,9 +179,8 @@ const RecommendationSaveForm = () => {
 
   /// view
 
-
   // 서버로 데이터 요청 할 때 view
-  if(loding) return (<div>요청 처리 중...</div>);
+  if(loding) return (<Loding />);
 
   return (
     <>

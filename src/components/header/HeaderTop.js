@@ -3,6 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { Nav } from 'react-bootstrap'
 import { json, useNavigate } from 'react-router-dom';
 import { CustomContext } from '../../App';
+import Loding from '../Loding';
 
 const HeaderTop = () => {
 
@@ -125,7 +126,7 @@ const HeaderTop = () => {
     console.log("로그인 상태")
     
     // 작업 진행 상태 일 때
-    if(loding) return <div>요청 처리 중...</div>;
+    if(loding) return (<Loding />);
 
     return (
         <>

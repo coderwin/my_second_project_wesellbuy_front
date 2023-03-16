@@ -16,13 +16,19 @@ const PwdSearchAnswerForm = ({id, pwd}) => {
 
   return (
     <Container>
-      <Row>
-        <Col>{id}님의 아이디는</Col>
+      <Row className="d-flex justify-content-center">
+        <Col sm={3}>
+          {id}님의 아이디는
+        </Col>
       </Row>
-        <Col>{pwd}</Col>
-      <Row>
-        <Col>
-          <Button onClick={handleLoginClick}>로그인</Button>
+      <Row className="d-flex justify-content-center">
+        <Col sm={3}>
+          {pwd}
+        </Col>
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <Col sm={3} className="d-grid gap-2">
+          <Button onClick={handleLoginClick} size="lg">로그인</Button>
         </Col>  
       </Row>
     </Container>

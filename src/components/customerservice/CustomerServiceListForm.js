@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
+import Loding from '../Loding';
 import CustomerServiceListBoxForm from './list/CustomerServiceListBoxForm';
 import CustomerServiceSearchNavForm from './list/CustomerServiceSearchNavForm';
 
@@ -125,7 +126,7 @@ const CustomerServiceListForm = () => {
   /// view 모음
 
   // 요청 처리 view
-  if(loding) return(<div>준비중...</div>);
+  if(loding) return(<Loding />);
 
   return (
     <CustomerServiceListContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas, totalPages}}>

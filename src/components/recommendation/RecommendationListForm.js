@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import { CustomContext } from '../../App';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
+import Loding from '../Loding';
 import RecommendationListBoxForm from './list/RecommendationListBoxForm';
 import RecommendationSearchNavForm from './list/RecommendationSearchNavForm';
 
@@ -126,7 +127,7 @@ const RecommendationListForm = () => {
 
   /// view 모음
 
-  if(loding) return (<div>준비중...</div>); 
+  if(loding) return (<Loding />); 
 
   return (
     <>

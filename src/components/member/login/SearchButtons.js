@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 
 const SearchButtons = () => {
@@ -19,14 +19,18 @@ const SearchButtons = () => {
     
     return (
         <Container>
-            <Row>
-                <Col>
-                    <Button onClick={handleSearchIdClick} variant="outline-primary">아이디찾기</Button>
-                </Col>
-                <Col >
-                    <Button onClick={handleSearchPwdClick}variant="outline-primary">비밀번호찾기</Button>
-                </Col>
-            </Row>
+            <ListGroup>
+                <ListGroupItem>
+                <Row className="d-flex justify-content-center">
+                    <Col sm={2}>
+                        <Button onClick={handleSearchIdClick} variant="outline-primary" >아이디찾기</Button>
+                    </Col>
+                    <Col sm={2}>
+                        <Button onClick={handleSearchPwdClick}variant="outline-primary">비밀번호찾기</Button>
+                    </Col>
+                </Row>
+                </ListGroupItem>
+            </ListGroup>
         </Container>
     );
 }

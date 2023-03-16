@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ItemDetailBoxForm from './detail/ItemDetailBoxForm';
 import ItemOrderBoxForm from './detail/ItemOrderBoxForm';
 import ReplyBoxForm from '../common/reply/ReplyBoxForm';
+import Loding from '../Loding';
 
 /**
  * Item detail component
@@ -185,7 +186,7 @@ const ItemDetailForm = () => {
 
 
   // loding true -> 작업 준비중 view
-  if(loding) return (<div>준비중...</div>);
+  if(loding) return (<Loding />);
 
   return (
     <ItemDetailContext.Provider value={{data, setLoding, srcArr, memberInfo, likesList, addItemLikesList, countOutInItemLikesList}}>

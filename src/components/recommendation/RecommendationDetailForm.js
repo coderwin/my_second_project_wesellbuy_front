@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import Loding from '../Loding';
 import RecommendationDetailBoxForm from './detail/RecommendationDetailBoxForm';
 import ReplyRecommendationBoxForm from './reply/ReplyRecommendationBoxForm'
 
@@ -118,7 +119,7 @@ const RecommendationDetailForm = () => {
   }, []);
 
   // loding true -> 작업 준비중 view
-  if(loding) return (<div>준비중...</div>);
+  if(loding) return (<Loding />);
 
   return (
     <RecommendationDetailContext.Provider value={{data, setLoding, srcArr, memberInfo}}>
