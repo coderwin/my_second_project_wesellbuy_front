@@ -134,7 +134,6 @@ export const LoginForm = () => {
     } catch(error) {
       // 요청 실패
       console.log("요청 실패");
-      console.log(error);
       // loding false로 바꿈
       setLoding(false);
       // error 상태에 데이터 넣기

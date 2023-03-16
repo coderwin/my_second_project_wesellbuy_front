@@ -15,7 +15,7 @@ const ItemListBoxForm = () => {
 
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {cardDatas, likesList, memberInfo} = useContext(ItemListContext);
+  const {cardDatas, likesList, memberInfo, addItemLikesList, countOutInItemLikesList} = useContext(ItemListContext);
   /// 상태 모음
 
   /// 메서드 모음
@@ -33,7 +33,9 @@ const ItemListBoxForm = () => {
           key={i}
           data={cardData} 
           likesList={likesList} 
-          memberInfo={memberInfo} 
+          memberInfo={memberInfo}
+          addItemLikesList={addItemLikesList}
+          countOutInItemLikesList={countOutInItemLikesList}
         /> 
         );
     });

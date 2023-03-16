@@ -16,17 +16,18 @@ import { useNavigate } from 'react-router-dom';
  *                - memberInfo: 회원정보 prop
  * 
  */
-const CardWithHeaderForm = ({data, likesList, memberInfo})=> {
+const CardWithHeaderForm = ({data, likesList, memberInfo, addItemLikesList, countOutInItemLikesList})=> {
 
   /// 변수 모음
   const {num: boardNum, name, price, memberId, pictureForm, rank} = data;
   const navigation = useNavigate();// navigation
+  const favoriteHeart = likesList.includes(boardNum);// 하트이미지 표시 결정 변수
 
   /// 상태 모음
   const [likesState, setLikesState] = useState(false);// 좋아요 상태
   // const [content, setContent] = useState("");// 내용 상태
   const [src, setSrc] = useState("");// 이미지 src
-
+  
   /// 메서드 모음
   /// 처음 시작
   useEffect(() => {
@@ -77,9 +78,10 @@ const CardWithHeaderForm = ({data, likesList, memberInfo})=> {
           const response = await deleteLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
-          console.log(response.data.data);
+          // sessionStorage에서 빼기
+          countOutInItemLikesList(likesList, boardNum);
           // likesState = false로 바꾸기
-          setLikesState(false);
+          setLikesState(() => false);
         } catch(err) {
           // 요청 실패
           console.log("요청 실패");
@@ -92,8 +94,10 @@ const CardWithHeaderForm = ({data, likesList, memberInfo})=> {
           const response = await saveLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
+          // sessionStorage에 저장
+          addItemLikesList(likesList, boardNum);
           // likesState = true로 바꾸기
-          setLikesState(true);
+          setLikesState(() => true);
         } catch(err) {
           // 요청 실패
           console.log("요청 실패");
@@ -160,7 +164,8 @@ const CardWithHeaderForm = ({data, likesList, memberInfo})=> {
       </Card.Body>
       <Card.Footer>
         <span className="likes" onClick={handleLikesClick}>
-          {likesState ? "💓" : "♥️"}
+          {/* {likesState ? "💓" : "♥️"} */}
+          {favoriteHeart ? "💓" : "♥️"}
         </span>
         <Button type="button" id={boardNum} variant="primary" onClick={handleDetailClick}>상세보기</Button>
       </Card.Footer>

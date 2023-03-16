@@ -17,35 +17,24 @@ const ItemRankBoxForm = () => {
   
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {setLoding} = useContext(ItemRankContext);
   const navigation = useNavigate();// navigation
 
   /// 상태 모음
-  
   const [datas, setDatas] = useState(null);// 상품순위 목록 데이터 상태 
-
   /// 메서드 모음
-  // 처음 시작
-  useEffect(() => {
-    // 상품순위 목록에 담기
-    inputDatas();
-  }, []);
+  
   // datas에 상품순위 목록에 담기
   async function inputDatas() {
-    // 요청 시작
-    setLoding(true);
     try {
       // 서버에서 상품 목록 불러오기
-      const {data} = await getItemRankList();
+      const response = await getItemRankList();
       // 요청 성공
       console.log("요청 성공");
       // 요청 끝
-      setLoding(false);
       // datas에 담기
-      setDatas(data.data);
+      setDatas(response.data.data);
     } catch(err) {
       // 요청 실패
-      setLoding(false);
       console.log("요청 실패");
       console.log(err);
     }
@@ -64,12 +53,17 @@ const ItemRankBoxForm = () => {
     navigation(`/item/${id}`);
   }
 
+  /// 처음 시작
+  useEffect(() => {
+    // 상품순위 목록에 담기
+    inputDatas();
+  }, []);
+
   /// view 모음
   let view = null;// 태그를 담아준다.
   // tbody에 들어갈 데이터 생성
   // 데이터가 있으면 생성한다
   if(datas) {
-    console.log(typeof(datas));
     // 데이터 만들기
     view = datas.map((data) => {
       return (
@@ -83,7 +77,6 @@ const ItemRankBoxForm = () => {
         </tr>
       );
     });
-
   // 없으면 데이터가 존재하지 않는다고 알려주기
   } else {
     view = (

@@ -33,13 +33,15 @@ const HeaderTop = () => {
         );
         return data;
     }
+
+    // 외부 변수, 상태, 메서드 불러오기
+    const {sessionForm} = useContext(CustomContext);
     
     // 상태 모음
     // 로딩/작업진행중 상태
     const [loding, setLoding] = useState(false); 
     const [memberInfo, setMemberInfo] = useState(null);
-    // 외부 변수, 상태, 메서드 불러오기
-    const {sessionForm} = useContext(CustomContext);
+    
 
     /// 메서드 모음
 
@@ -55,6 +57,7 @@ const HeaderTop = () => {
             // session 아이디 제거하기 - 서버 연결 전 임시로
             sessionStorage.clear();
             // 홈으로
+            navigation(0);
             navigation("/");
             // sessionForm 값 초기화하기
             setMemberInfo(null);
@@ -67,7 +70,9 @@ const HeaderTop = () => {
     }
 
     /// 처음 시작
-    // 왜 로그인 유지되는지는 모르겠다
+    // // 왜 로그인 유지되는지는 모르겠다
+    // // 로그인이 되면서 app.js에서부터 다시 랜더링 되기 때문이다.
+    // // 로그인시에는 body만 변한다/렌더링되기에 아무일이 안 일어난다.
     useEffect(() => {
         const getMemberInfo = () => {
             const key = "LOGIN_MEMBER";

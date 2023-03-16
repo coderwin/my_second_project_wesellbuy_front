@@ -18,20 +18,22 @@ const ItemRankBox = () => {
 
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {rankCardDatas, likesList, memberInfo} = useContext(ItemListContext);
-  const cardsOnARow = 3;// 한 줄에 게시글(카드) 개수
+  const {rankCardDatas, likesList, memberInfo, addItemLikesList, countOutInItemLikesList} = useContext(ItemListContext);
   /// 상태 모음
-  console.log("ranckCardDatas : " + rankCardDatas);
-  console.log(rankCardDatas);
 
   /// 메서드 모음
 
   /// view 모음
   let view = [];// view 변수
   /// rankCardDatas가 있을 때만 실행한다
-  if(rankCardDatas) {
+  if(rankCardDatas.length !== 0) {
+    const isStop = 3;// 멈추기 변수
     // rankCard 뿌려주기 cardsOnARow 만큼만
-    for(let i = 0; i < cardsOnARow; i++) {
+    for(let i = 0; i < rankCardDatas.length; i++) {
+      // 3이면 멈추기
+      if(i === isStop) {
+        break;
+      }
       view.push(
         <CardWithHeaderForm 
           // key={rankCardDatas[i].num} // 확인하기
@@ -39,6 +41,8 @@ const ItemRankBox = () => {
           data={rankCardDatas[i]} 
           likesList={likesList} 
           memberInfo={memberInfo} 
+          addItemLikesList={addItemLikesList}
+          countOutInItemLikesList={countOutInItemLikesList}
         />
       );
     }

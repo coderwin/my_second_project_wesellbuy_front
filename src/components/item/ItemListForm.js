@@ -36,12 +36,14 @@ const ItemListForm = () => {
   }
   // navigation
   const navigation = useNavigate();
+  // 외부 변수, 상태, 메서드 불러오기
+  const {sessionInfo} = useContext(CustomContext);// session에 있는 회원정보 불러오기
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청처리 상태
   const [data, setData] = useState(defaultData);// 검색 데이터 상태
   const [cardDatas, setCardDatas] = useState([]);// 데이터 상태(Card를 위한)
-  const [rankCardDatas, setRankCardDatas] = useState(null);// 데이터 상태(Card를 위한)
+  const [rankCardDatas, setRankCardDatas] = useState([]);// 데이터 상태(Card를 위한)
   const [likesList, setLikesList] = useState([]);// 회원의 상품좋아요 상태
   const [memberInfo, setMemberInfo] = useState(null);// 회원정보 상태
   const [totalPages, setTotalPages] = useState(0);// 상품 list의 전체페이지
@@ -63,17 +65,17 @@ const ItemListForm = () => {
   // rankCardDatas에 상품목록 담기
   async function inputRankCardDatas() {
     // 요청 시작
-    setLoding(true);
+    setLoding(() => true);
     try {
       // 서버에서 상품 목록 불러오기
       const {data} = await getItemRankList();
-      setLoding(false);
+      setLoding(() => false);
       // 요청 성공
       console.log("요청 성공");
       // cardDatas에 담기
-      setRankCardDatas(data.data);
+      setRankCardDatas(() => data.data);
     } catch(err) {
-      setLoding(false);
+      setLoding(() => false);
       // 요청 실패
       console.log("요청 실패");
       console.log(err);
@@ -93,7 +95,7 @@ const ItemListForm = () => {
   // cardDatas에 상품목록 담기
   async function inputCardDatas() {
     // 요청 시작
-    setLoding(true);
+    setLoding(() => true);
     try {
       // 서버에서 상품 목록 불러오기
       const {data} = await getItemList()
@@ -101,8 +103,8 @@ const ItemListForm = () => {
       setLoding(false);
       console.log("요청 성공");
       // cardDatas에 담기
-      setCardDatas(data.data.content);
-      setTotalPages(data.data.totalPages);
+      setCardDatas(() => data.data.content);
+      setTotalPages(() => data.data.totalPages);
     } catch(err) {
       // 요청 실패
       setLoding(false);
@@ -117,14 +119,14 @@ const ItemListForm = () => {
       // 서버에서 상품 목록 불러오기
       const {data} = await getItemList()
       // 요청 성공
-      setLoding(false);
+      setLoding(() => false);
       console.log("요청 성공");
       // cardDatas에 담기
-      setCardDatas(data.data.content);
-      setTotalPages(data.data.totalPages);
+      setCardDatas(() => data.data.content);
+      setTotalPages(() => data.data.totalPages);
     } catch(err) {
       // 요청 실패
-      setLoding(false);
+      setLoding(() => false);
       console.log("요청 실패");
       console.log(err);
     }
@@ -162,21 +164,22 @@ const ItemListForm = () => {
   // 회원의 좋아요 목록 LikesList에 담기
   async function inputLikesList() {
     // 요청 시작
-    setLoding(true);
+    setLoding(() => true);
     try {
       // 서버에 요청하기
       const response = await getLikesList();
       // 요청 성공
-      setLoding(false);
+      setLoding(() => false);
       console.log("요청 성공");
       // likesList에 담기
-      setLikesList(response.data.data);
-      // sessionStorage에 담기
-      inputLikesListInSessioStorage(response.data.data);
-      console.log(response);
+      setLikesList(() => {
+        // sessionStorage에 담기
+        inputLikesListInSessioStorage(response.data.data);
+        return response.data.data
+      });
     } catch(err) {
       // 요청 실패
-      setLoding(false);
+      setLoding(() => false);
       console.log("요청 실패");
       console.log(err);
     }
@@ -220,6 +223,57 @@ const ItemListForm = () => {
     navigation("/item/rank");
   }
 
+  /// CardForm에서 사용
+  // sessionStorage에 저장하기
+  function addItemLikesList(likesList, boardNum) {
+    // likesList에 추가
+    if(likesList.length === 0) {
+      likesList.push(boardNum);
+      // likesList에 담기
+      setLikesList(() => {
+        // likesList를 string으로 만들어주기
+        const strLikesList = JSON.stringify(likesList);
+        // sessionStorage에 담기
+        const key = "itemLikesList";
+        sessionStorage.setItem(key, strLikesList);
+        return [
+          ...likesList,
+          boardNum
+        ];
+      });
+    } else {
+      if(!likesList.includes(boardNum)) {
+        likesList.push(boardNum);
+        // likesList에 담기
+        setLikesList(() => {
+          // likesList를 string으로 만들어주기
+          const strLikesList = JSON.stringify(likesList);
+          // sessionStorage에 담기
+          const key = "itemLikesList";
+          sessionStorage.setItem(key, strLikesList);
+          return [
+            ...likesList,
+            boardNum
+          ];
+        });
+      };
+    }
+  }
+  // sessionStorage에서 빼기
+  function countOutInItemLikesList(likesList, boardNum) {
+    // likesList에 추가
+    const newLikesList = likesList.filter((num) => num !== boardNum);
+    // likesList를 string으로 만들어주기
+    const strLikesList = JSON.stringify(newLikesList);
+    // sessionStorage에 담기
+    const key = "itemLikesList";
+    sessionStorage.setItem(key, strLikesList);
+    // setLikesList에서 빼기
+    setLikesList(likesList.filter((num) => {
+      return num !== boardNum;
+    }));
+  }
+
   /// 처음 시작
   // sessionStorage에 있는 회원정보 불러오기
   useEffect(() => { 
@@ -250,7 +304,19 @@ const ItemListForm = () => {
 
   return (
     <>
-      <ItemListContext.Provider value={{data, handleDataChange, handlePageInDataChange, handleTypeNavClick, memberInfo, handleSearchClick, cardDatas, rankCardDatas, likesList}} >
+      <ItemListContext.Provider value={{
+        data, 
+        handleDataChange, 
+        handlePageInDataChange, 
+        handleTypeNavClick, 
+        memberInfo, 
+        handleSearchClick, 
+        cardDatas, 
+        rankCardDatas, 
+        likesList,
+        setLikesList,
+        addItemLikesList,
+        countOutInItemLikesList}} >
         <Container>
           <ListGroup>
             <ListGroupItem>

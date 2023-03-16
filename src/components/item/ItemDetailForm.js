@@ -45,6 +45,10 @@ const ItemDetailForm = () => {
   const [data, setData] = useState(defaultData);// 데이터 상태
   const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열 
   const [memberInfo, setMemberInfo] = useState(null);// 로그인 사용자 정보 상태
+  const [likesList, setLikesList] = useState(() => {
+    const key = "itemLikesList";
+    return JSON.parse(sessionStorage.getItem(key)) || [];
+  });// 회원 좋아요 목록 상태
 
   /// 메서드 모음
 
@@ -118,6 +122,57 @@ const ItemDetailForm = () => {
     );
   }
 
+  /// ItemDetailBoxForm에서 사용
+  // sessionStorage에 저장하기
+  function addItemLikesList(likesList, boardNum) {
+    // likesList에 추가
+    if(likesList.length === 0) {
+      likesList.push(boardNum);
+      // likesList에 담기
+      setLikesList(() => {
+        // likesList를 string으로 만들어주기
+        const strLikesList = JSON.stringify(likesList);
+        // sessionStorage에 담기
+        const key = "itemLikesList";
+        sessionStorage.setItem(key, strLikesList);
+        return [
+          ...likesList,
+          boardNum
+        ];
+      });
+    } else {
+      if(!likesList.includes(boardNum)) {
+        likesList.push(boardNum);
+        // likesList에 담기
+        setLikesList(() => {
+          // likesList를 string으로 만들어주기
+          const strLikesList = JSON.stringify(likesList);
+          // sessionStorage에 담기
+          const key = "itemLikesList";
+          sessionStorage.setItem(key, strLikesList);
+          return [
+            ...likesList,
+            boardNum
+          ];
+        });
+      };
+    }
+  }
+  // sessionStorage에서 빼기
+  function countOutInItemLikesList(likesList, boardNum) {
+    // likesList에 추가
+    const newLikesList = likesList.filter((num) => num !== boardNum);
+    // likesList를 string으로 만들어주기
+    const strLikesList = JSON.stringify(newLikesList);
+    // sessionStorage에 담기
+    const key = "itemLikesList";
+    sessionStorage.setItem(key, strLikesList);
+    // setLikesList에서 빼기
+    setLikesList(likesList.filter((num) => {
+      return num !== boardNum;
+    }));
+  }
+
   // 페이지 처음 시작
   useEffect(() => {
     // 상품 상세보기 데이터 불러오기
@@ -128,11 +183,12 @@ const ItemDetailForm = () => {
     getMemberInfo();
   }, []);
 
+
   // loding true -> 작업 준비중 view
   if(loding) return (<div>준비중...</div>);
 
   return (
-    <ItemDetailContext.Provider value={{data, setLoding, srcArr, memberInfo}}>
+    <ItemDetailContext.Provider value={{data, setLoding, srcArr, memberInfo, likesList, addItemLikesList, countOutInItemLikesList}}>
       <Container>
         <Row>
           {/* item detail box */}

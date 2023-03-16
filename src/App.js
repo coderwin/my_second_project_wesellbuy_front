@@ -50,13 +50,14 @@ function App() {
 
   // 메서드 모음
   /// 로그인 데이터 sessionForm에 담기
-  function handleSessionFormDataInput() {
-    // session에서 로그인한 사용자 데이터 불러오기
-    const sessionId = "LOGIN_MEMBER";
-    // 회원정보 가져오기
-    const memberInfo = JSON.parse(sessionStorage.getItem(sessionId));
+  function handleSessionFormDataInput() { 
     // sessionForm에 넣어주기
-    setSessionForm(memberInfo);
+    setSessionForm(() => {
+      // session에서 로그인한 사용자 데이터 불러오기
+      const sessionId = "LOGIN_MEMBER";
+      // 회원정보 가져오기
+      return JSON.parse(sessionStorage.getItem(sessionId));
+    });
   }
   /// sessionForm의 데이터 바꾸기
   function handleSessionFormChangeData(value) {

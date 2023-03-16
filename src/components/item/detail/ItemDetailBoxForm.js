@@ -17,61 +17,18 @@ import '../../../css/form.css';
 const ItemDetailBoxForm = () => {
 
   /// 변수 모음
-  const {data, setLoding, memberInfo, srcArr} = useContext(ItemDetailContext);// 외부의 변수, 상태, 메서드 불러오기
+  const {data, setLoding, memberInfo, srcArr, likesList, addItemLikesList, countOutInItemLikesList} = useContext(ItemDetailContext);// 외부의 변수, 상태, 메서드 불러오기
   const {num: boardNum} = useParams();// 상품번호 불러오기
   const navigation = useNavigate();// navigation
+  const favoriteHeart = likesList.includes(Number(boardNum));
 
   /// 상태 모음
   const [likesState, setLikesState] = useState(false);// 좋아요 선택 상태
   const [likesCount, setLikesCount] = useState(data.likes);// 좋아요수 상태
-  const [itemLikesList, setItemLikesList] = useState(null);// 회원 좋아요 목록 상태
 
-  console.log(itemLikesList);
-  
+
   /// 메서드 모음
-  // sessionStorage에서 itemLikesList 불러오기
-  // function getItemLikesList() {
-  //   const key = "itemLikesList";
-  //   const itemLikesList = JSON.parse(sessionStorage.getItem(key));
-  //   // setItemLikesList에 담기
-  //   setItemLikesList(itemLikesList);
-  // }
-  // /// 처음 시작
-  // useEffect(() => {
-  //   // memberInifo 있을 때만 반응한다.
-  //   if(memberInfo) {
-  //     console.log(memberInfo);
-  //     // sessionStroage에서  itemLikesList 불러오기
-  //     getItemLikesList();
-  //   } 
-  // }, [memberInfo]);
-  
-
-  // 좋아요 표시 하기
-  function expressItemLikes() {
-    // itemLikesList가 있으면 실행한다.
-    console.log("itemLikesList : " + likesState);
-    if(itemLikesList) {
-      console.log("expressItemLikes 하하");
-      // 순회하여 해당 상품의 번호가 있으면 생깔있는 하트표시하고
-      for(let i = 0; i < itemLikesList.length; i++) {
-        // 상품번호와 회원의 좋아요리스트에 같은 번호 있으면 
-        // 색깔 하트를 뿌려준다.
-        if(boardNum === Number(itemLikesList[i])) {
-          // likesState = true로 바꾼다
-          setLikesState(true);
-          console.log("itemLikesList : " + likesState);
-
-          return;
-        }
-      }
-      console.log("itemLikesList : " + likesState);
-      // likesState = false로 바꾼다
-      setLikesState(false);
-    }
-  }
-  
-  
+ 
   // 서버에서 좋아요 리스트 불러오기
   async function getLikesList() {
     return await axios.get(
@@ -81,21 +38,6 @@ const ItemDetailBoxForm = () => {
       }
     );
   }
-  // setItemLikesList에 담기
-  async function addItemLikesList() {
-    try {
-      const response = await getLikesList();
-      // 요청 성공
-      console.log("요청 성공");
-      setItemLikesList(response.data.data);
-    } catch(err) {
-      // 요청 실패
-      console.log("요청 실패");
-      console.log(err);
-    }
-  }
-  
-
 
   // 좋아요 하트를 클릭했을 때 삭제하기
   async function deleteLikes(boardNum, likesNum) {
@@ -130,8 +72,11 @@ const ItemDetailBoxForm = () => {
           const response = await deleteLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
+          const itemNum = Number(boardNum);
+          // sessionStorage에서 빼기
+          countOutInItemLikesList(likesList, itemNum);
           // likesState = false로 바꾸기
-          setLikesState(false);
+          setLikesState(() => false);
           // 좋아요수 1 감소시키기
           setLikesCount((likesCount) => {
             return likesCount - 1;
@@ -148,8 +93,11 @@ const ItemDetailBoxForm = () => {
           const response = await saveLikes(boardNum);
           // 요청 성공
           console.log("요청 성공");
+          const itemNum = Number(boardNum);
+          // sessionStorage에 저장
+          addItemLikesList(likesList, itemNum);
           // likesState = true로 바꾸기
-          setLikesState(true);
+          setLikesState(() => true);
           // 좋아요수 1 증가시키기
           setLikesCount((likesCount) => {
             return likesCount + 1; 
@@ -165,6 +113,7 @@ const ItemDetailBoxForm = () => {
       alert("로그인 후 이용해주세요");
     }
   }
+  
 
   // 수정 버튼 클릭했을 때
   function handleUpdateClick() {
@@ -207,17 +156,6 @@ const ItemDetailBoxForm = () => {
     }
   }
 
-  /// 처음 시작
-  // 하트 표시하기
-  useEffect(() => {
-    //좋아요 하트 표시 하기
-    expressItemLikes();
-  }, []);
-  // setItemLikesList에 담기
-  useEffect(() => {
-    addItemLikesList();
-  }, [likesState]);
-
   /// view 모음
   // 수정/삭제 버튼 만들기
   let updateAndeDeleteButtonesBox = "";// 수정/삭제 버튼 담는 변수
@@ -238,6 +176,14 @@ const ItemDetailBoxForm = () => {
       );
     }
   }
+
+  /// 처음 시작
+  // likesState value 정하기
+  useEffect(() => {
+    if(likesList.includes(Number(boardNum))) {
+      setLikesState(true);
+    }
+  }, []);
 
   return (
     <>
@@ -264,9 +210,10 @@ const ItemDetailBoxForm = () => {
           <Row>
             {/* 클릭하면 증가 */}
             <Col md="2">
-              <span>좋아요</span>
+              <span>좋아요</span> 
               <span className="likes" onClick={handleLikesClick}>
-                {likesState ? "💓" : "♥️"}
+                {/* {likesState ? "💓" : "♥️"} */}
+                {favoriteHeart ? "💓" : "♥️"}
               </span>
             </Col>
             <Col md="2">{likesCount}</Col>
