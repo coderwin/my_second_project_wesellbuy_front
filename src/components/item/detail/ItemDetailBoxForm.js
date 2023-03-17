@@ -165,10 +165,8 @@ const ItemDetailBoxForm = () => {
       updateAndeDeleteButtonesBox = (
         <ListGroupItem>
           <Row>
-            <Col>
+            <Col className="body_text_right">
               <Button onClick={handleUpdateClick}>수정</Button>
-            </Col>
-            <Col>
               <Button onClick={handleDeleteClick}>삭제</Button>
             </Col>
           </Row>
@@ -191,7 +189,9 @@ const ItemDetailBoxForm = () => {
         {/* 수정/삭제 button */}
         {updateAndeDeleteButtonesBox}
         {/* 상품명 */}
-        <ListGroupItem>{data.name}</ListGroupItem>
+        <ListGroupItem className="body_text_center display-4 bg-light">
+          {data.name}
+        </ListGroupItem>
         {/* 이미지 모음 */}
         {
           data.pictureForms.length !== 0 && (<ListGroupItem>
@@ -229,15 +229,15 @@ const ItemDetailBoxForm = () => {
         {/* 가격 */}
         <ListGroupItem>
           <Row>
-            <Col md="2">가격</Col>
-            <Col md="2">{data.price} <span>원</span></Col>
+            <Col md="2">가격(원)</Col>
+            <Col md="2">{data.price}</Col>
           </Row>
         </ListGroupItem>
         {/* 제고수량 */}
         <ListGroupItem>
           <Row>
-            <Col md="2">수량</Col>
-            <Col md="2">{data.stock} <span>개</span></Col>
+            <Col md="2">수량(개)</Col>
+            <Col md="2">{data.stock}</Col>
           </Row>
         </ListGroupItem>
         {/* 저자 - type:B에서만 */}

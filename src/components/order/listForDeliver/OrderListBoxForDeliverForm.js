@@ -52,11 +52,11 @@ const OrderListBoxForDeliverForm = () => {
   }
 
   return (
-    <Table>
-      <thead>
+    <Table hover>
+      <thead class="table-primary">
         <tr>
           <th>주문순서</th>
-          <th>회원아이디</th>
+          <th>ID</th>
           <th>주문날짜</th>
           <th>주문상태</th>
           <th>배달상태</th>

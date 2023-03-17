@@ -25,6 +25,96 @@
   white-space: pre;
 }
 
+/* body */
+/* body text */
+/* center */
+.body_text_center {
+  text-align: center
+}
+/* right */
+.body_text_right {
+  text-align: right;
+}
+/* left */
+.body_text_left {
+  text-align: left;
+}
+
+/* 캐러셀 이미지 크기 변경 */
+/* detail -> 현재 사용 안 함 */ 
+/* .carousel-inner > .carousel-item > img {
+  top: 0;
+  left: 0;
+  height: 300px;
+  min-width: 100%;
+  min-height: 100px;
+} */
+
+/* home container -> 현재 사용 안 함*/ 
+/* .home_container ul {
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+} */
+/* rank card 이미지 크기 같게 */
+.home_container .rank_card .card-img-top {
+  height: 10rem;
+  object-fit: cover;
+}
+/* body card 이미지 크기 같게 */
+.home_container .body_card .card-img-top {
+  height: 10rem;
+  object-fit: cover;
+}
+/* search NavBar */
+.search_navbar {
+  background-color: #e3f2fd;
+}
+/* pagination box */
+.home_container .pagination {
+  justify-content: center;
+}
+/* side navbar */
+.home_container .side_nav a:hover {
+  background-color: rgb(40, 103, 221);
+  color: white;
+}
+
+/* 추천합니다 body */
+.recommendation_container .rank_card .card-img-top {
+  height: 10rem;
+  object-fit: cover;
+}
+/* body card 이미지 크기 같게 */
+.recommendation_container .body_card .card-img-top {
+  height: 10rem;
+  object-fit: cover;
+}
+/* search NavBar */
+.recommendation_container .search_navbar {
+  background-color: #e3f2fd;
+}
+/* pagination box */
+.recommendation_container .pagination {
+  justify-content: center;
+}
+/* side navbar */
+.recommendation_container .side_nav a:hover {
+  background-color: rgb(40, 103, 221);
+  color: white;
+}
+/* card title */
+.recommendation_container .card .card-header {
+  background-color: black;
+  color: white;
+  font-size: 1.5rem;
+}
+
+/* pagination */
+.pagination {
+  justify-content: center;
+}
+
 /* footer */
 /* img */
 .footer img {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -33,7 +33,12 @@ const CardForm = ({data})=> {
     inputContent();
     // 이미지 src 담기 -> 현재 사용 안 함
       // 이미지 있으면 사용하기 
-    // setSrc(createSrc(pictureForm.storedFileName));
+      // if(pictureForm) {
+      //   setSrc(createSrc(pictureForm.storedFileName));
+      // // 이미지 없을 때
+      // } else {
+      //   setSrc(NoImage);
+      // }
   }, []);
   // 상품 설명은 30 글자로만
   function inputContent() {
@@ -59,25 +64,31 @@ const CardForm = ({data})=> {
   /// view 모음
   
   return (
-    <Card>
-      {/* 이미지 있으면 사용하자 -> 현재 사용 안 함 */}
-      {/* <Card.Img variant="top" src={src} />  */}
-      <Card.Body>
-        <Card.Title>
-          {itemName}
-        </Card.Title>
-        <Card.Text>
-          {content}
-        </Card.Text>
-        <Card.Text>
-          <span>판매자 : </span>{sellerId}
-        </Card.Text>
-      </Card.Body>
-      <Card.Footer>
-        <span>조회수 </span>{hits}
-        <Button id={boardNum} variant="primary" onClick={handleDetailClick}>상세보기</Button>
-      </Card.Footer>
-    </Card>
+    <Col>
+      <Card className="body_card h-100">
+        {/* 이미지 있으면 사용하자 -> 현재 사용 안 함 */}
+        {/* <Card.Img variant="top" src={src} />  */}
+        <Card.Header>{itemName}</Card.Header>
+        <Card.Body>
+          <Card.Text>
+            {content}
+          </Card.Text>
+          <Card.Text>
+            <span>판매자 : </span>{sellerId}
+          </Card.Text>
+        </Card.Body>
+        <Card.Footer>
+          <Row>
+            <Col sm="12">
+              <span>조회수 </span>{hits}
+            </Col>
+            <Col sm="12">
+              <Button id={boardNum} variant="primary" onClick={handleDetailClick}>상세보기</Button>
+            </Col>
+          </Row>
+        </Card.Footer>
+      </Card>
+    </Col>
   )
 }
 

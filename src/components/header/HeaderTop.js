@@ -7,7 +7,16 @@ import Loding from '../Loding';
 
 const HeaderTop = () => {
 
+    // 외부 변수, 상태, 메서드 불러오기
+    const {sessionForm, changeLoding} = useContext(CustomContext);
     const navigation = useNavigate();
+
+    // 상태 모음
+    // 로딩/작업진행중 상태
+    const [loding, setLoding] = useState(false); 
+    const [memberInfo, setMemberInfo] = useState(null);
+
+    /// 메서드 모음
     // /login으로 가기
     const handleLoginClick = () => {
         navigation("/login");
@@ -27,38 +36,25 @@ const HeaderTop = () => {
     // 서버에 로그아웃 요청하기
     async function logout() {
         // loding 상태 true
-        setLoding(true);
+        changeLoding(true);
         // 서버 로그아웃 하기
         const {data} = await axios.post(
             "http://localhost:8080/members/logout"
         );
         return data;
     }
-
-    // 외부 변수, 상태, 메서드 불러오기
-    const {sessionForm} = useContext(CustomContext);
-    
-    // 상태 모음
-    // 로딩/작업진행중 상태
-    const [loding, setLoding] = useState(false); 
-    const [memberInfo, setMemberInfo] = useState(null);
-    
-
-    /// 메서드 모음
-
     // 로그아웃 하기
     const handleLogoutClick = async () => {
         try {
             // 서버에 로그아웃 요청
             const result = await logout();
             // loding false로 바꾸기
-            setLoding(false);
+            changeLoding(false);
             // 로그아웃 성공 메시지 출력
             console.log(result.data);
             // session 아이디 제거하기 - 서버 연결 전 임시로
             sessionStorage.clear();
             // 홈으로
-            navigation(0);
             navigation("/");
             // sessionForm 값 초기화하기
             setMemberInfo(null);

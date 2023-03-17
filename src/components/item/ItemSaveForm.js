@@ -56,6 +56,10 @@ const ItemSaveForm = () => {
   const [error, setError] = useState(null);// 에러 상태
   const [errMsgs, setErrMsgs] = useState(defaultErrMsgs); // 에러 메시지 상태
   const [files, setFiles] = useState(null);// 파일들 상태
+  const [memberInfo, setMemberInfo] = useState(() => {
+    const key = "LOGIN_MEMBER";
+    return JSON.parse(sessionStorage.getItem(key)) || null;
+  });// 회원정보 상태
 
   /// 메서드 모음
   // input에 데이터 바뀌면 data 데이터 변경한다
@@ -70,69 +74,73 @@ const ItemSaveForm = () => {
   async function handleSaveSubmit(e) {
     // 이벤트 막기
     e.preventDefault();
-    // loding 상태 true로 바꾸기
-    setLoding(true);
-    // FormData 객체 생성
-    const formData = new FormData();
-    // 데이터 넣기
-    const jsonData = JSON.stringify(data);
-    const blob = new Blob([jsonData], {type: "application/json"}) // file과 content-type 다르게 하기 위해 사용?
-    formData.append("data", blob);
-    // files에 담겨있는 객체들을 files에 각각 담기
-    for(let key in files) {
-      formData.append("files", files[key]);
-    }
-    // 데이터 서버로 보내기
-    try {
-      // 데이터 저장하기
-      const response = await save(formData);
-      // 저장 성공
-      console.log("상품 저장 성공");
-      // loding false로
-      setLoding(false);
-      // 상품 등록 완료 alert창 띄우기
-      alert(response.data.data);
-      // itemNum 가져오기
-      const {itemNum} = response.data;
-      // ItemDetailForm으로 이동하기 - 나중에 작동시키기
-      navigation(`/item/${itemNum}`);
-    } catch(err) {
-      // 요청 실패
-      console.log("상품 저장 실패");
-      // loding false로 
-      setLoding(false);
-      // 다른 에러일 경우
-      if(err.response.data.errMsg) {
-        alert(err.response.data.errMsg);
+    if(memberInfo) {
+      // loding 상태 true로 바꾸기
+      setLoding(true);
+      // FormData 객체 생성
+      const formData = new FormData();
+      // 데이터 넣기
+      const jsonData = JSON.stringify(data);
+      const blob = new Blob([jsonData], {type: "application/json"}) // file과 content-type 다르게 하기 위해 사용?
+      formData.append("data", blob);
+      // files에 담겨있는 객체들을 files에 각각 담기
+      for(let key in files) {
+        formData.append("files", files[key]);
       }
-      // field error 일 때
-      if(err.response.data.errors) {
-        // newErrMsgs 객체 생성하기
-        let newErrMsgs = {};
-        // field 값에 따라서 데이터 넣기
-        for(let key in err.response.data.errors) {
-          // newErrMsg에 각가의 field 에러 메시지 객체 담기
-          const newErrMsg = err.response.data.errors[key];
-          // newErrMsg의 field와 errMsgs의 key를 비교한다.
-          for(let errMsgKey in errMsgs) {
-            // errMsgKey와 newErrMsg의 field가 같으면 
-            // newErrMsgs에 새로운 데이터를 추가한다.
-            if(newErrMsg.field === errMsgKey) {
-              newErrMsgs = {
-                ...newErrMsgs,
-                [newErrMsg.field]: newErrMsg.errMsg
-              }
-            } 
-          }
+      // 데이터 서버로 보내기
+      try {
+        // 데이터 저장하기
+        const response = await save(formData);
+        // 저장 성공
+        console.log("상품 저장 성공");
+        // loding false로
+        setLoding(false);
+        // 상품 등록 완료 alert창 띄우기
+        alert(response.data.data);
+        // itemNum 가져오기
+        const {itemNum} = response.data;
+        // ItemDetailForm으로 이동하기 - 나중에 작동시키기
+        navigation(`/item/${itemNum}`);
+      } catch(err) {
+        // 요청 실패
+        console.log("상품 저장 실패");
+        // loding false로 
+        setLoding(false);
+        // 다른 에러일 경우
+        if(err.response.data.errMsg) {
+          alert(err.response.data.errMsg);
         }
-        // errMsgs에 newErrMsgs 담기
-        // defaultMsgs는 항상 이벤트가 일어나면 초기화 시켜준다 
-        setErrMsgs({
-          ...defaultErrMsgs,
-          ...newErrMsgs
-        });
+        // field error 일 때
+        if(err.response.data.errors) {
+          // newErrMsgs 객체 생성하기
+          let newErrMsgs = {};
+          // field 값에 따라서 데이터 넣기
+          for(let key in err.response.data.errors) {
+            // newErrMsg에 각가의 field 에러 메시지 객체 담기
+            const newErrMsg = err.response.data.errors[key];
+            // newErrMsg의 field와 errMsgs의 key를 비교한다.
+            for(let errMsgKey in errMsgs) {
+              // errMsgKey와 newErrMsg의 field가 같으면 
+              // newErrMsgs에 새로운 데이터를 추가한다.
+              if(newErrMsg.field === errMsgKey) {
+                newErrMsgs = {
+                  ...newErrMsgs,
+                  [newErrMsg.field]: newErrMsg.errMsg
+                }
+              } 
+            }
+          }
+          // errMsgs에 newErrMsgs 담기
+          // defaultMsgs는 항상 이벤트가 일어나면 초기화 시켜준다 
+          setErrMsgs({
+            ...defaultErrMsgs,
+            ...newErrMsgs
+          });
+        }
       }
-    }
+    } else {
+      alert("로그인 후 이용해주세요");
+    }  
   }
   // 상품 데이터 서버로 보내기
   async function save(formData) {

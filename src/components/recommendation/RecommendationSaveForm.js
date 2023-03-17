@@ -36,6 +36,10 @@ const RecommendationSaveForm = () => {
   const [error, setError] = useState(null);// 에러 상태
   const [errMsgs, setErrMsgs] = useState(defaultErrMsgs); // 에러 메시지 상태
   const [files, setFiles] = useState(null);// 파일들 상태
+  const [memberInfo, setMemberInfo] = useState(() => {
+    const key = "LOGIM_MEMBER";
+    return JSON.parse(sessionStorage.getItem(key));
+  });// 회원정보 불러오기
 
   /// 메서드 모음
   // input에 데이터 바뀌면 data 데이터 변경한다
@@ -185,102 +189,131 @@ const RecommendationSaveForm = () => {
   return (
     <>
       <Form onSubmit={handleSaveSubmit}>
-          {/* 상품명 */}
-          <Form.Group
-          as={Row}
-          className="mb-3"
-          >
-          <Form.Label column sm="2">
-              ITEMNAME <span className='important'>*</span>
-          </Form.Label>
-          <Col sm="10">
-              <Form.Control
-              type="text"
-              name="itemName"
-              value={data.itemName}
-              onChange={handleDataChange}
-              />
+        {/* 상품명 */}
+        <Row className="d-flex justify-content-center">
+          <Col sm={8}>
+            <Form.Group
+            as={Row}
+            className="mb-3"
+            >
+            <Form.Label column sm="3">
+                ITEMNAME <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="5">
+                <Form.Control
+                type="text"
+                name="itemName"
+                value={data.itemName}
+                onChange={handleDataChange}
+                />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+                {errMsgs.itemName}
+            </Col>
+            </Form.Group>
           </Col>
-          {/* 에러 메시지 */}
-          <Col className="error">
-              {errMsgs.itemName}
-          </Col>
-          </Form.Group>
-          {/* 판매자 아이디 */}
-          <Form.Group
-          as={Row}
-          className="mb-3"
-          >
-          <Form.Label column sm="2">
-              sellerId <span className='important'>*</span>
-          </Form.Label>
-          <Col sm="2">
-              <Form.Control
-              type="text"
-              name="sellerId"
-              min="1"
-              value={data.sellerId}
-              onChange={handleDataChange}
-              />
-          </Col>
-          {/* 에러 메시지 */}
-          <Col className="error">
-              {errMsgs.sellerId}
-          </Col>
-          </Form.Group>
-          {/* 추천 이유 */}
-          <Form.Group
-          as={Row}
-          className="mb-3"
-          >
-          <Form.Label>
-              CONTENT <span className='important'>*</span>
-          </Form.Label>
-          <Col sm="12">
-              <Form.Control
-              as="textarea"
-              name="content"
-              rows={10}
-              value={data.content}
-              placeholder="추천 이유를 설명해주세요"
-              onChange={handleDataChange}
-              />
-          </Col>
-          {/* 에러 메시지 */}
-          <Col className="error">
-              {errMsgs.content}
-          </Col>
-          </Form.Group>
-          {/* 상품 이미지 */}
-          <Form.Group
-          as={Row}
-          className="mb-3"
-          >
-          <Form.Label column sm="2">이미지</Form.Label>
-          <Col sm="6">
-              <Form.Control 
-              type="file"
-              name="files"
-              multiple
-              onChange={handleFilesChange}
-              />
-          </Col>
-          {/* 에러 메시지 */}
-          <Col sm="10" className="error">
-              {errMsgs.files}
-          </Col>
-          {/* 이미지 미리보기 box */}
-          <Col sm="10" className="imageBox" />
-          </Form.Group>
+        </Row>
 
-          {/* 버튼 box */}
-          <Form.Group
-          as={Row}
-          className="mb-3"
-          >
-          <Button type="submit">등록</Button>
-          <Button type="button" onClick={handleCancelClick}>취소</Button>
-          </Form.Group>
+        {/* 판매자 아이디 */}
+        <Row className="d-flex justify-content-center">
+          <Col sm={8}>
+            <Form.Group
+            as={Row}
+            className="mb-3"
+            >
+              <Form.Label column sm="3">
+                  sellerId <span className='important'>*</span>
+              </Form.Label>
+              <Col sm="5">
+                  <Form.Control
+                  type="text"
+                  name="sellerId"
+                  min="1"
+                  value={data.sellerId}
+                  onChange={handleDataChange}
+                  />
+              </Col>
+              {/* 에러 메시지 */}
+              <Col className="error">
+                  {errMsgs.sellerId}
+              </Col>
+            </Form.Group>
+          </Col>
+        </Row>
+
+        {/* 추천 이유 */}
+        <Row className="d-flex justify-content-center">
+          <Col sm={8}>
+            <Form.Group
+            as={Row}
+            className="mb-3"
+            >
+            <Form.Label>
+                CONTENT <span className='important'>*</span>
+            </Form.Label>
+            <Col sm="12">
+                <Form.Control
+                as="textarea"
+                name="content"
+                rows={10}
+                value={data.content}
+                placeholder="추천 이유를 설명해주세요"
+                onChange={handleDataChange}
+                />
+            </Col>
+            {/* 에러 메시지 */}
+            <Col className="error">
+                {errMsgs.content}
+            </Col>
+            </Form.Group>
+          </Col>
+        </Row>
+
+        {/* 상품 이미지 */}
+        <Row className="d-flex justify-content-center">
+          <Col sm={8}>
+            <Form.Group
+            as={Row}
+            className="mb-3"
+            >
+              <Form.Label column sm="2">이미지</Form.Label>
+              <Col sm="6">
+                  <Form.Control 
+                  type="file"
+                  name="files"
+                  multiple
+                  onChange={handleFilesChange}
+                  />
+              </Col>
+              {/* 에러 메시지 */}
+              <Col sm="10" className="error">
+                  {errMsgs.files}
+              </Col>
+              {/* 이미지 미리보기 box */}
+              <Col sm="10" className="imageBox" />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        {/* 버튼 box */}
+        <Row className="d-flex justify-content-center">
+          <Col sm={8}>
+            <Form.Group
+            as={Row}
+            className="mb-3"
+            >
+              <Row className="d-flex justify-content-center">
+                <Col sm={2} className="d-grid gap-2">
+                  <Button type="submit" size="lg">등록</Button>
+                </Col>
+                <Col sm={2} className="d-grid gap-2">
+                  <Button type="button" onClick={handleCancelClick} size="lg">취소</Button>
+                </Col>
+              </Row>
+            </Form.Group>
+          </Col>
+        </Row>
       </Form>
     </>
   )

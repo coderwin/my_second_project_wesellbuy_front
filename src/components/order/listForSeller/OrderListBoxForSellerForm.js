@@ -52,14 +52,14 @@ const OrderListBoxForSellerForm = () => {
   }
 
   return (
-    <Table>
-      <thead>
+    <Table hover>
+      <thead class="table-primary">
         <tr>
-          <th>판매순서</th>
-          <th>주문수량</th>
-          <th>주문총가격</th>
-          <th>회원아이디</th>
-          <th>회원이름</th>
+          <th>순서</th>
+          <th>수량</th>
+          <th>금액</th>
+          <th>ID</th>
+          <th>NAME</th>
           <th>휴대전화</th>
           <th>집전화</th>
           <th>배송지</th>

@@ -6,11 +6,11 @@ import '../../css/form.css';
 
 const FooterBottom = () => {
   return (
-    <Container fluid="md" className="footer">
+    <Container fluid="md" className="footer body_text_center">
         <Row>
-            <Col>
+            <Col className="align-self-center">
                 <ListGroup>
-                    <ListGroupItem className="emailBox">
+                    <ListGroupItem className="emailBox border border-white">
                         📧 gommind@naver.com
                     </ListGroupItem>
                 </ListGroup>

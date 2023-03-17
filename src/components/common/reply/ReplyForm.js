@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import Loding from '../../Loding';
 
 /**
  * each reply component
@@ -28,6 +29,7 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
   const [data, setData] = useState(defaultData);// reply data
   const [mode, setMode] = useState("read");// read, update mode
   const [memberInfo, setMemberInfo] = useState(null);// 로그인 회원정보
+  const [loding, setLoding] = useState(false);// 요청처리 상태
 
   /// 메서드 모음
   // sessionStorage에 있는 회원정보 불러오기
@@ -52,10 +54,12 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
     // 삭제할지 물어보기
     const answer = window.confirm("정말로 삭제하시겠습니까?");
     if(answer) {
+      setLoding(true);
       try {
         // 서버로 삭제요청 보내기
         const response = await deleteReply(boardNum, data.num);
         // 요청 성공
+        setLoding(false);
         console.log("삭제 성공");
         alert(response.data.data);
         // mode 변경하기
@@ -63,6 +67,7 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
         // // replyForms 데이터 filter 해주기 -> 사용 안 함
         // OnDeleteRepliesChange(data.num);
       } catch(err) {
+        setLoding(false);
         // 요청 실패
         alert(err.response.data.errMsg);
       }
@@ -71,16 +76,19 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
   
   // 수정완료 클릭 시, 서버로 수정 데이터 보내기
   async function handleUpdateFinishClick() {
+    setLoding(true);
     try {
       // 서버로 수정 데이터 보내기
       const response = await updateReply(boardNum, data.num, data.content);
       // 요청 성공
+      setLoding(false);
       console.log("요청 성공");
       alert(response.data.data);
       // read 모드로 변경하기
       setMode("read");
     } catch(err) {
       // 요청 실패
+      setLoding(false);
       console.log("요청 실패");
       alert(err.response.data.errMsg);
       // read 모드로 변경하기
@@ -96,6 +104,13 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
       ...data,
       ...reply
     });
+  }
+  // 시간 날짜만 나오게 하기
+  function printDate(datetime) {
+    // 날짜시간 받아서 
+      // T부분에서 cut
+    const datetimeArr = datetime.split("T");
+    return datetimeArr[0];
   }
 
   /// 처음 시작 -> 데이터 뿌려주기
@@ -117,8 +132,8 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
   const readView = (
     <>
       {/* 작성날짜 */}
-      <ListGroup.Item as={Col}>
-        {data.createDate}
+      <ListGroup.Item as={Col} className="body_text_left">
+        {printDate(data.createDate)}
       </ListGroup.Item>
       <ListGroup.Item>
         <Row>
@@ -134,7 +149,7 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
       </ListGroup.Item>
       {/* 버튼 box */}
       {
-        (memberInfo && memberInfo.id === data.memberId) && (<ListGroup.Item as={Col} sm="12">
+        (memberInfo && memberInfo.id === data.memberId) && (<ListGroup.Item as={Col} sm="12" className="body_text_right">
           <Button onClick={handleUpdateClick}>수정</Button>
           <Button onClick={handleDeleteClick}>삭제</Button>
         </ListGroup.Item>)
@@ -145,14 +160,14 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
   const updateView = (
     <>
       {/* 작성날짜 */}
-      <ListGroup.Item>
-        {data.createDate}
+      <ListGroup.Item className="body_text_left">
+        {printDate(data.createDate)}
       </ListGroup.Item>
       
       <ListGroup.Item>
         <Row>
           {/* 작성자 아이디 */}
-          <Col sm="2">
+          <Col sm="2" className="align-self-center">
             {data.memberId}
           </Col>
           {/* 내용 */}
@@ -170,8 +185,14 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
       </ListGroup.Item>
       {/* 버튼 box */}
       <ListGroup.Item>
-        <Button onClick={handleUpdateFinishClick}>수정완료</Button>
-        <Button onClick={handleCancelClick}>취소</Button>
+        <Row className="d-flex justify-content-center">
+          <Col sm={2} className="d-grid gap-2" >
+            <Button onClick={handleUpdateFinishClick}>수정완료</Button>
+          </Col>
+          <Col sm={2} className="d-grid gap-2" >
+            <Button onClick={handleCancelClick}>취소</Button>
+          </Col>
+        </Row>
       </ListGroup.Item>
     </>
   );
@@ -185,6 +206,9 @@ const ReplyForm = ({OnDeleteRepliesChange, reply, updateReply, deleteReply}) => 
   } else if(mode === "delete") {
     view = "";
   }
+
+  // 요청 처리 view
+  if(loding) return(<Loding />);
 
   return (
     <>

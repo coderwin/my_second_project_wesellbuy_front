@@ -191,7 +191,7 @@ const ItemDetailForm = () => {
   return (
     <ItemDetailContext.Provider value={{data, setLoding, srcArr, memberInfo, likesList, addItemLikesList, countOutInItemLikesList}}>
       <Container>
-        <Row>
+        <Row className="d-flex justify-content-center">
           {/* item detail box */}
           <Col className="itemDetailBox" sm="8">
             {/* item detail */}

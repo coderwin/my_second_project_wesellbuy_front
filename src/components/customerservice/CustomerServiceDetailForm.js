@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Loding from '../Loding';
 import CustomerServiceDetailBoxForm from './detail/CustomerServiceDetailBoxForm';
 import ReplyCustomerServiceBoxForm from './reply/ReplyCustomerServiceBoxForm';
+import '../../css/form.css';
 
 /**
  * CustomerService detail component
@@ -100,9 +101,9 @@ const CustomerServiceDetailForm = () => {
   if(loding) return (<Loding />);
 
   return (
-    <CustomerServiceDetailContext.Provider value={{data}}>
-      <Container>
-        <Row>
+    <CustomerServiceDetailContext.Provider value={{data, setLoding}}>
+      <Container className="body_text_center">
+        <Row className="d-flex justify-content-center">
           {/* CustomerService detail box */}
           <Col className="CustomerServiceDetailBox" sm="8">
             {/* CustomerService detail */}

@@ -22,7 +22,7 @@ const ItemTypeNavForm = () => {
   /// view 모음
   
   return (
-    <Nav className="flex-column">
+    <Nav className="flex-column side_nav">
       <Nav.Link id="" onClick={handleTypeNavClick}>전체</Nav.Link>
       <Nav.Link id="B" onClick={handleTypeNavClick}>책</Nav.Link>
       <Nav.Link id="F" onClick={handleTypeNavClick}>가구</Nav.Link>

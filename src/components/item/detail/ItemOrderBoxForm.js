@@ -119,69 +119,86 @@ const ItemOrderBoxForm = () => {
       <ListGroup as="ul">
         <Form onSubmit={handleInputShopingBasketSubmit}>
           {/* 상품이름 */}
+          
           <ListGroupItem>
-            <Form.Group
-            as={Row}
-            className="mb-3"
-            >
-              <Form.Label column sm="4">
-                상품명
-              </Form.Label>
-              <Col sm="8">
-                <Form.Control
-                  type="text"
-                  name="name"
-                  value={orderData.name}
-                  readOnly
-                />
+            <Row className="d-flex justify-content-center">
+              <Col sm="12">
+                <Form.Group
+                as={Row}
+                className="mb-3"
+                >
+                  <Form.Label column sm="4">
+                    상품명
+                  </Form.Label>
+                  <Col sm="8">
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      value={orderData.name}
+                      readOnly
+                    />
+                  </Col>
+                </Form.Group>
               </Col>
-            </Form.Group>
-          </ListGroupItem>
+            </Row>
+            </ListGroupItem>
+
           {/* 주문수량 */}
           <ListGroupItem>
-            <Form.Group
-            as={Row}
-            className="mb-3"
-            >
-              <Form.Label column sm="4">
-                주문수량
-              </Form.Label>
-              <Col sm="4">
-                <Form.Control
-                  type="number"
-                  name="quantity"
-                  value={orderData.quantity}
-                  min="1"
-                  max={data.stock}
-                  placeholder='1'
-                  onChange={handleOrderDataChange}
-                />      
+            <Row className="d-flex justify-content-center">
+              <Col sm="12">
+                <Form.Group
+                as={Row}
+                className="mb-3"
+                >
+                  <Form.Label column sm="4">
+                    주문수량(개)
+                  </Form.Label>
+                  <Col sm="8">
+                    <Form.Control
+                      type="number"
+                      name="quantity"
+                      value={orderData.quantity}
+                      min="1"
+                      max={data.stock}
+                      placeholder='1'
+                      onChange={handleOrderDataChange}
+                    />      
+                  </Col>
+                </Form.Group>
               </Col>
-              <Col sm="1">
-                <span>개</span>
-              </Col>
-            </Form.Group>
+            </Row>
           </ListGroupItem>
           {/* 총 주문가격 */}
           <ListGroupItem>
-            <Form.Group
-              as={Row}
-              className="mb-3"
-            >
-              <Form.Label column sm="5">
-                총 주문가격
-              </Form.Label>
-              <Col sm="4">
-                {totalPrice}<span>원</span>
+            <Row className="d-flex justify-content-center">
+              <Col sm="12" className="align-self-center">
+                <Form.Group
+                  as={Row}
+                  className="mb-3"
+                >
+                  <Form.Label column sm="5">
+                    총주문가격(원)
+                  </Form.Label>
+                  <Col sm="7" className="align-self-center">
+                    {totalPrice}
+                  </Col>
+                </Form.Group>
               </Col>
-            </Form.Group>
+            </Row>
           </ListGroupItem>
           {/* button box */}
           <ListGroupItem>
             <Row>
               <Form.Group>
-                <Button type="submit">장바구니담기</Button>
-                <Button type="button" onClick={handleOrderClick}>주문</Button>
+              <Row className="d-flex justify-content-center">
+                <Col sm={6} className="d-grid gap-2" >
+                  <Button type="submit">장바구니담기</Button>
+                </Col>
+                <Col sm={6} className="d-grid gap-2" >
+                  <Button type="button" onClick={handleOrderClick}>주문</ Button>
+                </Col>
+                </Row>
               </Form.Group>
             </Row>
           </ListGroupItem>

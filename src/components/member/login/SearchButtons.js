@@ -18,7 +18,7 @@ const SearchButtons = () => {
     }
     
     return (
-        <Container>
+        <Container className="body_text_center">
             <ListGroup>
                 <ListGroupItem>
                 <Row className="d-flex justify-content-center">

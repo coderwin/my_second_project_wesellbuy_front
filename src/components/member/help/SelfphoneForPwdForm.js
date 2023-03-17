@@ -14,16 +14,16 @@ export const SelfphoneForPwdForm = () => {
   return (
     <Form onSubmit={handleSearchPwdSubmit}>
       <Row className="d-flex justify-content-center">
-        <Col sm={3}>
+        <Col sm={4}>
           <Form.Group className="mb-3">
               <Form.Label>아이디</Form.Label>
-              <Form.Control type="text" name="id" value={data.name} placeholder="Enter ID" onChange={handleDataChange} />
+              <Form.Control type="text" name="id" value={data.id} placeholder="Enter ID" onChange={handleDataChange} />
           </Form.Group>
         </Col>
       </Row>
 
       <Row className="d-flex justify-content-center">
-        <Col sm={3}>
+        <Col sm={4}>
           <Form.Group className="mb-3">
               <Form.Label>휴대전화</Form.Label>
               <Form.Control type="text" placeholder="휴대전화 번호" name="selfPhone" value={data.selfPhone} onChange={handleDataChange} />
@@ -33,7 +33,7 @@ export const SelfphoneForPwdForm = () => {
 
         {/* errorMsg box */}
       <Row className="d-flex justify-content-center">
-        <Col sm={3}>
+        <Col sm={4}>
           <Form.Group>
             <Col className="error">
               {error}
@@ -43,7 +43,7 @@ export const SelfphoneForPwdForm = () => {
       </Row>
 
       <Row className="d-flex justify-content-center">
-        <Col sm={3} className="d-grid gap-2">
+        <Col sm={4} className="d-grid gap-2">
           <Button variant="primary" type="submit">
             찾기
           </Button>

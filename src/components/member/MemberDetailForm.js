@@ -289,18 +289,27 @@ const MemberDetailForm = () => {
                 />
               </Form.Group>
             </Row>
+            
             {/* 이미지 box */}
-            <Row>
+            <Row className="d-flex justify-content-center">
+              <Form.Label>프로필</Form.Label>
+              <Col sm={12}>
               {data.selfPictureForm ? <Image roundedCircle src={`http://localhost:8080/members/images/${data.selfPictureForm.storedFileName}`} /> 
               : <Image roundedCircle src={noImage} />}
+              </Col>
             </Row>
+            
             {/* 버튼 box */}
-            <Row>
-              <Form.Group>
-                <Button type="button" onClick={handleUpdateClick}>수정</Button>
-                <Button type="button" onClick={handleWithdrawalClick}>탈퇴</Button>
-              </Form.Group>
-            </Row>     
+            <Form.Group>
+              <Row className="d-flex justify-content-center d-grid gap-2">
+                <Col sm={2} className="d-grid gap-2" >
+                  <Button type="button" onClick={handleUpdateClick}>수정</Button>
+                </Col>
+                <Col sm={2} className="d-grid gap-2" >
+                  <Button type="button" onClick={handleWithdrawalClick}>탈퇴</Button>
+                </Col>
+              </Row>  
+            </Form.Group>       
           </Form>
         </Col>
       </Row>

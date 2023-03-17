@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CardGroup } from 'react-bootstrap';
+import { CardGroup, Row } from 'react-bootstrap';
 import CardWithHeaderForm from '../../common/card/CardWithHeaderForm';
 import { ItemListContext } from '../ItemListForm';
 /**
@@ -51,9 +51,9 @@ const ItemRankBox = () => {
   }
 
   return (
-    <CardGroup>
+    <Row xs={1} md={3} className="g-4">
         {view}
-    </CardGroup>
+    </Row>
   );
 }
 

@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Loding from '../Loding';
 import RecommendationDetailBoxForm from './detail/RecommendationDetailBoxForm';
 import ReplyRecommendationBoxForm from './reply/ReplyRecommendationBoxForm'
+import '../../css/form.css'
 
 /**
  * Recommendation detail component
@@ -124,7 +125,7 @@ const RecommendationDetailForm = () => {
   return (
     <RecommendationDetailContext.Provider value={{data, setLoding, srcArr, memberInfo}}>
       <Container>
-        <Row>
+        <Row className="d-flex justify-content-center">
           {/* Recommendation detail box */}
           <Col className="RecommendationDetailBox" sm="8">
             {/* Recommendation detail */}

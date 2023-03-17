@@ -55,6 +55,8 @@ const RecommendationDetailBoxForm = () => {
         setLoding(false);
         console.log("요청 성공");
         alert(response.data.data);
+        // 추천합니다 list로 간다
+        navigation("/recommendation/list");
       } catch(err) {
         // 요청 실패
         setLoding(false);
@@ -62,6 +64,13 @@ const RecommendationDetailBoxForm = () => {
         console.log(err);
       }
     }
+  }
+  // 시간 날짜만 나오게 하기
+  function printDate(datetime) {
+    // 날짜시간 받아서 
+      // T부분에서 cut
+    const datetimeArr = datetime.split("T");
+    return datetimeArr[0];
   }
   
 
@@ -74,10 +83,8 @@ const RecommendationDetailBoxForm = () => {
       updateAndeDeleteButtonesBox = (
         <ListGroupItem>
           <Row>
-            <Col>
+            <Col className="body_text_right">
               <Button onClick={handleUpdateClick}>수정</Button>
-            </Col>
-            <Col>
               <Button onClick={handleDeleteClick}>삭제</Button>
             </Col>
           </Row>
@@ -129,7 +136,7 @@ const RecommendationDetailBoxForm = () => {
         <ListGroupItem>
           <Row>
             <Col md="2">작성날짜</Col>
-            <Col md="2">{data.createDate}</Col>
+            <Col md="2">{printDate(data.createDate)}</Col>
           </Row>
         </ListGroupItem>
         {/* 추천 이유 */}

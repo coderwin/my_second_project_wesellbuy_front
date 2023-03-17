@@ -11,6 +11,7 @@ import '../../css/form.css';
 import { CustomContext } from '../../App';
 import ItemHomeHeaderImageBox from './list/ItemHomeHeaderImageBox';
 import Loding from '../Loding';
+import '../../css/form.css';
 
 /**
  * Item list component
@@ -319,45 +320,57 @@ const ItemListForm = () => {
         setLikesList,
         addItemLikesList,
         countOutInItemLikesList}} >
-        <Container>
-          <ListGroup>
-            {/* 이미지 박스 */}
-            <ListGroupItem>
-              <ItemHomeHeaderImageBox />
-            </ListGroupItem>
-            <ListGroupItem>
-              <Row>
-                <Col>
-                  {/* 상품 순위 1, 2, 3 순위 */}
-                  <ItemRankBox />
-                </Col>
-                <Col>
-                  {/* 전체 순위 보기 */}
-                  <Button variant="link" onClick={handleShowRankClick}>전체순위보기</Button>
-                </Col>
-              </Row>
-            </ListGroupItem>
-          </ListGroup>
-          <Row>
-            <Col md="12">
-              {/* 위쪽 Nav - 검색 */}
-              <ItemSearchNavForm />
-            </Col>
-          </Row>
-          <Row>
-            <Col md="2">
-              {/* 왼쪽 Nav - item dtype */}
-              <ItemTypeNavForm />
-            </Col>
-            <Col md="10">
-              {/* body - 상품 목록  */}
-              <ItemListBoxForm />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              {/* footer - 페이지 버튼 */}
-              <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
+        <Container className="body_text_center home_container">
+          <Row className="d-flex justify-content-center">
+            <Col sm="12">
+              <ListGroup border>
+                {/* 이미지 박스 */}
+                <ListGroupItem>
+                  <ItemHomeHeaderImageBox />
+                </ListGroupItem>
+                <ListGroupItem>
+                  <Row>
+                    <Col sm="10">
+                      {/* 상품 순위 1, 2, 3 순위 */}
+                      <ItemRankBox />
+                    </Col>
+                    <Col sm="2" className="align-self-center">
+                      {/* 전체 순위 보기 */}
+                      <Button variant="link" onClick={handleShowRankClick}>{"전체순위보기>>"}</Button>
+                    </Col>
+                  </Row>
+                </ListGroupItem>
+              </ListGroup>
+              <ListGroup>
+                <ListGroupItem className="border border-white">
+                  <Row>
+                    <Col md="12">
+                      {/* 위쪽 Nav - 검색 */}
+                      <ItemSearchNavForm />
+                    </Col>
+                  </Row>
+                </ListGroupItem>
+                <Row>
+                  <Col md="2">
+                    {/* 왼쪽 Nav - item dtype */}
+                    <ItemTypeNavForm />
+                  </Col>
+                  <Col md="10">
+                    {/* body - 상품 목록  */}
+                    <ItemListBoxForm />
+                  </Col>
+                </Row>
+              </ListGroup>
+              <ListGroup>
+                <ListGroupItem className="border border-white">
+                  <Row className="d-flex justify-content-center">
+                    <Col sm="3">
+                      {/* footer - 페이지 버튼 */}
+                      <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
+                    </Col>
+                  </Row>
+                </ListGroupItem>
+              </ListGroup>
             </Col>
           </Row>
         </Container>

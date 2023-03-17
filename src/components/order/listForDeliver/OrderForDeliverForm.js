@@ -82,6 +82,13 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
       }
     );
   }
+  // 시간 날짜만 나오게 하기
+  function printDate(datetime) {
+    // 날짜시간 받아서 
+      // T부분에서 cut
+    const datetimeArr = datetime.split("T");
+    return datetimeArr[0];
+  }
 
   /// view 모음
   let orderStatusView = null;// 주문상태 출력 변수
@@ -139,7 +146,7 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
       </th>
       {/* 주문날짜 */}
       <th>
-        {data.createDate}
+        {printDate(data.createDate)}
       </th>
       {/* 주문상태 */}
       <th>  

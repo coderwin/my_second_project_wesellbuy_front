@@ -51,8 +51,8 @@ const OrderListBoxForm = () => {
   }
 
   return (
-    <Table>
-      <thead>
+    <Table hover>
+      <thead className="table-primary">
         <tr>
           <th>주문순서</th>
           <th>주문날짜</th>

@@ -319,112 +319,144 @@ const RecommendationUpdateForm = () => {
       <RecommendationUpdateContext.Provider value={{data, errMsgs, handleDataChange}}>
         <Form onSubmit={handleUpdateSubmit}>
           {/* 추천상품명 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">
-              ITEMNAME <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="text"
-                name="itemName"
-                value={data.itemName}
-                onChange={handleDataChange}
-              />
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label column sm="3">
+                  ITEMNAME <span className='important'>*</span>
+                </Form.Label>
+                <Col sm="5">
+                  <Form.Control
+                    type="text"
+                    name="itemName"
+                    value={data.itemName}
+                    onChange={handleDataChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col className="error">
+                  {errMsgs.itemName}
+                </Col>
+              </Form.Group>
             </Col>
-            {/* 에러 메시지 */}
-            <Col className="error">
-              {errMsgs.itemName}
-            </Col>
-          </Form.Group>
+          </Row>
+
           {/* 추천 판매자 아이디 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">
-              SELLERID <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="2">
-              <Form.Control
-                type="text"
-                name="sellerId"
-                value={data.sellerId}
-                onChange={handleDataChange}
-              />
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label column sm="3">
+                  SELLERID <span className='important'>*</span>
+                </Form.Label>
+                <Col sm="5">
+                  <Form.Control
+                    type="text"
+                    name="sellerId"
+                    value={data.sellerId}
+                    onChange={handleDataChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col className="error">
+                  {errMsgs.sellerId}
+                </Col>
+              </Form.Group>
             </Col>
-            {/* 에러 메시지 */}
-            <Col className="error">
-              {errMsgs.sellerId}
-            </Col>
-          </Form.Group>
+          </Row>
+
           {/* 추천 이유 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label>
-              CONTENT <span className='important'>*</span>
-            </Form.Label>
-            <Col sm="12">
-              <Form.Control
-                as="textarea"
-                name="content"
-                rows={10}
-                value={data.content}
-                placeholder="추천 이유를 설명해주세요"
-                onChange={handleDataChange}
-              />
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label>
+                  CONTENT <span className='important'>*</span>
+                </Form.Label>
+                <Col sm="12">
+                  <Form.Control
+                    as="textarea"
+                    name="content"
+                    rows={10}
+                    value={data.content}
+                    placeholder="추천 이유를 설명해주세요"
+                    onChange={handleDataChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col className="error">
+                  {errMsgs.content}
+                </Col>
+              </Form.Group>
             </Col>
-            {/* 에러 메시지 */}
-            <Col className="error">
-              {errMsgs.content}
-            </Col>
-          </Form.Group>
+          </Row>
+
           {/* 이미지 모음 */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Form.Label column sm="2">이미지</Form.Label>
-            <Col sm="6">
-              <Form.Control 
-                type="file"
-                name="files"
-                multiple
-                onChange={handleFilesChange}
-              />
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Form.Label column sm="2">이미지</Form.Label>
+                <Col sm="6">
+                  <Form.Control 
+                    type="file"
+                    name="files"
+                    multiple
+                    onChange={handleFilesChange}
+                  />
+                </Col>
+                {/* 에러 메시지 */}
+                <Col sm="10" className="error">
+                  {errMsgs.files}
+                </Col>
+                {/* 이미지 미리보기 box */}
+                <Col sm="10" className="imageBox" />
+              </Form.Group>
             </Col>
-            {/* 에러 메시지 */}
-            <Col sm="10" className="error">
-              {errMsgs.files}
-            </Col>
-            {/* 이미지 미리보기 box */}
-            <Col sm="10" className="imageBox" />
-          </Form.Group>
+          </Row>
 
           {/* 기존 이미지 모음 */}
-          <ImagesBoxSpread 
-            data={data}
-            pictureForms={data.recommendationPictureFormList} 
-            createSrc={createSrc} 
-            OnDeleteImageClick={handleDeleteImageClick}
-            srcArr={srcArr}
-            pictureNums={pictureNums}
-          />
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <ImagesBoxSpread 
+                data={data}
+                pictureForms={data.recommendationPictureFormList} 
+                createSrc={createSrc} 
+                OnDeleteImageClick={handleDeleteImageClick}
+                srcArr={srcArr}
+                pictureNums={pictureNums}
+              />
+            </Col>
+          </Row>
 
           {/* 버튼 box */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-          >
-            <Button type="submit">수정</Button>
-            <Button type="button" onClick={handleCancelClick}>취소</Button>
-          </Form.Group>
+          <Row className="d-flex justify-content-center">
+            <Col sm={8}>
+              <Form.Group
+                as={Row}
+                className="mb-3"
+              >
+                <Row className="d-flex justify-content-center">
+                  <Col sm={2} className="d-grid gap-2">
+                    <Button type="submit">수정</Button>
+                  </Col>
+                  <Col sm={2} className="d-grid gap-2">
+                    <Button type="button" onClick={handleCancelClick}>취소</Button>
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Col>
+          </Row>
         </Form>
-        
       </RecommendationUpdateContext.Provider>
     </>
   )

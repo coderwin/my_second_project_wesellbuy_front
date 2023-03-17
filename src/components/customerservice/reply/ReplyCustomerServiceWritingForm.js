@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom';
+import { CustomContext } from '../../../App';
+import { CustomerServiceDetailContext } from '../CustomerServiceDetailForm';
 
 /**
  * CustomerService reply writing component
@@ -20,6 +22,8 @@ const ReplyCustomerServiceWritingForm = ({saveReply, addReplies}) => {
   const {num: boardNum} = useParams();
   // navigation
   const navigation = useNavigate();
+  // 외부 변수, 상태, 메서드 불렁괴
+  const {setLoding: setAllLoding} = useContext(CustomContext);
 
   /// 상태 모음
   const [data, setData] = useState(defaultData);// 데이터 상태
@@ -38,22 +42,21 @@ const ReplyCustomerServiceWritingForm = ({saveReply, addReplies}) => {
   }
   // 로그인 사용자가 댓글 등록 버튼 클릭했을 때
   async function handleSaveClick() {
+    setAllLoding(true);// 전체 loding
     try {
       // 서버로 댓글 등록 요청 하기
       const response = await saveReply(boardNum, data);
       // 요청 성공
+      setAllLoding(false);
       console.log("요청 성공");
       alert(response.data.data);
       // 데이터는 비우기
       setData(
         defaultData
       );
-      // reload to 현재페이지
-      // 로그인한 상황에서 header 부분에 로그인으로 바뀔 수 있다.
-        // 그래서 0에서 /cs/:num으로 바꿈
-      navigation(0);
     } catch(err) {
       // 요청 실패
+      setAllLoding(false);
       console.log("요청 실패");
       console.log(err);
     }
@@ -119,7 +122,7 @@ const ReplyCustomerServiceWritingForm = ({saveReply, addReplies}) => {
       <ListGroup.Item>
         <Row>
           {/* 작성자 아이디 */}
-          <Col sm="2">
+          <Col sm="2" className="align-self-center">
             {memberInfo !== null ? memberInfo.id : ""}
           </Col>
           {/* 내용 */}
@@ -137,7 +140,11 @@ const ReplyCustomerServiceWritingForm = ({saveReply, addReplies}) => {
       </ListGroup.Item>
       {/* 버튼 box */}
       <ListGroup.Item>
-        <Button onClick={handleSaveClick}>등록</Button>
+        <Row className="d-flex justify-content-center">
+          <Col sm={3} className="d-grid gap-2" >
+            <Button variant="outline-primary" onClick={handleSaveClick}>댓글등록</Button>
+          </Col>
+        </Row>
       </ListGroup.Item>
     </>
   );
@@ -147,7 +154,7 @@ const ReplyCustomerServiceWritingForm = ({saveReply, addReplies}) => {
       <ListGroup.Item>
         <Row>
           {/* 작성자 아이디 */}
-          <Col sm="3">
+          <Col sm="3" className="align-self-center">
             <span>비어있음</span>
           </Col>
           <Col sm="9">
@@ -165,7 +172,11 @@ const ReplyCustomerServiceWritingForm = ({saveReply, addReplies}) => {
       </ListGroup.Item>
       {/* 버튼 box */}
       <ListGroup.Item>
-        <Button onClick={handleSaveByNoLoginClick}>등록</Button>
+        <Row className="d-flex justify-content-center">
+          <Col sm={3} className="d-grid gap-2" >
+            <Button onClick={handleSaveByNoLoginClick} variant="outline-primary">댓글등록</Button>
+          </Col>
+        </Row>
       </ListGroup.Item>
     </>
   );

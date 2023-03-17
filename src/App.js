@@ -38,6 +38,7 @@ import OrderDetail from './pages/order/OrderDetail';
 import OrderListForSeller from './pages/order/OrderListForSeller';
 import OrderListForDeliver from './pages/order/OrderListForDeliver';
 import CustomerServiceSave from './pages/customerservice/CustomerServiceSave';
+import Loding from './components/Loding';
 
 // context 만들기
 export const CustomContext = createContext(null);
@@ -47,6 +48,7 @@ function App() {
   /// 상태 모음
   // 로그인/비로그인 확인을 위한 상태
   const [sessionForm, setSessionForm] = useState(null); // 로그인한 사용자 데이터 담는 상태
+  const [loding, setLoding] = useState(false); // 요청 처리 상태
 
   // 메서드 모음
   /// 로그인 데이터 sessionForm에 담기
@@ -67,11 +69,20 @@ function App() {
   function getCurrentDate() {
     return new Date().toISOString().slice(0, 10);
   }
+  // change loding value
+  function changeLoding(result) {
+    setLoding(() => result);
+  }
 
+
+  /// view 모음
+  // 요청 처리 view
+
+  if(loding) return (<Loding />);
 
   return (
     <>
-      <CustomContext.Provider value={{sessionForm, handleSessionFormDataInput, handleSessionFormChangeData, getCurrentDate}}>
+      <CustomContext.Provider value={{sessionForm, handleSessionFormDataInput, handleSessionFormChangeData, getCurrentDate, setLoding, changeLoding}}>
         <Header />
 
         <Routes>

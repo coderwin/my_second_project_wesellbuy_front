@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CardGroup } from 'react-bootstrap';
+import { CardGroup, Row } from 'react-bootstrap';
 import CardForm from '../../common/card/CardForm';
 import { ItemListContext } from '../ItemListForm';
 
@@ -28,6 +28,7 @@ const ItemListBoxForm = () => {
   if(cardDatas) {
     // 모든 cardData 뿌려주기
     view = cardDatas.map((cardData, i) => {
+      
       return (
         <CardForm
           key={i}
@@ -44,9 +45,9 @@ const ItemListBoxForm = () => {
   }
 
   return (
-    <CardGroup>
+    <Row xs={1} md={5} className="g-4">
         {view}
-    </CardGroup>
+    </Row>
   );
 }
 

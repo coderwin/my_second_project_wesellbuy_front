@@ -45,6 +45,7 @@ const OrderForm = ({data, numPosition, datasLength, totalPages, searchCond}) => 
   }
   // 취소버튼을 클릭했을 때
   async function handleCancelClick(e) {
+    setLoding(true);
     try {
       // 주문번호
       const orderNum = e.target.id
@@ -77,6 +78,13 @@ const OrderForm = ({data, numPosition, datasLength, totalPages, searchCond}) => 
         withCredentials: true
       }
     );
+  }
+  // 시간 날짜만 나오게 하기
+  function printDate(datetime) {
+    // 날짜시간 받아서 
+      // T부분에서 cut
+    const datetimeArr = datetime.split("T");
+    return datetimeArr[0];
   }
 
   /// view 모음
@@ -140,7 +148,7 @@ const OrderForm = ({data, numPosition, datasLength, totalPages, searchCond}) => 
       </th>
       {/* 주문날짜 */}
       <th>
-        {data.createDate}
+        {printDate(data.createDate)}
       </th>
       {/* 주문상태 */}
       <th>  

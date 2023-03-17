@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Loding from '../Loding';
 import OrderDetailBoxForm from './detail/OrderDetailBoxForm';
+import '../../css/form.css';
 
 /**
  * Order detail component
@@ -101,8 +102,8 @@ const OrderDetailForm = () => {
 
   return (
     <OrderDetailContext.Provider value={{data}}>
-      <Container>
-        <Row>
+      <Container className="body_text_center">
+        <Row className="d-flex justify-content-center">
           {/* Order detail box */}
           <Col className="OrderDetailBox" sm="8">
             {/* order detail box */}

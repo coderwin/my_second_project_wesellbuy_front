@@ -5,6 +5,7 @@ import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import Loding from '../Loding';
 import CustomerServiceListBoxForm from './list/CustomerServiceListBoxForm';
 import CustomerServiceSearchNavForm from './list/CustomerServiceSearchNavForm';
+import '../../css/form.css';
 
 /**
  * CustomerService list component
@@ -130,31 +131,35 @@ const CustomerServiceListForm = () => {
 
   return (
     <CustomerServiceListContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas, totalPages}}>
-      <Container>
-        {/* 고객지원글 찾기 Nav */}
-        <Row>
-          <Col md="12">
-            {/* 위쪽 Nav - 검색 */}
-            <CustomerServiceSearchNavForm />
-          </Col>
-        </Row>
-        {/* 고객지원글 목록 box */}
-        <Row id="top">
-          <Col md="10">
-            {/* body - 고객지원글 목록  */}
-            <CustomerServiceListBoxForm />
-          </Col>
-        </Row>
-        {/* footer - 페이지 버튼 */}
-        <Row>
-          <Col>
-            <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
-          </Col>
-        </Row>
-        {/* 맨위로 이동하기 */}
-        <Row className="footerFixed mousePointer">
-          <Col>
-            <a href="#top">맨위로</a>
+      <Container className="body_text_center">
+        <Row className="d-flex justify-content-center">
+          <Col sm={10}>
+            {/* 고객지원글 찾기 Nav */}
+            <Row>
+              <Col md="12">
+                {/* 위쪽 Nav - 검색 */}
+                <CustomerServiceSearchNavForm />
+              </Col>
+            </Row>
+            {/* 고객지원글 목록 box */}
+            <Row id="top">
+              <Col md="10">
+                {/* body - 고객지원글 목록  */}
+                <CustomerServiceListBoxForm />
+              </Col>
+            </Row>
+            {/* footer - 페이지 버튼 */}
+            <Row className="d-flex justify-content-center">
+              <Col sm={3}>
+                <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
+              </Col>
+            </Row>
+            {/* 맨위로 이동하기 */}
+            <Row className="footerFixed mousePointer body_text_right">
+              <Col>
+                <a href="#top">맨위로</a>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>

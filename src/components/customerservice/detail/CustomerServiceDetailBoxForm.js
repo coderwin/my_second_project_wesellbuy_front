@@ -19,6 +19,13 @@ const CustomerServiceDetailBoxForm = () => {
   /// 상태 모음
 
   /// 메서드 모음
+  // 시간 날짜만 나오게 하기
+  function printDate(datetime) {
+    // 날짜시간 받아서 
+      // T부분에서 cut
+    const datetimeArr = datetime.split("T");
+    return datetimeArr[0];
+  }
 
   /// view 모음
 
@@ -43,7 +50,7 @@ const CustomerServiceDetailBoxForm = () => {
         <ListGroupItem>
           <Row>
             <Col md="3">작성날짜</Col>
-            <Col md="8">{data.createDate}</Col>
+            <Col md="8">{printDate(data.createDate)}</Col>
           </Row>
         </ListGroupItem>
         {/* 신고 이유 */}

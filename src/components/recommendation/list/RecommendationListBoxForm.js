@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CardGroup } from 'react-bootstrap';
+import { CardGroup, Row } from 'react-bootstrap';
 import CardNotLikesForm from '../../common/card/CardNotLikesForm';
 import { RecommendationListContext } from '../RecommendationListForm';
 
@@ -41,9 +41,9 @@ const RecommendationListBoxForm = () => {
   }
 
   return (
-    <CardGroup>
+    <Row xs={1} md={5} className="g-4">
         {view}
-    </CardGroup>
+    </Row>
   );
 }
 

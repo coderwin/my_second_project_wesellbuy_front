@@ -411,10 +411,12 @@ const JoinForm = () => {
       </Row>
 
       <Row className="d-flex justify-content-center d-grid gap-2">
-        <Col sm={2} >
+        <Col sm={2} className="d-grid gap-2" >
           <Button type="submit" variant="outline-primary" size="lg">
             가입
           </Button>
+        </Col>
+        <Col sm={2} className="d-grid gap-2">
           <Button type="button" variant="outline-primary" onClick={handleCancelClick} size="lg">
             취소
           </Button>

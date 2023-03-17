@@ -31,7 +31,7 @@ const RecommendationSearchNavForm = () => {
   /// view 모음
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar expand="lg" className="search_navbar">
       <Container fluid>
         <Navbar.Brand href="#">Search</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />

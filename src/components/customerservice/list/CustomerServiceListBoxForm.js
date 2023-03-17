@@ -31,8 +31,17 @@ const   CustomerServiceListBoxForm = () => {
     // 고객지원글 상세보기로 이동
     navigation(`/cs/${id}`);
   }
+  // 시간 날짜만 나오게 하기
+  function printDate(datetime) {
+    // 날짜시간 받아서 
+      // T부분에서 cut
+    const datetimeArr = datetime.split("T");
+    return datetimeArr[0];
+  }
 
   /// view 모음
+  
+
   let view = null;// 태그를 담아준다.
   // tbody에 들어갈 데이터 생성
   // 데이터가 있으면 생성한다
@@ -42,7 +51,7 @@ const   CustomerServiceListBoxForm = () => {
       return (
         <tr key={data.num}>
           <th id={data.num} onClick={handleItemNameClick} className="mousePointer">{data.reportedId}</th>
-          <th>{data.createDate}</th>
+          <th>{printDate(data.createDate)}</th>
         </tr>
       );
     });
@@ -58,8 +67,8 @@ const   CustomerServiceListBoxForm = () => {
   }
 
   return (
-    <Table bordered hover>
-      <thead>
+    <Table hover>
+      <thead className="table-primary">
         <tr>
           <th>신고한 회원아이디</th>
           <th>작성날짜</th>

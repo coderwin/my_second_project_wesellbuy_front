@@ -72,65 +72,65 @@ const CustomerServiceDetailBoxForm = () => {
     <>
       <ListGroup as="ul">
         {/* 신고된 회원 아이디 */}
-        <ListGroupItem >
+        <ListGroupItem className="list-group-item-dark">
           <Row>
-            <Col md="2">주문번호</Col>
-            <Col md="2">{data.num}</Col>
+            <Col md="6">주문번호</Col>
+            <Col md="6">{data.num}</Col>
           </Row>
         </ListGroupItem>
         {/* 결제금액 */}
         <ListGroupItem >
           <Row>
-            <Col md="2">결제금액</Col>
-            <Col md="2">{data.totalPrice}</Col>
+            <Col md="6">결제금액(원)</Col>
+            <Col md="6">{data.totalPrice}</Col>
           </Row>
         </ListGroupItem>
         {/* 주문상태 */}
         <ListGroupItem>
           <Row>
-            <Col md="2">주문상태</Col>
-            <Col md="2">{orderStatusView}</Col>
+            <Col md="6">주문상태</Col>
+            <Col md="6">{orderStatusView}</Col>
           </Row>
         </ListGroupItem>
         {/* 배달상태 */}
         {/* 작성자 */}
         <ListGroupItem >
           <Row>
-            <Col md="2">회원아이디</Col>
-            <Col md="2">{data.id}</Col>
+            <Col md="6">회원아이디</Col>
+            <Col md="6">{data.id}</Col>
           </Row>
         </ListGroupItem>
         <ListGroupItem>
           <Row>
-            <Col md="2">배달상태</Col>
-            <Col md="2">{deliveryStatusView}</Col>
+            <Col md="6">배달상태</Col>
+            <Col md="6">{deliveryStatusView}</Col>
           </Row>
         </ListGroupItem>
         {/* 주문 회원연락처 */}
         <ListGroupItem>
           <Row>
-            <Col md="2">휴대전화</Col>
-            <Col md="2">{data.memberPhone.selfPhone}</Col>
-            <Col md="2">집전화</Col>
-            <Col md="2">{data.memberPhone.homePhone}</Col>
+            <Col md="3">휴대전화</Col>
+            <Col md="3">{data.memberPhone.selfPhone}</Col>
+            <Col md="3">집전화</Col>
+            <Col md="3">{data.memberPhone.homePhone}</Col>
           </Row>
         </ListGroupItem>
         {/* 배송주소 */}
         <ListGroupItem>
           <Row>
-            <Col md="2">배송주소</Col>
-            <Col md="2">{addressBoxView}</Col>
+            <Col md="3">배송주소</Col>
+            <Col md="9">{addressBoxView}</Col>
           </Row>
         </ListGroupItem>
         {/* 주문상품 정보 모음 */}
         <ListGroupItem>
           <Table hover>
-            <thead>
+            <thead className="table-primary">
               <tr>
                 <th>순서</th>
                 <th>상품명</th>
                 <th>주문수량</th>
-                <th>상품가격</th>
+                <th>상품가격(원)</th>
               </tr>
             </thead>
             <tbody>

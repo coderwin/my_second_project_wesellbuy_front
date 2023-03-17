@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { CustomContext } from '../../App';
 import PageButtonForm from '../common/pagebutton/PageButtonForm';
 import Loding from '../Loding';
@@ -132,23 +132,35 @@ const RecommendationListForm = () => {
   return (
     <>
       <RecommendationListContext.Provider value={{data, handleDataChange, handleSearchClick, cardDatas}} >
-        <Container>
-          <Row>
-            <Col md="12">
-              {/* 위쪽 Nav - 검색 */}
-              <RecommendationSearchNavForm />
-            </Col>
-          </Row>
-          <Row>
-            <Col md="10">
-              {/* body - 추천합니다 목록  */}
-              <RecommendationListBoxForm />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              {/* footer - 페이지 버튼 */}
-              <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
+        <Container className="body_text_center recommendation_container">
+          <Row className="d-flex justify-content-center">
+            <Col sm="12">
+              <ListGroup>
+                <ListGroupItem className="border border-white">
+                  <Row>
+                    <Col md="12">
+                      {/* 위쪽 Nav - 검색 */}
+                      <RecommendationSearchNavForm />
+                    </Col>
+                  </Row>
+              </ListGroupItem>
+              <ListGroupItem className="border border-white">
+                <Row>
+                  <Col>
+                    {/* body - 추천합니다 목록  */}
+                    <RecommendationListBoxForm />
+                  </Col>
+                </Row>
+              </ListGroupItem>
+              <ListGroupItem className="border border-white">
+                <Row>
+                  <Col>
+                    {/* footer - 페이지 버튼 */}
+                    <PageButtonForm data={data} handleDataChange={handlePageInDataChange} totalPages={totalPages} />
+                  </Col>
+                </Row>
+              </ListGroupItem>
+              </ListGroup>
             </Col>
           </Row>
         </Container>

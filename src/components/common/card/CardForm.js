@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import NoImage from '../../../images/common/card_no_image.jpg';
 
 /**
  * Card Form component
@@ -39,6 +40,9 @@ const CardForm = ({data, likesList, memberInfo, addItemLikesList, countOutInItem
     // 이미지 src 담기
     if(pictureForm) {
       setSrc(createSrc(pictureForm.storedFileName));
+    // 이미지 없을 때
+    } else {
+      setSrc(NoImage);
     }
   }, []);
   // // 상품 설명은 30 글자로만
@@ -151,24 +155,30 @@ const CardForm = ({data, likesList, memberInfo, addItemLikesList, countOutInItem
   /// view 모음
   
   return (
-    <Card>
-      <Card.Img variant="top" src={src} />
-      <Card.Body>
-        <Card.Title>
-          {name}
-        </Card.Title>
-        <Card.Text>
-          {price}<span>원</span>
-        </Card.Text>
-      </Card.Body>
-      <Card.Footer>
-        <span className="likes" onClick={handleLikesClick}>
-          {/* {likesState ? "💓" : "♥️"} */}
-          {favoriteHeart ? "💓" : "♥️"}
-        </span>
-        <Button id={boardNum} variant="primary" onClick={handleDetailClick}>상세보기</Button>
-      </Card.Footer>
-    </Card>
+    <Col>
+      <Card className="body_card h-100">
+        <Card.Img variant="top" src={src} />
+        <Card.Body>
+          <Card.Title>
+            {name}
+          </Card.Title>
+          <Card.Text>
+            {price}<span>원</span>
+          </Card.Text>
+        </Card.Body>
+        <Card.Footer>
+          <Row>
+            <Col className="likes align-self-center" onClick={handleLikesClick} sm="2">
+              {/* {likesState ? "💓" : "♥️"} */}
+              {favoriteHeart ? "💓" : "♥️"}
+            </Col>
+            <Col sm="10">
+            <Button id={boardNum} variant="primary" onClick={handleDetailClick}>상세보기</Button>
+            </Col>
+          </Row>
+        </Card.Footer>
+      </Card>
+    </Col>
   )
 }
 

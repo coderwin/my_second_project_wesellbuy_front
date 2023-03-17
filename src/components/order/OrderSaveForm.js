@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Button, Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Loding from '../Loding';
 import OrderItemForm from './save/OrderItemForm';
+import '../../css/form.css';
+import { CustomContext } from '../../App';
 
 /**
  * Order Save component
@@ -19,6 +21,8 @@ const OrderSaveForm = () => {
   /// 변수 모음
   // navigation
   const navigation = useNavigate();
+  // 외부 변수, 상태, 메서드 불러오기
+  const {setLoding: setAllLoding} = useContext(CustomContext);
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청처리 상태
@@ -59,7 +63,7 @@ const OrderSaveForm = () => {
     // true
     if(result) {
       // 경고창 띄우기
-      alert("숫자만 입력하세요");
+      alert("다시 입력하세요");
       return;
     // false
     } else {
@@ -73,22 +77,21 @@ const OrderSaveForm = () => {
       if(memberInfo) {
         if(newOrder) {
           // loding = true
-          setPayLoding(true);
+          setAllLoding(true);
           console.log(order);
           try {
             const response = await save(paidMoneyNum);
             // 요청 성공
             // loding = false
-            setPayLoding(false);
+            setAllLoding(false);
             console.log("요청 성공");
-            console.log(response);
             alert(response.data.data);
             // 내 주문보기로 이동하기
             navigation("/order/list");
           } catch(err) {
             // 요청 실패
             // loding = false
-            setPayLoding(false);
+            setAllLoding(false);
             console.log("요청 실패");
             // field 데이터가 잘못 입력된 에러
             if(err.response.data.errors) {
@@ -158,8 +161,8 @@ const OrderSaveForm = () => {
     ));
     // shopingBaskik에서 빼주자
     changeShopingBaskit(newDatas);
-    // 새로 고침?
-    navigation(0);
+    // loding이 안 되네
+    navigation(0); 
   }
   // change shopingBaskit in localStorage
   function changeShopingBaskit(newDatas) {
@@ -257,44 +260,52 @@ const OrderSaveForm = () => {
   if(payLoding) return (<Loding />);// 결제 처리 view
 
   return (
-    <Container>
-      <ListGroup>
-        {/* order header -> 제목 */}
-        <ListGroupItem>
-          <Row>
-            <Col sm="1">선택</Col>
-            <Col sm="1">주문번호</Col>
-            <Col sm="2">상품명</Col>
-            <Col sm="2">주문수량</Col>
-            <Col sm="2">상품가격</Col>
-            <Col sm="2">총가격</Col>
-            <Col sm="2"></Col>{/* 삭제 버튼  */}
-          </Row>
-        </ListGroupItem>
-        {/* order body -> 주문 상품들 뿌려주기 */}
-        {
-          itemList !== null ? 
-          itemList : 
-          <ListGroupItem>
-            <Col>주문상품이 없습니다.</Col>
-          </ListGroupItem>
-        }
-      </ListGroup>
-      {/* 선택한 상품들 결제금액 */}
-      <ListGroup>
-        <ListGroupItem>
-          <Row>
-            <Col sm="2">결제금액</Col>
-            <Col sm="10">
-              <span>{allTotalPrice}</span>
-              <span>원</span>
-            </Col>
-          </Row>
-        </ListGroupItem>
-        <ListGroupItem>
-          <Button stype="button" onClick={handlePayClick}>결제하기</Button>
-        </ListGroupItem>
-      </ListGroup>
+    <Container className="body_text_center">
+      <Row className="d-flex justify-content-center">
+        <Col sm={10}>
+          <ListGroup>
+            {/* order header -> 제목 */}
+            <ListGroupItem>
+              <Row>
+                <Col sm="1">선택</Col>
+                <Col sm="2">주문번호</Col>
+                <Col sm="2">상품명</Col>
+                <Col sm="2">주문수량</Col>
+                <Col sm="2">상품가격</Col>
+                <Col sm="2">총가격</Col>
+                <Col sm="2"></Col>{/* 삭제 버튼  */}
+              </Row>
+            </ListGroupItem>
+            {/* order body -> 주문 상품들 뿌려주기 */}
+            {
+              itemList !== null ? 
+              itemList : 
+              <ListGroupItem>
+                <Col>주문상품이 없습니다.</Col>
+              </ListGroupItem>
+            }
+          </ListGroup>
+          {/* 선택한 상품들 결제금액 */}
+          <ListGroup>
+            <ListGroupItem>
+              <Row>
+                <Col sm="4">결제금액</Col>
+                <Col sm="8">
+                  <span>{allTotalPrice}</span>
+                  <span>원</span>
+                </Col>
+              </Row>
+            </ListGroupItem>
+            <ListGroupItem>
+              <Row className="d-flex justify-content-center d-grid gap-2">
+                <Col sm={2} className="d-grid gap-2" >
+                  <Button stype="button" onClick={handlePayClick}>결제하기</Button>
+                </Col>
+              </Row>
+            </ListGroupItem>
+          </ListGroup>
+          </Col>
+      </Row>
     </Container>
   );
 }

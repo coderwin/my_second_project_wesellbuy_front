@@ -58,25 +58,29 @@ const ItemRankForm = () => {
 
   return (
     <ItemRankContext.Provider value={{handleSearchClick, setLoding}}>
-      <Container>
-        {/* 순위 찾기 Nav */}
-        <Row>
-          <Col md="12">
-            {/* 위쪽 Nav - 검색 */}
-            <ItemRankSearchNavForm />
-          </Col>
-        </Row>
-        {/* 순위 목록 box */}
-        <Row id="top">
-          <Col md="10">
-            {/* body - 상품 목록  */}
-            <ItemRankBoxForm />
-          </Col>
-        </Row>
-        {/* 맨위로 이동하기 */}
-        <Row className="footerFixed mousePointer">
-          <Col>
-            <a href="#top">맨위로</a>
+      <Container className="body_text_center">
+        <Row className="d-flex justify-content-center">
+          <Col sm={10}>
+            {/* 순위 찾기 Nav */}
+            <Row>
+              <Col md="12">
+                {/* 위쪽 Nav - 검색 */}
+                <ItemRankSearchNavForm />
+              </Col>
+            </Row>
+            {/* 순위 목록 box */}
+            <Row id="top">
+              <Col md="12">
+                {/* body - 상품 목록  */}
+                <ItemRankBoxForm />
+              </Col>
+            </Row>
+            {/* 맨위로 이동하기 */}
+            <Row className="footerFixed mousePointer body_text_right">
+              <Col>
+                <a href="#top">맨위로</a>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>

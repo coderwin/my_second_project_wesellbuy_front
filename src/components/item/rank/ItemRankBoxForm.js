@@ -88,8 +88,8 @@ const ItemRankBoxForm = () => {
   }
 
   return (
-    <Table bordered hover>
-      <thead>
+    <Table hover>
+      <thead className="table-primary">
         <tr>
           <th>순위</th>
           <th>상품명</th>

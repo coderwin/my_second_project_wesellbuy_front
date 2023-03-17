@@ -32,7 +32,7 @@ const ItemRankSearchNavForm = () => {
           <Form className="d-flex" onSubmit={handleSearchClick}>
             <Form.Control
               type="search"
-              placeholder="원하는 순위를 입력하세요"
+              placeholder="원하는 순위 검색"
               className="me-2"
               aria-label="Search"
               name="rankName"

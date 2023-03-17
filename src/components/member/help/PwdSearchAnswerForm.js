@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const PwdSearchAnswerForm = ({id, pwd}) => {
@@ -16,14 +16,19 @@ const PwdSearchAnswerForm = ({id, pwd}) => {
 
   return (
     <Container>
+      <ListGroup>
       <Row className="d-flex justify-content-center">
         <Col sm={3}>
-          {id}님의 아이디는
+          <ListGroupItem>
+            {id}님의 아이디는
+          </ListGroupItem>
         </Col>
       </Row>
       <Row className="d-flex justify-content-center">
         <Col sm={3}>
-          {pwd}
+          <ListGroupItem>
+            {pwd}
+          </ListGroupItem>
         </Col>
       </Row>
       <Row className="d-flex justify-content-center">
@@ -31,6 +36,7 @@ const PwdSearchAnswerForm = ({id, pwd}) => {
           <Button onClick={handleLoginClick} size="lg">로그인</Button>
         </Col>  
       </Row>
+      </ListGroup>
     </Container>
   )
 }

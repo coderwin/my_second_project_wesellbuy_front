@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const IdSearchAnswerForm = ({name, ids}) => {
@@ -20,27 +20,33 @@ const IdSearchAnswerForm = ({name, ids}) => {
     return (
       <Row className="d-flex justify-content-center">
         <Col sm={4}>
+          <ListGroupItem>
           {id}
+          </ListGroupItem>
         </Col>
       </Row>
     );
   });
   return (
     <Container>
-      <Row className="d-flex justify-content-center">
-        <Col sm={4}>
-          {name}님의 아이디는
-        </Col>
-      </Row>
-      {result}
-      <Row className="d-flex justify-content-center">
-        <Col sm={2}>
-          <Button onClick={handleSearchIdClick}>비밀번호찾기</Button>
-        </Col>
-        <Col sm={2}>
-          <Button onClick={handleLoginClick}>로그인</Button>
-        </Col>  
-      </Row>
+      <ListGroup>   
+        <Row className="d-flex justify-content-center">
+          <Col sm={4}>
+            <ListGroupItem>
+              {name}님의 아이디는
+            </ListGroupItem>
+          </Col>
+        </Row>
+        {result}
+        <Row className="d-flex justify-content-center">
+          <Col sm={2}>
+            <Button onClick={handleSearchIdClick}>비밀번호찾기</Button>
+          </Col>
+          <Col sm={2}>
+            <Button onClick={handleLoginClick}>로그인</Button>
+          </Col>  
+        </Row>
+      </ListGroup>
     </Container>
   )
 }

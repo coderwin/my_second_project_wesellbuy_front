@@ -124,7 +124,7 @@ const OrderForSellerForm = ({data, numPosition, datasLength, totalPages, searchC
   // 주소 있을 때
   if(data.address) {
     for(let key in data.address) {
-      addressBoxView += data.address[key];
+      addressBoxView += data.address[key] + "\n";
     }
   // 주소 없을 때  
   } else {

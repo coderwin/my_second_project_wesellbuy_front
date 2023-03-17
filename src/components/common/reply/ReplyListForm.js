@@ -36,7 +36,12 @@ const ReplyListForm = ({replyFormList, replies, setReplies, updateReply, deleteR
   // replyFormList가 undefined가 아닐 때
   if(replyFormList.length !== 0) {
     view = replyFormList.map((reply) => {
-      return <ReplyForm key={reply.num} OnDeleteRepliesChange={handleDeleteRepliesChange} reply={reply} updateReply={updateReply} deleteReply={deleteReply} />;
+      return <ReplyForm 
+        key={reply.num} 
+        OnDeleteRepliesChange={handleDeleteRepliesChange} 
+        reply={reply} 
+        updateReply={updateReply} 
+        deleteReply={deleteReply} />;
     });
   }
 
