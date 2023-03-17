@@ -101,7 +101,7 @@ const MemberUpdateForm = () => {
     } catch(error) {
       // 데이터 가져오기 끝
       setLoding(false);
-      console.log(error);
+      // console.log(error);
       // error Msg 담기
       alert(error.response.data.errMsg);
       setError(error.response.data.errMsg);
@@ -125,12 +125,10 @@ const MemberUpdateForm = () => {
     document.querySelector(".imageBox").innerHTML = "";
 
     let reader = new FileReader();
-    console.log(e.target.files);
 
     reader.onload = function(event) {
       // img 태그 만들기
       let img = document.createElement("img");
-      console.log(event.target.result);
       img.setAttribute("src", event.target.result);
       // .imageBox에 Image 태그 담기
       document.querySelector(".imageBox").appendChild(img);
@@ -140,7 +138,6 @@ const MemberUpdateForm = () => {
   }
   // 파일 데이터 상태에 넣기
   function handleInputFileChange(e) {
-    console.log(e.target.files);
     // file이 있으면 실행된다
     if(e.target.files) {
       setFile(e.target.files[0]);
@@ -254,7 +251,7 @@ const MemberUpdateForm = () => {
               />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errorMsgs.name}
             </Col>
           </Form.Group>
@@ -280,7 +277,7 @@ const MemberUpdateForm = () => {
               />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errorMsgs.id}
             </Col>
           </Form.Group>
@@ -306,7 +303,7 @@ const MemberUpdateForm = () => {
               />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errorMsgs.pwd}
             </Col>
           </Form.Group>
@@ -332,7 +329,7 @@ const MemberUpdateForm = () => {
               />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errorMsgs.pwdConfirm}
             </Col>
           </Form.Group>
@@ -358,7 +355,7 @@ const MemberUpdateForm = () => {
               />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errorMsgs.email}
             </Col>
           </Form.Group>
@@ -384,7 +381,7 @@ const MemberUpdateForm = () => {
               />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errorMsgs.selfPhone}
             </Col>
           </Form.Group>
@@ -410,7 +407,7 @@ const MemberUpdateForm = () => {
               />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errorMsgs.homePhone}
             </Col>
           </Form.Group>
@@ -431,7 +428,7 @@ const MemberUpdateForm = () => {
               {/* country */}
               <Form.Select name="country" value={data.country} onChange={handleDataChange}>
                 {
-                  countryValues.map((value, i) => value === data.country ? <option value={value}>{countryNames[i]}</option> : <option value={value}>{countryNames[i]}</option>)
+                  countryValues.map((value, i) => value === data.country ? <option key={i} value={value}>{countryNames[i]}</option> : <option key={i} value={value}>{countryNames[i]}</option>)
                 }
               </Form.Select>
               {/* 에러 메시지 */}
@@ -512,7 +509,7 @@ const MemberUpdateForm = () => {
             {/* 이미지 미리보기 box */}
             <Col sm="6" className="imageBox" />
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errorMsgs.file}
             </Col>
           </Form.Group>

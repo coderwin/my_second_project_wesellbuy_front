@@ -115,6 +115,13 @@
   justify-content: center;
 }
 
+/* member container */
+/* 이미지 */
+.member_container .profil {
+  max-width: 460px;
+  max-height: 345px;
+}
+
 /* footer */
 /* img */
 .footer img {

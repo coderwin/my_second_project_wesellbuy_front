@@ -119,7 +119,7 @@ const HeaderTop = () => {
 
     // Q. 계속 렌더링되는 게 맞나?
     // Q. 렌더링 되는 것이 아니라 여기로 오는 건가?
-    console.log("로그인 상태")
+    // console.log("로그인 상태")
     
     // 작업 진행 상태 일 때
     if(loding) return (<Loding />);

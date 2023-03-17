@@ -76,8 +76,6 @@ const ItemOrderBoxForm = () => {
     // JSON parse 해준다.
     const shopingBasket = JSON.parse(strShopingBasket);
 
-    console.log("create shopingBasket : " + shopingBasket.length);
-
     return shopingBasket;
   }
 

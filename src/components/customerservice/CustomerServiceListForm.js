@@ -45,7 +45,6 @@ const CustomerServiceListForm = () => {
       setLoding(false);
       // 요청 성공
       console.log("요청 성공");
-      console.log(data);
       // Listdatas에 담기
       setListDatas(data.data.content);
       setTotalPages(data.data.totalPages);
@@ -54,7 +53,7 @@ const CustomerServiceListForm = () => {
       setLoding(false);
       // 요청 실패
       console.log("요청 실패");
-      console.log(err);
+      // console.log(err);
     }
   }
   // 찾기에서 사용
@@ -75,7 +74,7 @@ const CustomerServiceListForm = () => {
       setLoding(false);
       // 요청 실패
       console.log("요청 실패");
-      console.log(err);
+      // console.log(err);
     }
   }
   // 서버에서 나의 고객지원글 불러오기
@@ -90,7 +89,6 @@ const CustomerServiceListForm = () => {
   }
   // 검색 데이터 바뀌면 data 변경한다
   function handleDataChange(e) {
-    console.log(`${e.target.name} : ${e.target.value}`);
     setData({
       ...data,
       [e.target.name]: e.target.value
@@ -98,7 +96,6 @@ const CustomerServiceListForm = () => {
   }
   // page 데이터 바뀌면 data 변경한다
   function handlePageInDataChange(e) {
-    console.log(`${e.target.name} : ${e.target.id}`);
     setData((data) => {
       return {
       ...data,

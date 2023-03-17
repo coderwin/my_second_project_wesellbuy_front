@@ -36,7 +36,7 @@ const ImagesBoxSpread = ({pictureForms, createSrc, OnDeleteImageClick, pictureNu
   // ImageForm 루프 돌기
   return (
     <ListGroup>
-      <ListGroupItem>
+      <ListGroupItem className="border border-white">
         <Row>
           {/* 클라이언트 저장 이미지가 나온다 */}
           {imageForms !== null && imageForms}

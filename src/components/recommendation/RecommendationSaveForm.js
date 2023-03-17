@@ -44,7 +44,6 @@ const RecommendationSaveForm = () => {
   /// 메서드 모음
   // input에 데이터 바뀌면 data 데이터 변경한다
   function handleDataChange(e) {
-    console.log(`${e.target.name} : ${e.target.value}`);
     setData({
       ...data,
       [e.target.name]: e.target.value
@@ -71,7 +70,7 @@ const RecommendationSaveForm = () => {
       // 데이터 저장하기
       const response = await save(formData);
       // 저장 성공
-      console.log("상품 저장 성공");
+      console.log("저장 성공");
       // loding false로
       setLoding(false);
       // 상품 등록 완료 alert창 띄우기
@@ -82,10 +81,10 @@ const RecommendationSaveForm = () => {
       navigation(`/recommendation/${boardNum}`);
     } catch(err) {
       // 요청 실패
-      console.log("상품 저장 실패");
+      console.log("저장 실패");
       // loding false로 
       setLoding(false);
-      console.log(err);
+      // console.log(err);
       // 다른 에러일 경우
       if(err.response.data.errMsg) {
         alert(err.response.data.errMsg);
@@ -135,8 +134,6 @@ const RecommendationSaveForm = () => {
   }
   // 파일 데이터들 상태에 넣기
   function handleFilesChange(e) {
-    console.log(e.target.files);
-    console.log(e.target.files[0]);
     // file이 있으면 실행된다.
     if(e.target.files) {
       // 파일을 담기
@@ -208,7 +205,7 @@ const RecommendationSaveForm = () => {
                 />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
                 {errMsgs.itemName}
             </Col>
             </Form.Group>
@@ -235,7 +232,7 @@ const RecommendationSaveForm = () => {
                   />
               </Col>
               {/* 에러 메시지 */}
-              <Col className="error">
+              <Col className="error" sm="12">
                   {errMsgs.sellerId}
               </Col>
             </Form.Group>

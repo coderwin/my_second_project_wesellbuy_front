@@ -63,7 +63,6 @@ const ItemUpdateForm = () => {
 
 
   /// 메서드 모음
-  console.log(data);
 
   // 상품 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
@@ -95,7 +94,7 @@ const ItemUpdateForm = () => {
       // 요청 실패
       console.log("요청 실패");
       setLoding(false);
-      console.log(err);
+      // console.log(err);
       // errMsg 보여주기
       alert(err.response.data.errMsg);
     }
@@ -320,7 +319,6 @@ const ItemUpdateForm = () => {
         return createSrc(pictureForm.storedFileName);
       });
     }
-    console.log(newSrcArr);
     // srcArr상태에 담기
     setSrcArr([
       ...newSrcArr
@@ -336,7 +334,6 @@ const ItemUpdateForm = () => {
         return pictureForm.num;
       });
     }
-    console.log(newPictureNums);
     // pictureNums에 담기
     setPictureNums([
       ...pictureNums,
@@ -378,7 +375,7 @@ const ItemUpdateForm = () => {
                   />
                 </Col>
                 {/* 에러 메시지 */}
-                <Col className="error">
+                <Col className="error" sm="12">
                   {errMsgs.name}
                 </Col>
               </Form.Group>
@@ -430,7 +427,7 @@ const ItemUpdateForm = () => {
                   />
                 </Col>
                 {/* 에러 메시지 */}
-                <Col className="error">
+                <Col className="error" sm="12">
                   {errMsgs.stock}
                 </Col>
               </Form.Group>
@@ -458,7 +455,7 @@ const ItemUpdateForm = () => {
                   />
                 </Col>
                 {/* 에러 메시지 */}
-                <Col className="error">
+                <Col className="error" sm="12">
                   {errMsgs.price}
                 </Col>
               </Form.Group>

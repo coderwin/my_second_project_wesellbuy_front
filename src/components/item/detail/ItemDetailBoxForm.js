@@ -84,7 +84,7 @@ const ItemDetailBoxForm = () => {
         } catch(err) {
           // 요청 실패
           console.log("요청 실패");
-          console.log(err);
+          // console.log(err);
         }
       // likesState === false
       } else {
@@ -105,7 +105,7 @@ const ItemDetailBoxForm = () => {
         } catch(err) {
           // 요청 실패
           console.log("요청 실패");
-          console.log(err);
+          // console.log(err);
         }
       }
     } else {
@@ -151,7 +151,7 @@ const ItemDetailBoxForm = () => {
         // 요청 실패
         setLoding(false);
         console.log("요청 실패");
-        console.log(err);
+        // console.log(err);
       }
     }
   }
@@ -211,7 +211,7 @@ const ItemDetailBoxForm = () => {
             {/* 클릭하면 증가 */}
             <Col md="2">
               <span>좋아요</span> 
-              <span className="likes" onClick={handleLikesClick}>
+              <span className="likes mousePointer" onClick={handleLikesClick}>
                 {/* {likesState ? "💓" : "♥️"} */}
                 {favoriteHeart ? "💓" : "♥️"}
               </span>

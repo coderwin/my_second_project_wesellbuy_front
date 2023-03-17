@@ -102,7 +102,7 @@ const CustomerServiceDetailForm = () => {
 
   return (
     <CustomerServiceDetailContext.Provider value={{data, setLoding}}>
-      <Container className="body_text_center">
+      <Container>
         <Row className="d-flex justify-content-center">
           {/* CustomerService detail box */}
           <Col className="CustomerServiceDetailBox" sm="8">

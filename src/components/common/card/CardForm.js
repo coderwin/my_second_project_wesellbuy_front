@@ -92,7 +92,7 @@ const CardForm = ({data, likesList, memberInfo, addItemLikesList, countOutInItem
         } catch(err) {
           // 요청 실패
           console.log("요청 실패");
-          console.log(err);
+          // console.log(err);
         }
       // likesState === false
       } else {
@@ -108,7 +108,7 @@ const CardForm = ({data, likesList, memberInfo, addItemLikesList, countOutInItem
         } catch(err) {
           // 요청 실패
           console.log("요청 실패");
-          console.log(err);
+          // console.log(err);
         }
       }
     } else {
@@ -145,7 +145,6 @@ const CardForm = ({data, likesList, memberInfo, addItemLikesList, countOutInItem
   // 상세보기 클릭했을 때
   // 상품 상세보기로 간다
   function handleDetailClick(e) {
-    console.log(e.target.id);
     const boardNum = e.target.id;
     navigation(`/item/${boardNum}`);
     return;
@@ -168,7 +167,7 @@ const CardForm = ({data, likesList, memberInfo, addItemLikesList, countOutInItem
         </Card.Body>
         <Card.Footer>
           <Row>
-            <Col className="likes align-self-center" onClick={handleLikesClick} sm="2">
+            <Col className="likes align-self-center mousePointer" onClick={handleLikesClick} sm="2">
               {/* {likesState ? "💓" : "♥️"} */}
               {favoriteHeart ? "💓" : "♥️"}
             </Col>

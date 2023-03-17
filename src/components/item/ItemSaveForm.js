@@ -64,7 +64,6 @@ const ItemSaveForm = () => {
   /// 메서드 모음
   // input에 데이터 바뀌면 data 데이터 변경한다
   function handleDataChange(e) {
-    console.log(`${e.target.name} : ${e.target.value}`);
     setData({
       ...data,
       [e.target.name]: e.target.value
@@ -158,8 +157,6 @@ const ItemSaveForm = () => {
   }
   // 파일 데이터들 상태에 넣기
   function handleFilesChange(e) {
-    console.log(e.target.files);
-    console.log(e.target.files[0]);
     // file이 있으면 실행된다.
     if(e.target.files) {
       // 파일을 담기
@@ -253,7 +250,7 @@ const ItemSaveForm = () => {
                   />
                 </Col>
                 {/* 에러 메시지 */}
-                <Col className="error">
+                <Col className="error" sm="12">
                   {errMsgs.name}
                 </Col>
               </Form.Group>
@@ -311,7 +308,7 @@ const ItemSaveForm = () => {
                   />
                 </Col>
                 {/* 에러 메시지 */}
-                <Col className="error">
+                <Col className="error" sm="12">
                   {errMsgs.stock}
                 </Col>
               </Form.Group>
@@ -339,7 +336,7 @@ const ItemSaveForm = () => {
                   />
                 </Col>
                 {/* 에러 메시지 */}
-                <Col className="error">
+                <Col className="error" sm="12">
                   {errMsgs.price}
                 </Col>
               </Form.Group>
@@ -419,7 +416,7 @@ const ItemSaveForm = () => {
               >
                 <Row className="d-flex justify-content-center">
                   <Col sm={2}>
-                    <Button Button type="submit">등록</Button>
+                    <Button type="submit">등록</Button>
                   </Col>
                   <Col sm={2}>
                     <Button type="button" onClick={handleCancelClick}>취소</Button>

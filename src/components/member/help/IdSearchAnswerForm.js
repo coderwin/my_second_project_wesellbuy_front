@@ -18,7 +18,7 @@ const IdSearchAnswerForm = ({name, ids}) => {
   
   const result = ids.map((id, num) => {
     return (
-      <Row className="d-flex justify-content-center">
+      <Row key={num} className="d-flex justify-content-center">
         <Col sm={4}>
           <ListGroupItem>
           {id}

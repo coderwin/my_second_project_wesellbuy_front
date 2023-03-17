@@ -70,12 +70,11 @@ const ItemDetailForm = () => {
       });
       // 이미지 srcArr 만들기 -> 사용 -> 더 생각해보기
       setSrcArr(createSrcArr(response.data.data.pictureForms));
-      console.log(JSON.stringify(srcArr));// 여기까지는 바로 실행된다.
     } catch(err) {
       // 요청 실패
       setLoding(false);
       console.log("요청 실패");
-      console.log(err);
+      // console.log(err);
       // errMsg 보여주기
       alert(err.response.data.errMsg);
     }

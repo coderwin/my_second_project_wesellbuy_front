@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import NoImage from '../../../images/common/card_no_image2.jpg';
+import '../../../css/form.css';
 
 /**
  * Card Form component
@@ -89,7 +90,7 @@ const CardWithHeaderForm = ({data, likesList, memberInfo, addItemLikesList, coun
         } catch(err) {
           // 요청 실패
           console.log("요청 실패");
-          console.log(err);
+          // console.log(err);
         }
       // likesState === false
       } else {
@@ -169,7 +170,7 @@ const CardWithHeaderForm = ({data, likesList, memberInfo, addItemLikesList, coun
         </Card.Body>
         <Card.Footer>
           <Row>
-            <Col className="likes align-self-center" onClick={handleLikesClick} sm="6">
+            <Col className="likes align-self-center mousePointer" onClick={handleLikesClick} sm="6">
               {/* {likesState ? "💓" : "♥️"} */}
               {favoriteHeart ? "💓" : "♥️"}
             </Col>

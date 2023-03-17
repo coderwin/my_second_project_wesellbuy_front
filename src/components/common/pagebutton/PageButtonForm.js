@@ -44,13 +44,13 @@ const PageButtonForm = ({data, handleDataChange, totalPages}) => {
 
     /// endPage 0 일 때 출력물 없음
     if(endPage === 0) {
-      console.log(`endPage : ${endPage}`);  
+      // console.log(`endPage : ${endPage}`);  
       return result;
     }
     /// 게시글 1이상일 때
     // endPage 1 일 때
     if(endPage === 1) {
-      console.log(`endPage : ${endPage}`);
+      // console.log(`endPage : ${endPage}`);
       result.push(<Pagination.Item active name="page" key={nowPage} id={nowPage}>{nowPage + 1}</Pagination.Item>);
       return result;
     }

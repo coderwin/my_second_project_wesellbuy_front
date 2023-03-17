@@ -1,6 +1,5 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
-import NotFoundForm from '../../components/error/NotFoundForm';
+import NotFoundForm from '../../components/errors/NotFoundForm';
 
 /**
  * NotFound page

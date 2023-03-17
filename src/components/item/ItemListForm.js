@@ -323,7 +323,7 @@ const ItemListForm = () => {
         <Container className="body_text_center home_container">
           <Row className="d-flex justify-content-center">
             <Col sm="12">
-              <ListGroup border>
+              <ListGroup>
                 {/* 이미지 박스 */}
                 <ListGroupItem>
                   <ItemHomeHeaderImageBox />

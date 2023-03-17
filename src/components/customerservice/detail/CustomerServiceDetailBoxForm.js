@@ -33,21 +33,21 @@ const CustomerServiceDetailBoxForm = () => {
     <>
       <ListGroup as="ul">
         {/* 신고된 회원 아이디 */}
-        <ListGroupItem >
+        <ListGroupItem className="body_text_center">
           <Row>
             <Col md="3">신고된 회원 아이디</Col>
             <Col md="8">{data.reportedId}</Col>
           </Row>
         </ListGroupItem>
         {/* 작성자 */}
-        <ListGroupItem >
+        <ListGroupItem className="body_text_center">
           <Row>
             <Col md="3">작성자</Col>
             <Col md="8">{data.memberId}</Col>
           </Row>
         </ListGroupItem>
         {/* 작성 날짜 */}
-        <ListGroupItem>
+        <ListGroupItem className="body_text_center">
           <Row>
             <Col md="3">작성날짜</Col>
             <Col md="8">{printDate(data.createDate)}</Col>

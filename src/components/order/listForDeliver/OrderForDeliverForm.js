@@ -37,13 +37,6 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
 
 
   /// 메서드 모음
-  // 주문을 클릭했을 때 -> 지우기
-  function handleItemNameClick(e) {
-    // id 불러오기
-    const id = e.target.id;// 상품번호 불러오기
-    // 주문 상세보기로 이동
-    navigation(`/item/${id}`);
-  }
   // 배달완료를 클릭했을 때
   async function handleFinishDeliveryClick(e) {
     try {
@@ -131,10 +124,8 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
 
   return (
     <tr>
-      {/* 나의 주문번호 순서 */}
-      <th id={data.num} 
-        onClick={handleItemNameClick} className="mousePointer"
-      >
+      {/* 주문번호 순서 */}
+      <th id={data.num}>
         {/* 첫페이지가 1번부터 */}
         {/* {searchCond.size * (searchCond.page + 1) - searchCond.size + 1} */}
         {/* 첫페이지가 마지막번호부터 */}

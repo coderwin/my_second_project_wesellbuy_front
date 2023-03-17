@@ -24,7 +24,6 @@ const ImagesBox = ({srcArr}) => {
   // ImageForm들을 생성
   if(srcArr) {
     imageForms = srcArr.map((src, num) => {
-      console.log(src);
       return (<Carousel.Item key={num}>
         <img
           className="d-block w-100"

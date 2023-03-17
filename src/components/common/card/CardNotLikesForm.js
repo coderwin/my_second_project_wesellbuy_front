@@ -54,7 +54,6 @@ const CardForm = ({data})=> {
   // 상세보기 클릭했을 때
   // 추천합니다 상세보기로 간다
   function handleDetailClick(e) {
-    console.log(e.target.id);
     const boardNum = e.target.id;
     navigation(`/recommendation/${boardNum}`);
     return;

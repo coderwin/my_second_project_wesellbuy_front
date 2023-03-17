@@ -71,7 +71,7 @@ const RecommendationUpdateForm = () => {
       // 요청 실패
       console.log("요청 실패");
       setLoding(false);
-      console.log(err);
+      // console.log(err);
       // errMsg 보여주기
       alert(err.response.data.errMsg);
     }
@@ -337,7 +337,7 @@ const RecommendationUpdateForm = () => {
                   />
                 </Col>
                 {/* 에러 메시지 */}
-                <Col className="error">
+                <Col className="error" sm="12">
                   {errMsgs.itemName}
                 </Col>
               </Form.Group>
@@ -363,7 +363,7 @@ const RecommendationUpdateForm = () => {
                   />
                 </Col>
                 {/* 에러 메시지 */}
-                <Col className="error">
+                <Col className="error" sm="12">
                   {errMsgs.sellerId}
                 </Col>
               </Form.Group>

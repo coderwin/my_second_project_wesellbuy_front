@@ -73,12 +73,10 @@ const JoinForm = () => {
     document.querySelector(".imageBox").innerHTML = "";
 
     let reader = new FileReader();
-    console.log(e.target.files);
 
     reader.onload = function(event) {
       // img 태그 만들기
       let img = document.createElement("img");
-      console.log(event.target.result);
       img.setAttribute("src", event.target.result);
       // .imageBox에 img 태그 담기
       document.querySelector(".imageBox").appendChild(img);
@@ -90,7 +88,6 @@ const JoinForm = () => {
   // 파일 데이터 상태에 넣기
   // + 파일 미리보기
   function handleInputFileChange(e) {
-    console.log(e.target.files);
     // file이 있으면 실행된다
     if(e.target.files) {
       setFile(e.target.files[0]);
@@ -138,7 +135,7 @@ const JoinForm = () => {
     })
     .catch((err) => {
       console.log("요청 실패");
-      console.log(err);
+      // console.log(err);
       // 로딩중 해제하기
       setLoding(false);    
       // newErrMsgs 객체 생성하기
@@ -147,7 +144,6 @@ const JoinForm = () => {
       // field 값에 따라서 데이터 넣기
       for(let key in err.response.data.errors) {
         // errMsgs 상태 순회하기
-        console.log(err.response.data.errors[key]);
         const newErrMsg = err.response.data.errors[key];
         for(let errMsgKey in errMsgs) {
             // newErrMsgs의 새로운 속성을 추가한다
@@ -168,7 +164,6 @@ const JoinForm = () => {
           id: err.response.data.errMsg
         };
       }
-      console.log("newErrMsgs -> " + newErrMsgs);
       // errMsgs value 교체하기
       setErrMsgs({
         ...defaultErrMsgs,
@@ -233,7 +228,7 @@ const JoinForm = () => {
               <Form.Control type="text" name="name" onChange={handleInputDataChange} value={data.name} />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errMsgs.name}
             </Col>
           </Form.Group>
@@ -254,7 +249,7 @@ const JoinForm = () => {
               <Button onClick={handleCheckIdClick}>중복확인</Button>
             </Col>
             {/* 에러/중복확인 메시지 */}
-            <Col>
+            <Col sm="12">
               <span className="error">{errMsgs.id}</span>
               <span className="pass">{checkId.msg}</span>
             </Col>
@@ -273,7 +268,7 @@ const JoinForm = () => {
               <Form.Control type="password" name="pwd" onChange={handleInputDataChange} value={data.pwd} />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errMsgs.pwd}
             </Col>
           </Form.Group>
@@ -291,7 +286,7 @@ const JoinForm = () => {
               <Form.Control type="password" name="pwdConfirm" onChange={handleInputDataChange} value={data.pwdConfirm} />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errMsgs.pwdConfirm}
             </Col>
           </Form.Group>
@@ -309,7 +304,7 @@ const JoinForm = () => {
               <Form.Control type="text" name="email" onChange={handleInputDataChange} value={data.email} />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errMsgs.email}
             </Col>
           </Form.Group>
@@ -327,7 +322,7 @@ const JoinForm = () => {
               <Form.Control type="text" name="selfPhone" onChange={handleInputDataChange} value={data.selfPhone} />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errMsgs.selfPhone}
             </Col>
           </Form.Group>
@@ -345,7 +340,7 @@ const JoinForm = () => {
               <Form.Control type="text" name="homePhone" onChange={handleInputDataChange} value={data.homePhone} />
             </Col>
             {/* 에러 메시지 */}
-            <Col className="error">
+            <Col className="error" sm="12">
               {errMsgs.homePhone}
             </Col>
           </Form.Group>

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { CustomContext } from '../../App';
 import MemberDetailLeftNavForm from './detail/MemberDetailLeftNavForm';
 import Loding from '../Loding';
+import '../../css/form.css';
 
 /**
  * Member detail component
@@ -176,7 +177,7 @@ const MemberDetailForm = () => {
   if(error) return (<div>요청 작업 중 에러 발생</div>);
     
   return (
-    <Container>
+    <Container className="member_container">
       <Row>
         {/* left side Nav */}
         <Col sm="3">
@@ -294,8 +295,8 @@ const MemberDetailForm = () => {
             <Row className="d-flex justify-content-center">
               <Form.Label>프로필</Form.Label>
               <Col sm={12}>
-              {data.selfPictureForm ? <Image roundedCircle src={`http://localhost:8080/members/images/${data.selfPictureForm.storedFileName}`} /> 
-              : <Image roundedCircle src={noImage} />}
+              {data.selfPictureForm ? <Image className="img-responsive profil" roundedCircle src={`http://localhost:8080/members/images/${data.selfPictureForm.storedFileName}`} /> 
+              : <Image className="profil" roundedCircle src={noImage} />}
               </Col>
             </Row>
             

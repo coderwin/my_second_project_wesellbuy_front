@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CardGroup, Row } from 'react-bootstrap';
+import { CardGroup, Col, Row } from 'react-bootstrap';
 import CardNotLikesForm from '../../common/card/CardNotLikesForm';
 import { RecommendationListContext } from '../RecommendationListForm';
 
@@ -34,10 +34,10 @@ const RecommendationListBoxForm = () => {
           key={i}
           data={cardData}
         /> 
-        );
+      );
     });
   } else {
-    view = "추천글이 없습니다.";
+    view = <Col>추천글이 없습니다.</Col>;
   }
 
   return (

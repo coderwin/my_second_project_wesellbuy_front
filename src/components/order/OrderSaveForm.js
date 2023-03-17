@@ -72,13 +72,11 @@ const OrderSaveForm = () => {
       // order 생성하기
       const newOrder = createOrder();
       // order가 처음과 바꼈는지 확인하기
-      console.log(`order: ${order}`);
       // 서버로 주문등록하기
       if(memberInfo) {
         if(newOrder) {
           // loding = true
           setAllLoding(true);
-          console.log(order);
           try {
             const response = await save(paidMoneyNum);
             // 요청 성공
@@ -107,7 +105,7 @@ const OrderSaveForm = () => {
 
             // 계산 중 에러
             if(err.response.data.errMsg) {
-              console.log(err.response.data.errMsg);
+              // console.log(err.response.data.errMsg);
               // 클라이언트에게 에러 이유 알려주기
               alert(err.response.data.errMsg);
             }
@@ -121,7 +119,6 @@ const OrderSaveForm = () => {
   // 서버에 필요한 데이터로 만든다.
   const createOrder = useCallback(() => {
     let newOrder = null;
-    console.log(readyOrder);
     if(readyOrder) {
       newOrder = readyOrder.map((item) => {
         return {

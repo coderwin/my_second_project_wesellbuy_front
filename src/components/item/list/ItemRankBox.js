@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CardGroup, Row } from 'react-bootstrap';
+import { CardGroup, Col, Row } from 'react-bootstrap';
 import CardWithHeaderForm from '../../common/card/CardWithHeaderForm';
 import { ItemListContext } from '../ItemListForm';
 /**
@@ -47,7 +47,7 @@ const ItemRankBox = () => {
       );
     }
   } else {
-    view = "상품이 없습니다.";
+    view = <Col>상품이 없습니다.</Col>;
   }
 
   return (
