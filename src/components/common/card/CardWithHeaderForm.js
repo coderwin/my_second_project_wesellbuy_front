@@ -9,13 +9,20 @@ import '../../../css/form.css';
  * Card Form component
  * writer : 이호진
  * init : 2023.03.09
- * updated by writer :
- * update :
+ * updated by writer : 이호진
+ * update : 2023.03.18
  * description : Card component
  *               > 속성(props)
  *                - data: card에 입력하고 싶은 데이터 prop
  *                - likeList: 좋아요 표시를 위한 게시글번호 모음 prop
  *                - memberInfo: 회원정보 prop
+ *                - addItemLikesList: sessionStorage에 좋아요 상품번호 추가 메서드 prop
+ *                - countOutInItemLikesList: sessionStorage에 좋아요 상품번호 제거 메서드 prop
+ * 
+ * update : > 좋아요 버튼 제거
+ *            > itemList의 상품들의 좋아요와 연동할 때 에러 안 나게 할 수 없을까?
+ *              > 한 곳에서 좋아요 클릭하면 다른 곳에서 제거가 안 되고
+ *              > 서버로 좋아요 등록 요청이 간다
  * 
  */
 const CardWithHeaderForm = ({data, likesList, memberInfo, addItemLikesList, countOutInItemLikesList})=> {
@@ -170,11 +177,11 @@ const CardWithHeaderForm = ({data, likesList, memberInfo, addItemLikesList, coun
         </Card.Body>
         <Card.Footer>
           <Row>
-            <Col className="likes align-self-center mousePointer" onClick={handleLikesClick} sm="6">
+            {/* <Col className="likes align-self-center mousePointer" onClick={handleLikesClick} sm="6"> */}
               {/* {likesState ? "💓" : "♥️"} */}
-              {favoriteHeart ? "💓" : "♥️"}
-            </Col>
-            <Col sm="6">
+              {/* {favoriteHeart ? "💓" : "♥️"} */}
+            {/* </Col> */}
+            <Col>
               <Button type="button" id={boardNum} variant="primary" onClick={handleDetailClick}>상세보기</Button>
             </Col>
           </Row>

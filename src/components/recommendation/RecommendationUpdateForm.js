@@ -43,37 +43,60 @@ const RecommendationUpdateForm = () => {
   const [files, setFiles] = useState(null);// 파일들 상태
   const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열 
   const [pictureNums, setPictureNums] = useState([]);// 이미지번호 모아두는 배열 상태
-
+  const [memberInfo, setMemberInfo] = useState(() => {
+    const key = "LOGIN_MEMBER";
+    return JSON.parse(sessionStorage.getItem(key)) || null
+  });// 로그인 사용자 정보 상태
 
   /// 메서드 모음
   // 추천합니다글 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
   async function inputData() {
-    try {
-      // 추천합니다글 detail 불러오기
-      const response = await getRecommendationDetailInfo(boardNum);
-      // 요청 성공
-      console.log("요청 성공");
+    setLoding(true);
+    if(memberInfo) {
+      try {
+        // 추천합니다글 detail 불러오기
+        const response = await getRecommendationDetailInfo(boardNum);
+        // 요청 성공
+        console.log("요청 성공");
+        setLoding(false);
+        // data 데이터 담기
+        setData({
+          ...data,
+          itemName: response.data.data.itemName,
+          sellerId: response.data.data.sellerId,
+          content: response.data.data.content,
+          recommendationPictureFormList: response.data.data.recommendationPictureFormList
+        });
+        // srcArr 만들기
+        createSrcArr(response.data.data.recommendationPictureFormList);
+        // pictureNums 만들기
+        createPictureNums(response.data.data.recommendationPictureFormList);
+      } catch(err) {
+        // 요청 실패
+        console.log("요청 실패");
+        // 데이터가 없는 곳으로 입장했을 때
+          // NotFound page로 이동(4xx error)
+        const errMsg = "No value present";
+        if(err.response.data.status === 500 && err.response.data.message === errMsg) {
+          navigation("/errors/notfound");
+          return;
+        }
+        // 클라이언트가 잘못된 URI데이터 요청을 보냈을 때
+        const pattern = /^Failed to convert value of type.*/;
+        if(err.response.data.status === 400 && pattern.test(err.response.data.message)) {
+          navigation("/errors/notfound");
+          return;
+        }
+        setLoding(false);
+        // console.log(err);
+        // errMsg 보여주기
+        alert(err.response.data.errMsg);
+      }
+    } else {
+      // 접근 권한 없는 회원 접근 막기
+      navigation("/errors/notfound");
       setLoding(false);
-      // data 데이터 담기
-      setData({
-        ...data,
-        itemName: response.data.data.itemName,
-        sellerId: response.data.data.sellerId,
-        content: response.data.data.content,
-        recommendationPictureFormList: response.data.data.recommendationPictureFormList
-      });
-      // srcArr 만들기
-      createSrcArr(response.data.data.recommendationPictureFormList);
-      // pictureNums 만들기
-      createPictureNums(response.data.data.recommendationPictureFormList);
-    } catch(err) {
-      // 요청 실패
-      console.log("요청 실패");
-      setLoding(false);
-      // console.log(err);
-      // errMsg 보여주기
-      alert(err.response.data.errMsg);
     }
   }
   // 이미지 src 만들기
@@ -82,8 +105,6 @@ const RecommendationUpdateForm = () => {
   }
   // 추천합니다글 상세보기 데이터 불러오기
   async function getRecommendationDetailInfo(boardNum) {
-    // loding true로 바꾸기
-    setLoding(true);
     // 서버에 recommendation detail 요청하기
     // 누구든 볼수 있음 - 인증 불필요
     return await axios.get(

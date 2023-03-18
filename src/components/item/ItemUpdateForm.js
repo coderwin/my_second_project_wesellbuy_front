@@ -12,9 +12,12 @@ import Loding from '../Loding';
  * Item update component
  * writer : 이호진
  * init : 2023.03.07
- * updated by writer :
- * update :
+ * updated by writer : 이호진
+ * update : 2023.03.18
  * description : Item 수정 component
+ * 
+ * update : > input of price -> readOnly 속성 추가
+ *            > 가격을 바꾸면 장바구니에 있는 가격값도 바꿀 수 없을까?
  */
 export const ItemUpdateContext = createContext(null); // itemUpdate Contexnt
 
@@ -60,6 +63,10 @@ const ItemUpdateForm = () => {
   const [files, setFiles] = useState(null);// 파일들 상태
   const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열
   const [pictureNums, setPictureNums] = useState([]);// 이미지번호 모아두는 배열 상태
+  const [memberInfo, setMemberInfo] = useState(() => {
+    const key = "LOGIN_MEMBER";
+    return JSON.parse(sessionStorage.getItem(key)) || null
+  });// 로그인 사용자 정보 상태
 
 
   /// 메서드 모음
@@ -67,36 +74,56 @@ const ItemUpdateForm = () => {
   // 상품 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
   async function inputData() {
-    try {
-      // 상품 detail 불러오기
-      const response = await getItemDetailInfo(boardNum);
-      // 요청 성공
-      console.log("요청 성공");
+    setLoding(true);
+    if(memberInfo) {
+      try {
+        // 상품 detail 불러오기
+        const response = await getItemDetailInfo(boardNum);
+        // 요청 성공
+        console.log("요청 성공");
+        setLoding(false);
+        // data 데이터 담기
+        setData({
+          ...data,
+          name: response.data.data.name,
+          stock: response.data.data.stock,
+          price: response.data.data.price,
+          content: response.data.data.content,
+          type: response.data.data.type,
+          author: response.data.data.author,
+          publisher: response.data.data.publisher,
+          company: response.data.data.company,
+          pictureForms: response.data.data.pictureForms
+        });
+        // srcArr 만들기
+        createSrcArr(response.data.data.pictureForms);
+        // pictureNums 만들기
+        createPictureNums(response.data.data.pictureForms);
+      } catch(err) {
+        // 요청 실패
+        console.log("요청 실패");
+        // 상품이 없는 곳으로 입장했을 때
+          // NotFound page로 이동(4xx error)
+        const errMsg = "No value present";
+        if(err.response.data.status === 500 && err.response.data.message === errMsg) {
+          navigation("/errors/notfound");
+          return;
+        }
+        // 클라이언트가 잘못된 URI데이터 요청을 보냈을 때
+        const pattern = /^Failed to convert value of type.*/;
+        if(err.response.data.status === 400 && pattern.test(err.response.data.message)) {
+          navigation("/errors/notfound");
+          return;
+        }
+        setLoding(false);
+        // console.log(err);
+        // errMsg 보여주기
+        alert(err.response.data.errMsg);
+      } 
+    } else {
+      // 접근 권한 없는 회원 접근 막기
+      navigation("/errors/notfound");
       setLoding(false);
-      // data 데이터 담기
-      setData({
-        ...data,
-        name: response.data.data.name,
-        stock: response.data.data.stock,
-        price: response.data.data.price,
-        content: response.data.data.content,
-        type: response.data.data.type,
-        author: response.data.data.author,
-        publisher: response.data.data.publisher,
-        company: response.data.data.company,
-        pictureForms: response.data.data.pictureForms
-      });
-      // srcArr 만들기
-      createSrcArr(response.data.data.pictureForms);
-      // pictureNums 만들기
-      createPictureNums(response.data.data.pictureForms);
-    } catch(err) {
-      // 요청 실패
-      console.log("요청 실패");
-      setLoding(false);
-      // console.log(err);
-      // errMsg 보여주기
-      alert(err.response.data.errMsg);
     }
   }
   // 이미지 src 만들기
@@ -105,8 +132,6 @@ const ItemUpdateForm = () => {
   }
   // 상품 상세보기 데이터 불러오기
   async function getItemDetailInfo(boardNum) {
-    // loding true로 바꾸기
-    setLoding(true);
     // 서버에 item detail 요청하기
     // 누구든 볼수 있음 - 인증 불필요
     return await axios.get(
@@ -450,6 +475,7 @@ const ItemUpdateForm = () => {
                     name="price"
                     min="0"
                     value={data.price}
+                    readOnly
                     placeholder="0"
                     onChange={handleDataChange}
                   />

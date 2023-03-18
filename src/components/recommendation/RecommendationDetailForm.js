@@ -33,19 +33,24 @@ const RecommendationDetailForm = () => {
   // URI의 파라미터 얻어오기
     // num을 itemNum으로 교체
   const {num: boardNum} = useParams();
+  const navigation = useNavigate();// navigation
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청 상태
   const [error, setError] = useState(null);// 에러 상태
   const [data, setData] = useState(defaultData);// 데이터 상태
   const [srcArr, setSrcArr] = useState(null);// 이미지 src 배열 
-  const [memberInfo, setMemberInfo] = useState(null);// 로그인 사용자 정보 상태
+  const [memberInfo, setMemberInfo] = useState(() => {
+    const key = "LOGIN_MEMBER";
+    return JSON.parse(sessionStorage.getItem(key)) || null
+  });// 로그인 사용자 정보 상태
 
   /// 메서드 모음
 
   // 추천합니다글 상세정보 데이터에 담기
     // 이미지 srcArr도 담기 - inputSrcArr
   async function inputData() {
+    setLoding(true);
     try {
       // 추천합니다글 detail 불러오기
       const response = await getRecommendationDetailInfo();
@@ -62,6 +67,19 @@ const RecommendationDetailForm = () => {
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
+      // 데이터가이 없는 곳으로 입장했을 때
+        // NotFound page로 이동(4xx error)
+      const errMsg = "No value present";
+      if(err.response.data.status === 500 && err.response.data.message === errMsg) {
+        navigation("/errors/notfound");
+        return;
+      }
+      // 클라이언트가 잘못된 URI데이터 요청을 보냈을 때
+      const pattern = /^Failed to convert value of type.*/;
+      if(err.response.data.status === 400 && pattern.test(err.response.data.message)) {
+        navigation("/errors/notfound");
+        return;
+      }
       setLoding(false);
       console.log(err);
       // errMsg 보여주기
@@ -100,8 +118,6 @@ const RecommendationDetailForm = () => {
   }
   // 추천합니다글 상세보기 데이터 불러오기
   async function getRecommendationDetailInfo() {
-    // loding true로 바꾸기
-    setLoding(true);
     // 서버에 item detail 요청하기
     // 그래도 CORS 정책을 따라야 할 듯
     return await axios.get(

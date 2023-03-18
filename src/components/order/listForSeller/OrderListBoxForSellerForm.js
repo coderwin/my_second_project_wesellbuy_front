@@ -53,7 +53,7 @@ const OrderListBoxForSellerForm = () => {
 
   return (
     <Table hover>
-      <thead class="table-primary">
+      <thead className="table-primary">
         <tr>
           <th>순서</th>
           <th>수량</th>

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import {Route, Routes} from 'react-router-dom';
 import Header from './pages/Header';
 import Footer from './pages/Footer';
@@ -132,6 +132,8 @@ function App() {
 
           {/* 404 page */}
           <Route path="/*" element={<NotFound />} />
+          {/* 클라이언트의 잘못된 요청 */}
+          <Route path="/errors/notfound" element={<NotFound />} />
         </Routes>
 
         <Footer />

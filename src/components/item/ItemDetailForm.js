@@ -39,6 +39,7 @@ const ItemDetailForm = () => {
   // URI의 파라미터 얻어오기
     // num을 itemNum으로 교체
   const {num: itemNum} = useParams();
+  const navigation = useNavigate();// navigation
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청 상태
@@ -72,9 +73,23 @@ const ItemDetailForm = () => {
       setSrcArr(createSrcArr(response.data.data.pictureForms));
     } catch(err) {
       // 요청 실패
+      // console.log(err.response.data.message);
+      // 상품이 없는 곳으로 입장했을 때
+      // NotFound page로 이동(4xx error)
+      const errMsg = "No value present";
+      if(err.response.data.status === 500 && err.response.data.message === errMsg) {
+        navigation("/errors/notfound");
+        return;
+      }
+      // 클라이언트가 잘못된 URI데이터 요청을 보냈을 때
+      const pattern = /^Failed to convert value of type.*/;
+      if(err.response.data.status === 400 && pattern.test(err.response.data.message)) {
+        navigation("/errors/notfound");
+        return;
+      }
       setLoding(false);
       console.log("요청 실패");
-      // console.log(err);
+      console.log(err);    
       // errMsg 보여주기
       alert(err.response.data.errMsg);
     }
@@ -113,8 +128,6 @@ const ItemDetailForm = () => {
   }
   // 상품 상세보기 데이터 불러오기
   async function getItemDetailInfo() {
-    // loding true로 바꾸기
-    setLoding(true);
     // 서버에 item detail 요청하기
     // 누구든 볼수 있음 - 인증 불필요
     return await axios.get(

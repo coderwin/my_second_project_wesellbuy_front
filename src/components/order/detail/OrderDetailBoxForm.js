@@ -59,7 +59,7 @@ const CustomerServiceDetailBoxForm = () => {
   // 주문상품이 있을 때
   if(data.orderItemDetailList) {
     orderItemsBoxView = data.orderItemDetailList.map((orderItem, i) => {
-      return <OrderItemList orderItem={orderItem} num={i} />
+      return <OrderItemList key={i} orderItem={orderItem} num={i} />
     });
   } else {
     orderItemsBoxView = 
