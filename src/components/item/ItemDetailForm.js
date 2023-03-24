@@ -212,6 +212,7 @@ const ItemDetailForm = () => {
             </Row>
             {/* reply(댓글) box */}
             <Row>
+              {/* 댓글 list */}
               <ReplyBoxForm replyFormList={data.replyFormList} />
             </Row>
           </Col>

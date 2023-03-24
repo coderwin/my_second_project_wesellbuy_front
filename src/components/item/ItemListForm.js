@@ -124,6 +124,7 @@ const ItemListForm = () => {
       // 요청 성공
       setLoding(() => false);
       console.log("요청 성공");
+      console.log(data.data.content);
       // cardDatas에 담기
       setCardDatas(() => data.data.content);
       setTotalPages(() => data.data.totalPages);

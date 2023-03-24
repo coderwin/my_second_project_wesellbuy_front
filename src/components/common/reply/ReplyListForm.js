@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListGroup } from 'react-bootstrap'
+import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import ReplyForm from './ReplyForm'
 
 /**
