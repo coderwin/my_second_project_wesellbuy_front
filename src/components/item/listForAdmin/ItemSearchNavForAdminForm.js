@@ -1,20 +1,23 @@
-import React, { useContext } from 'react'
-import { Button, Col, Container, Form, Nav, Navbar, Row } from 'react-bootstrap';
-import { CustomerServiceListContext } from '../CustomerServiceListForm';
+import { useContext } from "react";
+import { Button, Col, Container, Form, Nav, Navbar, Row } from "react-bootstrap";
+import { ItemListForAdminContext } from "../ItemListForAdminForm";
 
 /**
- * CustomerService list search component
+ * Item list search for admin component
  * writer : 이호진
- * init : 2023.03.10
+ * init : 2023.03.28
  * updated by writer :
  * update :
- * description : 고객지원글 검색 component
+ * description : 상품 검색 관리자용 component
  */
-const CustomerServiceSearchNavForm = () => {
+const ItemSearchNavForAdminForm = () => {
 
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {data, handleDataChange, handleSearchClick} = useContext(CustomerServiceListContext);
+  const {data, handleDataChange, handleSearchClick} = useContext(ItemListForAdminContext);
+  // type에 들어가는 상품종류 모음
+  const dtypeValues = ["", "B", "F", "HA", "ITEM"];
+  const dtypeNames = ["선택", "책", "가구", "가전제품", "기타"];
   // input 달력(Datapicker) 환경설정 변수
   const dateOptions = {
     alloInvalid: true,
@@ -23,38 +26,50 @@ const CustomerServiceSearchNavForm = () => {
     formatYear: 'yy'
   }
   // 페이지 sizeValues 배열 변수
-  const sizeValues = [10, 15, 20, 30];
+  const sizeValues = [20, 30, 40];
   
   /// 상태 모음
 
   /// 메서드 모음
-  
 
   /// view 모음
 
+
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar expand="lg" className="search_navbar">
       <Container fluid>
         <Navbar.Brand href="#">Search</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav>
           </Nav>
-          {/* 신고당한 회원아이디 search */}
+          {/* 상품명 search */}
           <Form className="d-flex">
             <Form.Control
               type="search"
-              placeholder="신고한 회원아이디"
+              placeholder="상품명"
               className="me-2"
               aria-label="Search"
-              name="reportedId"
-              value={data.reportedId}
+              name="name"
+              value={data.name}
               onChange={handleDataChange}
             />
           </Form>
+          {/* 상품 등록 아이디 search */}
           <Form className="d-flex">
-            {/* 등록 날짜 search */}
+            <Form.Control
+              type="search"
+              placeholder="판매자 아이디"
+              className="me-2"
+              aria-label="Search"
+              name="memberId"
+              value={data.memberId}
+              onChange={handleDataChange}
+            />
+          </Form>
+          {/* 등록 날짜 search */}
             {/* 작동할 지 모르겟군 -> 확인해보자 */}
+          <Form className="d-flex">
             <Form.Control
               type="date"
               datepicker-popup=""
@@ -69,7 +84,24 @@ const CustomerServiceSearchNavForm = () => {
               value={data.createDate}
               onChange={handleDataChange}
             />
-            
+          </Form>
+          {/* 상품 종류 search */}
+          <Form className="d-flex">
+            <Form.Select
+                as={Col}
+                sm="5" 
+                name="dtype"
+                value={data.dtype}
+                onChange={handleDataChange}
+              >
+                {
+                  dtypeValues.map((value, i) => {
+                    return (value === data.dtype ? 
+                    <option key={i} value={value}>{dtypeNames[i]}</option> 
+                    : <option key={i} value={value}>{dtypeNames[i]}</option>);
+                  })
+                }
+            </Form.Select>
             <Button type="button" onClick={handleSearchClick}>Search</Button>
           </Form>  
         </Navbar.Collapse>
@@ -80,7 +112,7 @@ const CustomerServiceSearchNavForm = () => {
               <Form.Select
                   as={Col}
                   sm="5" 
-                  name="size"
+                  name="size" 
                   value={data.size}
                   onChange={handleDataChange}
                 >
@@ -100,4 +132,4 @@ const CustomerServiceSearchNavForm = () => {
   )
 }
 
-export default CustomerServiceSearchNavForm;
+export default ItemSearchNavForAdminForm;

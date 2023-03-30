@@ -1,23 +1,21 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
-import { Table } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import "../../../css/form.css";
-import { CustomerServiceListContext } from '../CustomerServiceListForm';
+import { useContext } from "react";
+import { Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { CustomerServiceListForAdminContext } from "../CustomerServiceListForAdminForm";
 
 /**
- * CustomerService list box component
+ * CustomerService list box for admin component
  * writer : 이호진
- * init : 2023.03.10
+ * init : 2023.03.28
  * updated by writer :
  * update :
- * description : 고객지원글 목록 box component
+ * description : 고객지원글 목록 box 관리자용 component
  */
-const   CustomerServiceListBoxForm = () => {
+const CustomerServiceListBoxForAdminForm = () => {
   
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {listDatas} = useContext(CustomerServiceListContext);
+  const {listDatas} = useContext(CustomerServiceListForAdminContext);
   const navigation = useNavigate();// navigation
 
   /// 상태 모음
@@ -50,6 +48,7 @@ const   CustomerServiceListBoxForm = () => {
     view = listDatas.map((data) => {
       return (
         <tr key={data.num}>
+          <th id={data.num} onClick={handleItemNameClick} className="mousePointer">{data.memberId}</th>
           <th id={data.num} onClick={handleItemNameClick} className="mousePointer">{data.reportedId}</th>
           <th>{printDate(data.createDate)}</th>
         </tr>
@@ -60,7 +59,7 @@ const   CustomerServiceListBoxForm = () => {
   } else {
     view = (
     <tr>
-      <th colSpan={2}>
+      <th colSpan={3}>
         작성한 글이 없습니다.
       </th>
     </tr>);
@@ -70,6 +69,7 @@ const   CustomerServiceListBoxForm = () => {
     <Table hover>
       <thead className="table-primary">
         <tr>
+          <th>신고한 회원아이디</th>
           <th>신고당한 회원아이디</th>
           <th>작성날짜</th>
         </tr>
@@ -81,4 +81,4 @@ const   CustomerServiceListBoxForm = () => {
   )
 }
 
-export default CustomerServiceListBoxForm;
+export default CustomerServiceListBoxForAdminForm;

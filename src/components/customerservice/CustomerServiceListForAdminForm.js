@@ -1,30 +1,28 @@
-import axios from 'axios';
-import React, { createContext, useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap';
-import PageButtonForm from '../common/pagebutton/PageButtonForm';
-import Loding from '../Loding';
-import CustomerServiceListBoxForm from './list/CustomerServiceListBoxForm';
-import CustomerServiceSearchNavForm from './list/CustomerServiceSearchNavForm';
-import '../../css/form.css';
+import axios from "axios";
+import { createContext, useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import PageButtonForm from "../common/pagebutton/PageButtonForm";
+import Loding from "../Loding";
+import CustomerServiceListBoxForAdminForm from "./listForAdmin/CustomerServiceListBoxForAdminForm";
+import CustomerServiceSearchNavForAdminForm from "./listForAdmin/CustomerServiceSearchNavForAdminForm";
 
 /**
- * CustomerService list component
+ * CustomerService list for admin component
  * writer : 이호진
- * init : 2023.03.10
+ * init : 2023.03.28
  * updated by writer :
  * update :
- * description : 고객지원글 목록 component
+ * description : 고객지원글 목록 관리자용 component
  */
-export const CustomerServiceListContext = createContext(null); // CustomerServiceList Context
+export const CustomerServiceListForAdminContext = createContext(null); // CustomerServiceList Context
 
-const CustomerServiceListForm = () => {
+const CustomerServiceListForAdminForm = () => {
   /// 변수 모음
   // 검색 데이터 default 변수
   const defaultData = {
-    memberId: "", // 신고한 회원 아이디
     reportedId: "", // 신고당한 회원 아이디
     createData: "",// 추천합니다글 생성 날짜(shape : 0000-00-00) 
-    size: 20,// 페이지 size
+    size: 10,// 페이지 size
     page: 0// 페이지 번호
   }
 
@@ -78,10 +76,10 @@ const CustomerServiceListForm = () => {
       // console.log(err);
     }
   }
-  // 서버에서 나의 고객지원글 불러오기
+  // 서버에서 모든 고객지원글 불러오기
   async function getCustomerServiceList() {
     return await axios.get(
-      "http://localhost:8080/customerservices",
+      "http://localhost:8080/customerservices/admin",
       {
         params: data,
         withCredentials: true
@@ -128,7 +126,7 @@ const CustomerServiceListForm = () => {
   if(loding) return(<Loding />);
 
   return (
-    <CustomerServiceListContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas, totalPages}}>
+    <CustomerServiceListForAdminContext.Provider value={{data, handleDataChange, handleSearchClick, listDatas, totalPages}}>
       <Container className="body_text_center">
         <Row className="d-flex justify-content-center">
           <Col sm={10}>
@@ -136,14 +134,14 @@ const CustomerServiceListForm = () => {
             <Row>
               <Col md="12">
                 {/* 위쪽 Nav - 검색 */}
-                <CustomerServiceSearchNavForm />
+                <CustomerServiceSearchNavForAdminForm />
               </Col>
             </Row>
             {/* 고객지원글 목록 box */}
             <Row id="top">
               <Col md="12">
                 {/* body - 고객지원글 목록  */}
-                <CustomerServiceListBoxForm />
+                <CustomerServiceListBoxForAdminForm />
               </Col>
             </Row>
             {/* footer - 페이지 버튼 */}
@@ -161,8 +159,8 @@ const CustomerServiceListForm = () => {
           </Col>
         </Row>
       </Container>
-    </CustomerServiceListContext.Provider> 
+    </CustomerServiceListForAdminContext.Provider> 
   )
 }
 
-export default CustomerServiceListForm
+export default CustomerServiceListForAdminForm;

@@ -20,8 +20,12 @@
   bottom: 0;
   left: 0;
 }
-/* div에서 text(content) 원본 그대로 */
+/* div에서 text(content) 원본 그대로 + 줄바꿈*/
 .originContent {
+  white-space: pre-wrap;
+}
+/* div에서 text(content) 원본 그대로 + 줄바꿈 X */
+.originContent_noLine {
   white-space: pre;
 }
 

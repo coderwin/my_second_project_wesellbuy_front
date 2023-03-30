@@ -1,20 +1,20 @@
-import React, { useContext } from 'react'
-import { Button, Col, Container, Form, Nav, Navbar, Row } from 'react-bootstrap';
-import { CustomerServiceListContext } from '../CustomerServiceListForm';
+import { useContext } from "react";
+import { Button, Col, Container, Form, Nav, Navbar, Row } from "react-bootstrap";
+import { MemberListForAdminContext } from "../MemberListForAdminForm";
 
 /**
- * CustomerService list search component
+ * Member list search for admin component
  * writer : 이호진
- * init : 2023.03.10
+ * init : 2023.03.28
  * updated by writer :
  * update :
- * description : 고객지원글 검색 component
+ * description : 회원 검색 관리자용 component
  */
-const CustomerServiceSearchNavForm = () => {
+const MemberSearchNavForAdminForm = () => {
 
   /// 변수 모음
   // 외부의 변수 불러오기
-  const {data, handleDataChange, handleSearchClick} = useContext(CustomerServiceListContext);
+  const {data, handleDataChange, handleSearchClick} = useContext(MemberListForAdminContext);
   // input 달력(Datapicker) 환경설정 변수
   const dateOptions = {
     alloInvalid: true,
@@ -22,33 +22,65 @@ const CustomerServiceSearchNavForm = () => {
     minDate: "2000-01-02",
     formatYear: 'yy'
   }
+  // country에 들어가는 상품종류 모음
+  const countryValues = ["", "ko", "us", "gb", "cn", "jp"];
+  const countryNames = ["나라명", "대한민국", "미국", "영국", "중국", "일본"];
   // 페이지 sizeValues 배열 변수
-  const sizeValues = [10, 15, 20, 30];
-  
+  const sizeValues = [20, 30, 40];
   /// 상태 모음
 
   /// 메서드 모음
-  
 
   /// view 모음
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar expand="lg" className="search_navbar">
       <Container fluid>
         <Navbar.Brand href="#">Search</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav>
           </Nav>
-          {/* 신고당한 회원아이디 search */}
+          {/* 회원아이디 search */}
           <Form className="d-flex">
             <Form.Control
               type="search"
-              placeholder="신고한 회원아이디"
+              placeholder="아이디"
               className="me-2"
               aria-label="Search"
-              name="reportedId"
-              value={data.reportedId}
+              name="id"
+              value={data.id}
+              onChange={handleDataChange}
+            />
+          </Form>
+          {/* 나라명 search */}
+          <Form className="d-flex">
+            <Form.Select
+                as={Col}
+                sm="5" 
+                name="country"
+                value={data.country}
+                onChange={handleDataChange}
+              >
+                {
+                  countryValues.map((value, i) => {
+                    return (value === data.country ? 
+                    <option key={i} value={value}>{countryNames[i]}</option> 
+                    : <option key={i} value={value}>{countryNames[i]}</option>);
+                  })
+                }
+            </Form.Select>
+            <Button type="button" onClick={handleSearchClick}>Search</Button>
+          </Form>  
+          {/* 도시명 search */}
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="도시명"
+              className="me-2"
+              aria-label="Search"
+              name="city"
+              value={data.city}
               onChange={handleDataChange}
             />
           </Form>
@@ -80,7 +112,7 @@ const CustomerServiceSearchNavForm = () => {
               <Form.Select
                   as={Col}
                   sm="5" 
-                  name="size"
+                  name="size" 
                   value={data.size}
                   onChange={handleDataChange}
                 >
@@ -100,4 +132,4 @@ const CustomerServiceSearchNavForm = () => {
   )
 }
 
-export default CustomerServiceSearchNavForm;
+export default MemberSearchNavForAdminForm;

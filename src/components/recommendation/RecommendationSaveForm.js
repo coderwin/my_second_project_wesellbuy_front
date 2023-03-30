@@ -220,7 +220,7 @@ const RecommendationSaveForm = () => {
             className="mb-3"
             >
               <Form.Label column sm="3">
-                  sellerId <span className='important'>*</span>
+                  SELLERID <span className='important'>*</span>
               </Form.Label>
               <Col sm="5">
                   <Form.Control

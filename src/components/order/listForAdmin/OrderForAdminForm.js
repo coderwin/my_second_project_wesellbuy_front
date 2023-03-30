@@ -1,13 +1,13 @@
-import axios from 'axios';
-import React, { useState } from 'react'
-import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import Loding from '../../Loding';
+import axios from "axios";
+import { useState } from "react";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import Loding from "../../Loding";
 
 /**
  * Order of Order box component
  * writer : 이호진
- * init : 2023.03.12
+ * init : 2023.03.28
  * updated by writer :
  * update :
  * description : 주문목록의 주문 component
@@ -23,7 +23,7 @@ import Loding from '../../Loding';
  *                -> 현재 : 취소전 그대로 유지될 것으로 예상
  *                -> 수정한다면 : 배송취소가 생겼으면 좋겠군
  */
-const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, searchCond}) => {
+const OrderForAdminForm = ({data, numPosition, datasLength, totalPages, searchCond}) => {
   
   /// 변수 모음
   const navigation = useNavigate();// navigation
@@ -34,26 +34,31 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
 
   /// 상태 모음
   const [loding, setLoding] = useState(false);// 요청처리 상태
-  const [deliveryResult, setDeliveryResult] = useState(false);// 배송중 버튼 클릭 후 처리 상태 
-
+  const [cancelResult, setCancelResult] = useState(false);// 취소버튼 클릭 후 처리 상태 
 
   /// 메서드 모음
-  // 배달완료를 클릭했을 때
-  async function handleFinishDeliveryClick(e) {
+  // 주문을 클릭했을 때
+  function handleItemNameClick(e) {
+    // id 불러오기
+    const id = e.target.id;// 상품번호 불러오기
+    // 주문 상세보기로 이동
+    navigation(`/order/${id}`);
+  }
+  // 취소버튼을 클릭했을 때
+  async function handleCancelClick(e) {
+    setLoding(true);
     try {
-      // loding = true
-      setLoding(true);
       // 주문번호
       const orderNum = e.target.id
       // 서버로 취소 요청
-      const response = await changeDeliveryStatus(orderNum);
+      const response = await cancel(orderNum);
       // 요청 성공
       // loding = false
       setLoding(false);
       console.log("요청 성공");
       alert(response.data.data);
       // cancelResult 변경
-      setDeliveryResult(true);
+      setCancelResult(true);
     } catch(err) {
       // 요청 실패
       console.log("요청 실패");
@@ -67,10 +72,9 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
     }
   }
   // 서버로 취소 요청
-  async function changeDeliveryStatus(num) {
-    return await axios.patch(
-      `http://localhost:8080/orders/${num}/delivery/deliver`,
-      {},
+  async function cancel(num) {
+    return await axios.delete(
+      `http://localhost:8080/orders/${num}`,
       {
         withCredentials: true
       }
@@ -87,54 +91,65 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
   /// view 모음
   let orderStatusView = null;// 주문상태 출력 변수
   let deliveryStatusView = null;// 배달상태 출력 변수
-  let deliveryBtnBoxView = null;// 배송버튼 박스 출력 변수
+  let cancelBtnBoxView = null;// 취소버튼 박스 출력 변수
 
   // orderStatusView 결정
   // 처음 and 취소요청실패
-  for(let i = 0; i < orderStatusValues.length; i++) {
-    if(orderStatusValues[i] === data.orderStatus) {
-      orderStatusView = orderStatusNames[i];
+  if(cancelResult === false) {
+    for(let i = 0; i < orderStatusValues.length; i++) {
+      if(orderStatusValues[i] === data.orderStatus) {
+        orderStatusView = orderStatusNames[i];
+      }
     }
+  // 취소요청성공
+  } else {
+    // 서버에서 처리 필요 -> 아직 서버에서 처리 안 함
+    orderStatusView = orderStatusNames[1];// 취소
   }
 
   // deliveryStatusView 결정
   // 처음 and 취소요청실패
-  if(deliveryResult === false) {
+  if(cancelResult === false) {
     for(let i = 0; i < deliveryStatusValues.length; i++) {
       if(deliveryStatusValues[i] === data.deliveryStatus) {
         deliveryStatusView = deliveryStatusNames[i];
       }
     }
   } else {
-    deliveryStatusView = deliveryStatusNames[2];// 배송완료   
+    deliveryStatusView = deliveryStatusNames[3];// 배송취소 
   }
 
-  // deliveryBtnBoxView 결정
-  // 처음 and 배달완료요청실패
-  if(deliveryResult === false) {
-    deliveryBtnBoxView = (
-      data.deliveryStatus === "TRANSIT" ? 
-      <Button id={data.num} onClick={handleFinishDeliveryClick}>배달완료</Button> : 
-      ""
+  // cancelBtnBoxView 결정
+  // 처음 and 취소요청실패
+  if(cancelResult === false) {
+    cancelBtnBoxView = (
+      data.orderStatus === "CANCEL" ? 
+      "취소완료" :
+      (
+        data.deliveryStatus === "READY" ?
+        <Button id={data.num} onClick={handleCancelClick}>취소</Button> :
+        "취소불가" 
+      )
     );
   } else {
-    deliveryBtnBoxView = "";
+    cancelBtnBoxView = "취소완료";
   }
 
-  if(loding) return (<Loding />);// 클라이언트 요청 처리 view
+  if(loding) return (<tr><td><Loding /></td></tr>);// 클라이언트 요청 처리 view
 
   return (
     <tr>
-      {/* 주문번호 순서 */}
-      <th id={data.num}>
-        {/* 첫페이지가 1번부터 */}
-        {/* {searchCond.size * (searchCond.page + 1) - searchCond.size + 1} */}
-        {/* 첫페이지가 마지막번호부터 */}
+      {/* 나의 주문번호 순서 */}
+      <th id={data.num} 
+        onClick={handleItemNameClick} className="mousePointer"
+      >
+        {/* 첫페이지가 1번부터 => 순서가 안 맞군*/}
         {searchCond.size * (totalPages - searchCond.page - 1) + datasLength - numPosition}
+        {/* 첫페이지가 마지막번호부터 -> 어떻게 하지? */}
       </th>
       {/* 주문 회원아이디 */}
       <th>
-        {data.id}
+          {data.id}
       </th>
       {/* 주문날짜 */}
       <th>
@@ -148,12 +163,12 @@ const OrderForDeliverForm = ({data, numPosition, datasLength, totalPages, search
       <th>
         {deliveryStatusView}
       </th>
-      {/* 배달완료 button */}
+      {/* 주문취소 button */}
       <th>
-        {deliveryBtnBoxView}
+        {cancelBtnBoxView}
       </th>
     </tr>
   )
 }
 
-export default OrderForDeliverForm;
+export default OrderForAdminForm;

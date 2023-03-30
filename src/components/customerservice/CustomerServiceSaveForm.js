@@ -198,10 +198,10 @@ const CustomerServiceSaveForm = () => {
             >
               <Row className="d-flex justify-content-center">
                 <Col sm={2}>
-                  <Button type="submit">등록</Button>
+                  <Button type="submit" className="d-grid gap-2">등록</Button>
                 </Col>
                 <Col sm={2}>
-                  <Button type="button" onClick={handleCancelClick}>취소</Button>
+                  <Button type="button" className="d-grid gap-2" onClick={handleCancelClick}>취소</Button>
                 </Col>
               </Row>
             </Form.Group>
